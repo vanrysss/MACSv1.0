@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MACS v1.0</string>
+    <string name="title_activity_calculation">CalculationActivity</string>
+    <string name="action_settings">wtf</string>
+    <string name="calc_meta_label">Meta Data</string>
+    <string name="vehicle_params">Vehicle Parameters</string>
+</resources>
