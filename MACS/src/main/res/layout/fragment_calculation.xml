@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
@@ -10,14 +11,101 @@
         android:text="@string/calc_meta_label"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <EditText
-        android:id="@+id/calculation_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/calculation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_single_title_hint"/>
+
+
+        <EditText
+            android:id="@+id/calculation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_engineer_name_hint"/>
+
+        <EditText
+            android:id="@+id/calculation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_job_site_hint"/>
+
+        <Button
+            android:id="@+id/calculation_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/vehicle_params"/>
+        android:text="@string/vehicle_params"
+        style="?android:listSeparatorTextViewStyle"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/soil_params"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/measurements"
+        style="?android:listSeparatorTextViewStyle"/>
+
+        <EditText
+            android:id="@+id/Beta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_beta_hint"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Theta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_theta_hint"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Sigma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_sigma_hint"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Delta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_delta_hint"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Kp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/calc_Kp_hint"
+            android:inputType="number"/>
 
 </LinearLayout>

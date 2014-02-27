@@ -1,12 +1,10 @@
 package com.VanLesh.macsv10.macs;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 
-public abstract class MainActivity extends FragmentActivity {
-    protected abstract Fragment createFragment();
+public abstract class MainActivity extends SingleFragmentActivity {
+
+/*    protected abstract Fragment createFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +22,9 @@ public abstract class MainActivity extends FragmentActivity {
         }
 
     }
-
+*/
+    @Override
+    protected Fragment createFragment(){
+        return new CalculationFragment();
+    }
 }

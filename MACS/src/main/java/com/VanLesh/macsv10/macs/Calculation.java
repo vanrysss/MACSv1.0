@@ -23,6 +23,9 @@ public class Calculation {
     }
 
 
+
+    private boolean doemail;
+
     //
 
     private int beta; //angle of slope
@@ -39,6 +42,15 @@ public class Calculation {
 
     public Calculation(){
         mId = UUID.randomUUID();
+        mDate = new Date();
+    }
+
+    public boolean isDoemail() {
+        return doemail;
+    }
+
+    public void setDoemail(boolean doemail) {
+        this.doemail = doemail;
     }
 
     public void setTitle(String title) {
@@ -95,7 +107,7 @@ public class Calculation {
     }
 
     //equation 8 in the publication
-    public double Pp(Vehicle v, Soil s double Kp){
+    public double Pp(Vehicle v, Soil s, double Kp){
 
         return .5*s.getunitW()*Math.pow(D_b,2)*v.getBladeW()*Kp + 2*s.getC()*v.getBladeW()* Math.sqrt(Kp);
     }
@@ -114,5 +126,12 @@ public class Calculation {
 
         return top/bot;
 
+    }
+
+    @Override
+    //over ride default toString to return our title so the user sees something
+    //useful when we display a list of calcs
+    public String toString(){
+        return mTitle;
     }
 }

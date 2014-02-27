@@ -6,4 +6,15 @@
     <string name="action_settings">wtf</string>
     <string name="calc_meta_label">Meta Data</string>
     <string name="vehicle_params">Vehicle Parameters</string>
+    <string name="calc_single_title_hint">Unique Calculation Identifier</string>
+    <string name="calc_engineer_name_hint">Engineer Name</string>
+    <string name="calc_job_site_hint">Jobsite ID</string>
+    <string name="measurements">Measurements</string>
+    <string name="calc_beta_hint">β : Angle of slope</string>
+    <string name="calc_theta_hint">θ : Angle of guyline</string>
+    <string name="calc_sigma_hint">σ : Anchor angle</string>
+    <string name="calc_delta_hint">δ : Ask Ben About me</string>
+    <string name="calc_Kp_hint">Kp : Ask Ben</string>
+    <string name="soil_params">Soil Parameters</string>
+    <string name="calculations_title">Calculations</string>
 </resources>
