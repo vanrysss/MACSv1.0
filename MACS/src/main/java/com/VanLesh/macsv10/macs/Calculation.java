@@ -15,16 +15,13 @@ public class Calculation {
     private String mTitle;
     private String mEngineerName;
     private String mJobSite;
+
+
+
     private Date mDate;
     private UUID mId;
 
-    public UUID getId() {
-        return mId;
-    }
-
-
-
-    private boolean doemail;
+    public boolean doemail;
 
     //
 
@@ -45,6 +42,17 @@ public class Calculation {
         mDate = new Date();
     }
 
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public UUID getId() {
+        return mId;
+    }
     public boolean isDoemail() {
         return doemail;
     }

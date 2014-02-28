@@ -32,6 +32,10 @@ public class CalculationLab {
         return mCalculations;
     }
 
+    public void addCalculation(Calculation c){
+        mCalculations.add(c);
+    }
+
     public Calculation getCalculation(UUID id){
         for(Calculation c : mCalculations){
             if(c.getId().equals(id))
@@ -39,6 +43,4 @@ public class CalculationLab {
         }
         return null;
     }
-
-
 }

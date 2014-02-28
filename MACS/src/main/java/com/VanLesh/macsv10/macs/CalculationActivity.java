@@ -2,7 +2,9 @@ package com.VanLesh.macsv10.macs;
 
 import android.support.v4.app.Fragment;
 
-public abstract class MainActivity extends SingleFragmentActivity {
+import java.util.UUID;
+
+public abstract class CalculationActivity extends SingleFragmentActivity {
 
 /*    protected abstract Fragment createFragment();
 
@@ -25,6 +27,11 @@ public abstract class MainActivity extends SingleFragmentActivity {
 */
     @Override
     protected Fragment createFragment(){
-        return new CalculationFragment();
+        //return new CalculationFragment();
+        UUID calculationId = (UUID)getIntent()
+                .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
+
+        return CalculationFragment.newInstance(calculationId);
+
     }
 }

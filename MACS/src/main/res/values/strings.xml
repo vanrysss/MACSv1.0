@@ -17,4 +17,7 @@
     <string name="calc_Kp_hint">Kp : Ask Ben</string>
     <string name="soil_params">Soil Parameters</string>
     <string name="calculations_title">Calculations</string>
+    <string name="new_calc">New Calculation</string>
+    <string name="delete_calc">Delete</string>
+    <string name="date_picker_title">Date of Calculation</string>
 </resources>
