@@ -1,6 +1,7 @@
 package com.VanLesh.macsv10.macs;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -12,13 +13,27 @@ import java.util.UUID;
 
 public class CalculationLab {
 
+    private static final String TAG = "CalculationLab";
+    private static final String FILENAME = "calculations.json";
+
     private static CalculationLab sCalculationLab;
     private Context mAppcontext;
     private ArrayList<Calculation> mCalculations;
+    private CalculationJSONSerializer mSerializer;
+
+    private Context mAppContext;
 
     private CalculationLab(Context appcontext){
         mAppcontext = appcontext;
-        mCalculations = new ArrayList<Calculation>();
+        mSerializer = new CalculationJSONSerializer(mAppcontext, FILENAME);
+
+        try {
+            mCalculations = mSerializer.loadCalculations();
+        }catch (Exception e){
+            mCalculations = new ArrayList<Calculation>();
+            Log.e(TAG,"Error loading calcs:", e);
+
+        }
     }
 
     public static CalculationLab get(Context c){
@@ -36,6 +51,10 @@ public class CalculationLab {
         mCalculations.add(c);
     }
 
+    public void deleteCalculation(Calculation c){
+        mCalculations.remove(c);
+    }
+
     public Calculation getCalculation(UUID id){
         for(Calculation c : mCalculations){
             if(c.getId().equals(id))
@@ -43,4 +62,17 @@ public class CalculationLab {
         }
         return null;
     }
+
+    public boolean saveCalculations(){
+        try {
+            mSerializer.saveCalculations(mCalculations);
+            Log.d(TAG,"calculations saved");
+            return true;
+        }catch (Exception e){
+            Log.e(TAG,"Error saving",e);
+            return false;
+        }
+    }
+
+
 }

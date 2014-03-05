@@ -1,13 +1,18 @@
 package com.VanLesh.macsv10.macs;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,23 +36,28 @@ public class CalculationFragment extends Fragment{
     private Button mDateButton;
 
     private static final int REQUEST_DATE = 0;
-    public static String EXTRA_CALCULATION_ID = "com.bignerdranch.android.calculationintent.calculation_id";
+    public static String EXTRA_CALCULATION_ID = "com.VanLesh.android.calculationintent.calculation_id";
     private static final String DIALOG_DATE = "date";
 
-    private void updateDate(){
-        mDateButton.setText(mCalculation.getDate().toString());
-    }
+    public static CalculationFragment newInstance(UUID calculationId){
+                Bundle args = new Bundle();
+                args.putSerializable(EXTRA_CALCULATION_ID, calculationId);
+
+                CalculationFragment fragment = new CalculationFragment();
+                fragment.setArguments(args);
+
+                return fragment;
+        }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //UUID calculationId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_CALCULATION_ID);
-
         UUID calculationId = (UUID)getArguments().getSerializable(EXTRA_CALCULATION_ID);
 
         mCalculation = CalculationLab.get(getActivity()).getCalculation(calculationId);
         setHasOptionsMenu(true);
     }
+
 
     @TargetApi(11)
     @Override
@@ -87,64 +97,51 @@ public class CalculationFragment extends Fragment{
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCalculation.getDate());
                 dialog.setTargetFragment(CalculationFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
+            }
+        });
 
         updateDate();
 
         mMailCheckBox = (CheckBox)v.findViewById(R.id.calculation_list_item_emailCheckBox);
         mMailCheckBox.setChecked(mCalculation.isDoemail());
-        mMailCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-            public void onCheckedChanged(CompoundButton buttonview, boolean isChecked){
-                mCalculation.setDoemail(isChecked);
-            }
-
+        mMailCheckBox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton button, boolean b) {
+                        mCalculation.setDoemail(b);
+                }
         });
 
         return v;
+
     }
 
-    private void updateDate()
-            {
-                Date d = mCalculation.getDate();
-                CharSequence c = DateFormat.format("EEEE, MMM dd, yyyy", d);
-                mDateButton.setText(c);
-            }
-
-
-
-        return v;
+    private void updateDate(){
+        mDateButton.setText(mCalculation.getDate().toString());
     }
 
- /*   @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case android.R.id.home:
-                if(NavUtils.getParentActivityName(getActivity()) != null){
-                    NavUtils.navigateUpFromSameTask(getActivity());
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-*/
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode != Activity.RESULT_OK){
             return;
         }
         if (requestCode == REQUEST_DATE){
-            Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCalculation.setDate(date);
             updateDate();
         }
     }
-    public static CalculationFragment newInstance(UUID calculationId){
-        Bundle args = new Bundle();
-        args.putSerializable(EXTRA_CALCULATION_ID, calculationId);
 
-        CalculationFragment fragment = new CalculationFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_calc_list, menu);
     }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        CalculationLab.get(getActivity()).saveCalculations();
+    }
+
+
 }

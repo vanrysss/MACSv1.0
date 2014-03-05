@@ -62,7 +62,7 @@ public class DatePickerFragment extends DialogFragment{
         DatePicker datePicker = (DatePicker)v.findViewById(R.id.dialog_date_datePicker);
         datePicker.init(year,month,day, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
+            public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
                //TRanslate year,m,d into a date obj
                 mDate = new GregorianCalendar(year,month,day).getTime();
                 //update argument to preserve selected value on rotate

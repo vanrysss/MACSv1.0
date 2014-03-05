@@ -23,7 +23,7 @@ public class CalculationPagerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.viewPager);
-        setContentView(mViewPager);
+            setContentView(mViewPager);
 
         mCalculations = CalculationLab.get(this).getCalculations();
 

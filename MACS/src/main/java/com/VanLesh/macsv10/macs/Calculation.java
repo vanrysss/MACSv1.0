@@ -1,5 +1,8 @@
 package com.VanLesh.macsv10.macs;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,33 +18,157 @@ public class Calculation {
     private String mTitle;
     private String mEngineerName;
     private String mJobSite;
-
-
-
     private Date mDate;
     private UUID mId;
+    public boolean doemail = true;
 
-    public boolean doemail;
 
-    //
 
+    // Measurements
     private int beta; //angle of slope
-    private int sigma; //anchor angle
     private int D_b; //blade embedment
-    private int H_a; //height of anchor attachment
-    private int delta; //mystery number
+    private int delta =1;
     private int theta; //angle on guyline
     private double Kp; //another mystery
-
     private int La; //Setback distance of anchor from soil
     private int Ha; //height of Anchor
 
 
+    //Class objects that matter for calculation
+    private Soil mSoil;
+    private Vehicle mVehicle;
+
+    //JSON things
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_DATE = "date";
+    private static final String JSON_ENGINEER = "engineer";
+    private static final String JSON_DOEMAIL = "do email";
+    private static final String JSON_SITE = "jobsite";
+    private static final String JSON_BETA = "β";
+    private static final String JSON_Db = "Db";
+    private static final String JSON_DELTA = "δ";
+    private static final String JSON_THETA = "θ";
+    private static final String JSON_Kp = "Kp";
+    private static final String JSON_La = "La";
+    private static final String JSON_Ha = "Ha";
+    private static final String JSON_VEHICLE = "vehicle";
+    private static final String JSON_SOIL = "soil";
+
     public Calculation(){
         mId = UUID.randomUUID();
         mDate = new Date();
+
     }
 
+    //TODO: fill out the rest pls
+    public Calculation(JSONObject json) throws JSONException{
+        mId = UUID.fromString(json.getString(JSON_ID));
+        if (json.has(JSON_TITLE))
+            mTitle = json.getString(JSON_TITLE);
+
+        if(json.has(JSON_VEHICLE))
+            mVehicle = new Vehicle(json.getJSONObject(JSON_VEHICLE))
+
+        if (json.has(JSON_SOIL))
+            mSoil = new Soil(json.getJSONObject(JSON_SOIL))
+
+        mDate = new Date(json.getLong(JSON_DATE));
+        mEngineerName = json.getString(JSON_ENGINEER);
+        mJobSite = json.getString(JSON_SITE);
+        mId = UUID.fromString(json.getString(JSON_ID));
+        doemail = json.getBoolean(JSON_DOEMAIL);
+        beta = json.getInt(JSON_BETA);
+        D_b = json.getInt(JSON_Db);
+        delta = json.getInt(JSON_DELTA);
+        theta = json.getInt(JSON_THETA);
+        Kp = json.getDouble(JSON_Db);
+        La = json.getInt(JSON_La);
+        Ha = json.getInt(JSON_Ha);
+
+    }
+    public JSONObject toJSON() throws JSONException{
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID, mId.toString());
+        json.put(JSON_TITLE,mTitle.toString());
+        json.put(JSON_DATE,mDate.toString());
+        json.put(JSON_ENGINEER,mEngineerName.toString());
+        json.put(JSON_SITE,mJobSite.toString());
+        json.put(JSON_BETA,beta);
+        json.put(JSON_Db, D_b);
+        json.put(JSON_DELTA,delta);
+        json.put(JSON_THETA,theta);
+        json.put(JSON_Kp,Kp);
+        json.put(JSON_La,La);
+        json.put(JSON_Ha,Ha);
+        if (mVehicle != null)
+            json.put(JSON_VEHICLE, mVehicle.toJSON());
+        if (mSoil != null)
+            json.put(JSON_SOIL, mSoil.toJSON());
+
+        return json;
+
+    }
+
+    public void setId(UUID id) {
+        mId = id;
+    }
+
+    public int getBeta() {
+        return beta;
+    }
+
+    public void setBeta(int beta) {
+        this.beta = beta;
+    }
+
+    public int getD_b() {
+        return D_b;
+    }
+
+    public void setD_b(int d_b) {
+        D_b = d_b;
+    }
+
+    public int getDelta() {
+        return delta;
+    }
+
+    public void setDelta(int delta) {
+        this.delta = delta;
+    }
+
+    public int getTheta() {
+        return theta;
+    }
+
+    public void setTheta(int theta) {
+        this.theta = theta;
+    }
+
+    public double getKp() {
+        return Kp;
+    }
+
+    public void setKp(double kp) {
+        Kp = kp;
+    }
+
+    public int getLa() {
+        return La;
+    }
+
+    public void setLa(int la) {
+        La = la;
+    }
+
+    public int getHa() {
+        return Ha;
+    }
+
+    public void setHa(int ha) {
+        Ha = ha;
+    }
     public Date getDate() {
         return mDate;
     }
@@ -53,6 +180,7 @@ public class Calculation {
     public UUID getId() {
         return mId;
     }
+
     public boolean isDoemail() {
         return doemail;
     }
@@ -83,6 +211,22 @@ public class Calculation {
 
     public String getJobSite() {
         return mJobSite;
+    }
+
+    public Soil getSoil() {
+        return mSoil;
+    }
+
+    public void setSoil(Soil soil) {
+        mSoil = soil;
+    }
+
+    public Vehicle getVehicle() {
+        return mVehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        mVehicle = vehicle;
     }
 
     private double tsin(int param){
@@ -142,4 +286,8 @@ public class Calculation {
     public String toString(){
         return mTitle;
     }
+
+
+
+
 }

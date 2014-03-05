@@ -1,16 +1,14 @@
 package com.VanLesh.macsv10.macs;
 
 /**
-
- * Created by samvanryssegem on 2/25/14.
- * Simple class that objectifies a vehicle
+ * Created by samvanryssegem on 3/4/14.
  */
 public class Vehicle {
 
     private String type;
     private String vehicleclass;
 
-    private int mCg; // distance of vehicle center of gravity from soil
+    private int mCg; // distance of vehicle center of gravity from anchor
     private int mHg; // height of center of gravity from soil
     private int mWv; // weight of vehicle
     private int mTrackL; //track length

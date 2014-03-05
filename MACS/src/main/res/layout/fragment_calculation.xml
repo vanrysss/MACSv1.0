@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,8 +25,8 @@
             android:hint="@string/calc_single_title_hint"/>
 
 
-        <EditText
-            android:id="@+id/calculation_title"
+    <EditText
+            android:id="@+id/calculation_engineer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -29,7 +34,7 @@
             android:hint="@string/calc_engineer_name_hint"/>
 
         <EditText
-            android:id="@+id/calculation_title"
+            android:id="@+id/calculation_jobsite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -50,12 +55,93 @@
         android:text="@string/vehicle_params"
         style="?android:listSeparatorTextViewStyle"/>
 
+        <EditText
+            android:id="@+id/Hg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Hg: Height of vehicle COG"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Cg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Cg: Distance of COG from anchor"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Wv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Wv : Weight of the Vehicle"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Tl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Tl: Vehicle track length"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Tw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Tw: Vehicle track width"
+            android:inputType="number"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/soil_params"
         style="?android:listSeparatorTextViewStyle"/>
+
+        <EditText
+            android:id="@+id/SoilName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="The Soil Type"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Soilunitwt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Soild unit weight"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Soilfricta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Φ : Soil friction angle"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Soilcohesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="C : Soil cohesion"
+            android:inputType="number"/>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -82,15 +168,6 @@
             android:inputType="number"/>
 
         <EditText
-            android:id="@+id/Sigma"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="@string/calc_sigma_hint"
-            android:inputType="number"/>
-
-        <EditText
             android:id="@+id/Delta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:hint="@string/calc_Kp_hint"
+            android:hint="Kp"
             android:inputType="number"/>
 
+    /
 </LinearLayout>
