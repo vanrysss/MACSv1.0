@@ -68,10 +68,10 @@ public class Calculation {
             mTitle = json.getString(JSON_TITLE);
 
         if(json.has(JSON_VEHICLE))
-            mVehicle = new Vehicle(json.getJSONObject(JSON_VEHICLE))
+            mVehicle = new Vehicle(json.getJSONObject(JSON_VEHICLE));
 
         if (json.has(JSON_SOIL))
-            mSoil = new Soil(json.getJSONObject(JSON_SOIL))
+            mSoil = new Soil(json.getJSONObject(JSON_SOIL));
 
         mDate = new Date(json.getLong(JSON_DATE));
         mEngineerName = json.getString(JSON_ENGINEER);
@@ -90,10 +90,10 @@ public class Calculation {
     public JSONObject toJSON() throws JSONException{
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
-        json.put(JSON_TITLE,mTitle.toString());
+        json.put(JSON_TITLE,mTitle);
         json.put(JSON_DATE,mDate.toString());
-        json.put(JSON_ENGINEER,mEngineerName.toString());
-        json.put(JSON_SITE,mJobSite.toString());
+        json.put(JSON_ENGINEER,mEngineerName);
+        json.put(JSON_SITE,mJobSite);
         json.put(JSON_BETA,beta);
         json.put(JSON_Db, D_b);
         json.put(JSON_DELTA,delta);

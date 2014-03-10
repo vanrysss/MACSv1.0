@@ -22,7 +22,7 @@ public class DatePickerFragment extends DialogFragment{
     public static final String EXTRA_DATE =
             "com.VanLesh.macsv10.macs.date";
 
-    private Date mDate;
+   Date mDate;
 
     public static DatePickerFragment newInstance(Date date){
         Bundle args = new Bundle();
@@ -33,8 +33,6 @@ public class DatePickerFragment extends DialogFragment{
 
         return fragment;
     }
-    View v = getActivity().getLayoutInflater()
-            .inflate(R.layout.dialog_date,null);
 
     private void sendResult(int resultCode){
         if(getTargetFragment() == null)

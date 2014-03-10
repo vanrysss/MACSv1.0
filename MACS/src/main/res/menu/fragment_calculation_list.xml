@@ -4,11 +4,6 @@
     <item android:id="@+id/menu_item_new_calc"
           android:icon="@android:drawable/ic_menu_add"
           android:title="@string/new_calc"
-          android:showAsAction="ifRoom|withText"
-        />
-
-    <item android:id="@+id/menu_item_show_subtitle"
-          android:title="@string/show_subtitle"
-          android:showAsAction="never"/>
+          android:showAsAction="ifRoom|withText"/>
 </menu>
 

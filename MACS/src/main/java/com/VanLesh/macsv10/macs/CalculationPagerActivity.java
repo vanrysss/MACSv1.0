@@ -13,55 +13,45 @@ import java.util.UUID;
 /**
  * Created by samvanryssegem on 2/27/14.
  */
-public class CalculationPagerActivity extends FragmentActivity {
+public class CalculationPagerActivity extends FragmentActivity  implements CalculationFragment.Callbacks{
 
     private ViewPager mViewPager;
-    private ArrayList<Calculation> mCalculations;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.viewPager);
-            setContentView(mViewPager);
+        setContentView(mViewPager);
 
-        mCalculations = CalculationLab.get(this).getCalculations();
+        final ArrayList<Calculation> calculations = CalculationLab.get(this).getCalculations();
 
         FragmentManager fm = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
             @Override
             public Fragment getItem(int position) {
-                Calculation calc = mCalculations.get(position);
-                return CalculationFragment.newInstance(calc.getId());
+                UUID calcId = calculations.get(position).getId();
+                return CalculationFragment.newInstance(calcId);
             }
 
             @Override
             public int getCount() {
-                return mCalculations.size();
-            }
-        });
-
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener(){
-            public void onPageScrollStateChanged(int state) {}
-
-            public void onPageScrolled(int pos, float posOffset, int posOffsetPixels){}
-
-            public void onPageSelected(int pos){
-                Calculation calc = mCalculations.get(pos);
-                if(calc.getTitle()!= null){
-                    setTitle(calc.getTitle());
-                }
+                return calculations.size();
             }
         });
 
         UUID crimeId = (UUID)getIntent()
                 .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
-        for(int i=0; i < mCalculations.size(); i++){
-            if(mCalculations.get(i).getId().equals(crimeId)){
+        for(int i=0; i < calculations.size(); i++){
+            if(calculations.get(i).getId().equals(crimeId)){
                 mViewPager.setCurrentItem(i);
                 break;
             }
         }
 
+    }
+
+    public void onCalculationUpdated(Calculation crime) {
+        // do nothing
     }
 }
