@@ -26,7 +26,7 @@
             android:hint="@string/calc_single_title_hint"/>
 
 
-    <EditText
+        <EditText
             android:id="@+id/calculation_engineer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,25 @@
         style="?android:listSeparatorTextViewStyle"/>
 
         <EditText
-            android:id="@+id/Hg"
+            android:id="@+id/input_vehicle_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Vehicle Class"
+            />
+
+        <EditText
+            android:id="@+id/input_vehicle_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Vehicle Type"
+            />
+
+        <EditText
+            android:id="@+id/input_vehicle_height"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -186,7 +204,29 @@
             android:hint="Kp"
             android:inputType="number"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/calc_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/perform_calc"
+           />
+        <Button
+            android:id="@+id/report_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Send Report"/>
+    </LinearLayout>
 </LinearLayout>
-
 </ScrollView>
+
+
+

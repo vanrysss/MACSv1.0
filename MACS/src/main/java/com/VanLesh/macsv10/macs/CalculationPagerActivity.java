@@ -54,4 +54,12 @@ public class CalculationPagerActivity extends FragmentActivity  implements Calcu
     public void onCalculationUpdated(Calculation crime) {
         // do nothing
     }
+
+    public void onVehicleUpdated(Vehicle v){
+
+    }
+
+    public void onSoilUpdated(Soil s){
+
+    }
 }

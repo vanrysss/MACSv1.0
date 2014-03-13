@@ -35,8 +35,12 @@ public class Calculation {
 
 
     //Class objects that matter for calculation
-    private Soil mSoil;
-    private Vehicle mVehicle;
+    public Soil mSoil;
+    public Vehicle mVehicle;
+
+    //final calculation values
+    private int rollover;
+    private int drag;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -58,6 +62,8 @@ public class Calculation {
     public Calculation(){
         mId = UUID.randomUUID();
         mDate = new Date();
+        mVehicle = new Vehicle();
+        mSoil = new Soil();
 
     }
 
@@ -260,6 +266,12 @@ public class Calculation {
 
     //equation 8 in the publication
     public double Pp(Vehicle v, Soil s, double Kp){
+        if (theta - beta >= .333 * delta)
+            Kp = 0;
+        else if (theta - beta >0)
+            Kp = .5 * Kp;
+        else
+            Kp = Kp;
 
         return .5*s.getunitW()*Math.pow(D_b,2)*v.getBladeW()*Kp + 2*s.getC()*v.getBladeW()* Math.sqrt(Kp);
     }

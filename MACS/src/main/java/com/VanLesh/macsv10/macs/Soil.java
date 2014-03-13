@@ -10,6 +10,8 @@ import org.json.JSONObject;
 // only used by the program
 public class Soil {
 
+
+
     private String mname; //hey lets uniquely name all of our soil types
     private int munitW; //this is a force aka weight/volume
     private int mfrictA; // the friction angle
@@ -25,10 +27,7 @@ public class Soil {
 
 
     public Soil(){
-        mname = "defualt";
-        munitW =0;
-        mfrictA =0;
-        mC=0;
+
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -56,6 +55,13 @@ public class Soil {
     }
 
 
+    public String getName() {
+        return mname;
+    }
+
+    public void setName(String mname) {
+        this.mname = mname;
+    }
 
     public int getC() {
         return mC;

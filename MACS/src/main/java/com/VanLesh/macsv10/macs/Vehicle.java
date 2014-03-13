@@ -16,6 +16,8 @@ public class Vehicle {
     private int mWv; // weight of vehicle
     private int mTrackL; //track length
     private int mTrackW; //track width
+    private int mBladeW; //blade width
+
 
     private static final String JSON_TYPE ="type";
     private static final String JSON_CLASS="class";
@@ -26,13 +28,7 @@ public class Vehicle {
     private static final String JSON_TRACKWIDTH="track width";
 
     public Vehicle(){
-        type = "default";
-        vehicleclass = "default";
-        mCg =1;
-        mHg =1;
-        mWv =1;
-        mTrackL =1;
-        mTrackW =1;
+
     }
 
     public Vehicle(JSONObject json) throws JSONException {
@@ -67,6 +63,7 @@ public class Vehicle {
     }
 
     private int mTrackA = mTrackL*mTrackW; //track area
+
     public String getType() {
         return type;
     }
@@ -123,7 +120,12 @@ public class Vehicle {
         mBladeW = bladeW;
     }
 
-    private int mBladeW; //blade width
 
+    public String getVehicleclass() {
+        return vehicleclass;
+    }
 
+    public void setVehicleclass(String vehicleclass) {
+        this.vehicleclass = vehicleclass;
+    }
 }

@@ -50,6 +50,19 @@ public class CalculationListActivity extends SingleFragmentActivity
 
     }
 
+    public void onVehicleUpdated(Vehicle v){
+        FragmentManager fm = getSupportFragmentManager();
+        CalculationListFragment listFragment = (CalculationListFragment)
+            fm.findFragmentById(R.id.fragmentContainer);
+        listFragment.updateUI();
+    }
+
+    public void onSoilUpdated(Soil s){
+        FragmentManager fm = getSupportFragmentManager();
+        CalculationListFragment listFragment = (CalculationListFragment)
+                                                                                            fm.findFragmentById(R.id.fragmentContainer);
+        listFragment.updateUI();
+    }
 }
 
 

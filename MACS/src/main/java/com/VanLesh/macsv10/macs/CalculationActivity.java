@@ -11,6 +11,7 @@ public abstract class CalculationActivity extends SingleFragmentActivity {
         //return new CalculationFragment();
         UUID calculationId = (UUID)getIntent()
                 .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
+            //    .getSerializableExtra(CalculationFragment.EXTRA_VEHICLE_ID);
 
         return CalculationFragment.newInstance(calculationId);
 
