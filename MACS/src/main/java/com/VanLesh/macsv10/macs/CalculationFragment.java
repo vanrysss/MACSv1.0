@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Date;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class CalculationFragment extends Fragment{
     EditText mTitleField;
     EditText mEngineerName;
     EditText mJobsite;
+
     EditText mVehicleclass;
     EditText mVehicletype;
     EditText mVehicleHeight;
@@ -38,11 +40,14 @@ public class CalculationFragment extends Fragment{
     EditText mWeight;
     EditText mTrackL;
     EditText mTrackW;
+    EditText mBladeW;
+
     EditText mSoilType;
     EditText mSoilUnitWeight;
     EditText mSoilFrictionAngle;
     EditText mSoilCohesionFactor;
 
+    TextView mAnchorCapacity;
     Button mDateButton;
     Callbacks mCallbacks;
     Button mCalculateButton;
@@ -160,7 +165,7 @@ public class CalculationFragment extends Fragment{
         });
 
         mVehicleclass = (EditText)v.findViewById(R.id.input_vehicle_class);
-        mVehicleclass.setText(mCalculation.getVehicle().getVehicleclass());
+        mVehicleclass.setText(mCalculation.getVehicle().getVehicleClass());
         mVehicleclass.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -169,7 +174,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setVehicleclass(charSequence.toString());
+                mCalculation.getVehicle().setVehicleClass(charSequence.toString());
 
             }
 
@@ -179,8 +184,29 @@ public class CalculationFragment extends Fragment{
             }
         });
 
+        mVehicletype = (EditText)v.findViewById(R.id.input_vehicle_type);
+        mVehicletype.setText(mCalculation.getVehicle().getVehicleType());
+        mVehicletype.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.getVehicle().setVehicleClass(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         mVehicleHeight = (EditText)v.findViewById(R.id.input_vehicle_height);
-        mVehicleHeight.setText(Integer.toString(mCalculation.getVehicle().getHg()));
+        if (mCalculation.getVehicle().getHg() != 0)
+            mVehicleHeight.setText(Double.toString(mCalculation.getVehicle().getHg()));
+
         mVehicleHeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -189,7 +215,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.mVehicle.setHg(Integer.parseInt(charSequence.toString()));
+                mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -200,7 +226,9 @@ public class CalculationFragment extends Fragment{
         });
 
         mCOGDistance = (EditText)v.findViewById(R.id.Cg);
-        mCOGDistance.setText(Integer.toString(mCalculation.getVehicle().getCg()));
+        if(mCalculation.getVehicle().getCg() != 0)
+             mCOGDistance.setText(Double.toString(mCalculation.getVehicle().getCg()));
+
         mCOGDistance.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -209,7 +237,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setCg(Integer.parseInt(charSequence.toString()));
+                mCalculation.getVehicle().setCg(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -220,7 +248,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mWeight = (EditText)v.findViewById(R.id.Wv);
-        mWeight.setText(Integer.toString(mCalculation.getVehicle().getWv()));
+        if(mCalculation.getVehicle().getWv() != 0)
+            mWeight.setText(Integer.toString(mCalculation.getVehicle().getWv()));
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -240,7 +269,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mTrackL = (EditText)v.findViewById(R.id.Tl);
-        mTrackL.setText(Integer.toString(mCalculation.getVehicle().getTrackL()));
+        if(mCalculation.getVehicle().getTrackL() !=0)
+            mTrackL.setText(Double.toString(mCalculation.getVehicle().getTrackL()));
         mTrackL.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -249,7 +279,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setTrackL(Integer.parseInt(charSequence.toString()));
+                mCalculation.getVehicle().setTrackL(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -260,7 +290,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mTrackW = (EditText)v.findViewById(R.id.Tw);
-        mTrackW.setText(Integer.toString(mCalculation.getVehicle().getTrackW()));
+        if(mCalculation.getVehicle().getTrackW() != 0)
+            mTrackW.setText(Double.toString(mCalculation.getVehicle().getTrackW()));
         mTrackW.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -269,7 +300,28 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setTrackW(Integer.parseInt(charSequence.toString()));
+                mCalculation.getVehicle().setTrackW(Double.parseDouble(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mBladeW =(EditText)v.findViewById(R.id.Wb);
+        if (mCalculation.getVehicle().getBladeW() !=0)
+            mBladeW.setText(Double.toString(mCalculation.getVehicle().getBladeW()));
+        mBladeW.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.getVehicle().setBladeW(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -300,7 +352,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mSoilUnitWeight = (EditText)v.findViewById(R.id.Soilunitwt);
-        mSoilUnitWeight.setText(Integer.toString(mCalculation.getSoil().getunitW()));
+        if (mCalculation.getSoil().getunitW() != 0)
+            mSoilUnitWeight.setText(Integer.toString(mCalculation.getSoil().getunitW()));
         mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -320,7 +373,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mSoilCohesionFactor = (EditText)v.findViewById(R.id.Soilcohesion);
-        mSoilCohesionFactor.setText(Integer.toString(mCalculation.getSoil().getC()));
+        if (mCalculation.getSoil().getC() !=0 )
+             mSoilCohesionFactor.setText(Integer.toString(mCalculation.getSoil().getC()));
         mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -341,7 +395,8 @@ public class CalculationFragment extends Fragment{
         });
 
         mSoilFrictionAngle = (EditText)v.findViewById(R.id.Soilfricta);
-        mSoilFrictionAngle.setText(Integer.toString(mCalculation.getSoil().getfrictA()));
+        if (mCalculation.getSoil().getfrictA() != 0)
+             mSoilFrictionAngle.setText(Integer.toString(mCalculation.getSoil().getfrictA()));
         mSoilFrictionAngle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -375,7 +430,12 @@ public class CalculationFragment extends Fragment{
         mCalculateButton = (Button)v.findViewById(R.id.calc_button);
         mCalculateButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-
+                double A1 = mCalculation.Alpha1();
+                double A2 = mCalculation.Alpha2();
+                double Pp =mCalculation.Pp(mCalculation.getVehicle(),mCalculation.getSoil());
+                double AnchCap = mCalculation.anchor_capacity(A1,A2,Pp);
+                mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
+                mAnchorCapacity.setText(Double.toString(AnchCap));
             }
         });
         return v;
@@ -397,8 +457,8 @@ public class CalculationFragment extends Fragment{
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
+    public void onStop(){
+        super.onStop();
         CalculationLab.get(getActivity()).saveCalculations();
     }
 

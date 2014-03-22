@@ -24,4 +24,5 @@
     <string name="subtitle">a subtitle</string>
     <string name="hide_subtitle">hide me</string>
     <string name="perform_calc">Perform Calculation</string>
+    <string name="slide">slide answer</string>
 </resources>

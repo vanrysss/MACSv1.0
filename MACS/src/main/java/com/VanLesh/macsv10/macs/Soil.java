@@ -22,10 +22,6 @@ public class Soil {
     private static final String JSON_FRICTIONANGLE = "friction angle";
     private static final String JSON_COHESION="cohesion";
 
-
-
-
-
     public Soil(){
 
     }
@@ -41,10 +37,14 @@ public class Soil {
     }
 
     public Soil(JSONObject json) throws JSONException {
-        mname =json.getString(JSON_NAME);
-        munitW =json.getInt(JSON_UNITW);
-        mfrictA = json.getInt(JSON_FRICTIONANGLE);
-        mC = json.getInt(JSON_COHESION);
+        if (json.has(JSON_NAME))
+            mname =json.getString(JSON_NAME);
+        if (json.has(JSON_UNITW))
+            munitW =json.getInt(JSON_UNITW);
+        if (json.has(JSON_FRICTIONANGLE))
+            mfrictA = json.getInt(JSON_FRICTIONANGLE);
+        if (json.has(JSON_COHESION))
+            mC = json.getInt(JSON_COHESION);
     }
      public int getfrictA() {
         return mfrictA;

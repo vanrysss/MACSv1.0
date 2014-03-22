@@ -54,7 +54,7 @@ public class VehicleLab {
 
     public Vehicle getVehicle(String title){
         for(Vehicle c : mVehicles){
-            if(c.getType().equals(title))
+            if(c.getVehicleType().equals(title))
                 return c;
         }
         return null;

@@ -143,10 +143,11 @@ public class CalculationListFragment extends ListFragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu,inflater);
         inflater.inflate(R.menu.fragment_calc_list,menu);
-        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
-        if (mSubtitleVisible && showSubtitle != null){
+  /*      MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
+       if (mSubtitleVisible && showSubtitle != null){
             showSubtitle.setTitle(R.string.hide_subtitle);
         }
+        */
     }
 
     @TargetApi(11)
@@ -159,7 +160,7 @@ public class CalculationListFragment extends ListFragment{
                 ((CalculationAdapter)getListAdapter()).notifyDataSetChanged();
                 mCallbacks.onCalculationSelected(calc);
                 return true;
-            case R.id.menu_item_show_subtitle:
+/*            case R.id.menu_item_show_subtitle:
                 if (getActivity().getActionBar().getSubtitle() == null){
                     getActivity().getActionBar().setSubtitle(R.string.subtitle);
                     mSubtitleVisible =true;
@@ -169,7 +170,7 @@ public class CalculationListFragment extends ListFragment{
                     mSubtitleVisible =false;
                     item.setTitle(R.string.show_subtitle);
                 }
-                return true;
+                return true; */
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -11,13 +11,13 @@ public class Vehicle {
     private String type;
     private String vehicleclass;
 
-    private int mCg; // distance of vehicle center of gravity from anchor
-    private int mHg; // height of center of gravity from soil
+    private double mCg; // distance of vehicle center of gravity from anchor
+    private double mHg; // height of center of gravity from soil
     private int mWv; // weight of vehicle
-    private int mTrackL; //track length
-    private int mTrackW; //track width
-    private int mBladeW; //blade width
-
+    private double mTrackL; //track length
+    private double mTrackW; //track width
+    private double mBladeW; //blade width
+    private double TrackA = mTrackL*mTrackW;
 
     private static final String JSON_TYPE ="type";
     private static final String JSON_CLASS="class";
@@ -33,12 +33,19 @@ public class Vehicle {
 
     public Vehicle(JSONObject json) throws JSONException {
 
-        type=json.getString(JSON_TYPE);
-        vehicleclass=json.getString(JSON_CLASS);
-        mCg =json.getInt(JSON_CG);
-        mHg=json.getInt(JSON_HG);
-        mWv=json.getInt(JSON_WEIGHT);
-        mTrackL=json.getInt(JSON_TRACKLENGTH);
+        if(json.has(JSON_TYPE))
+             type=json.getString(JSON_TYPE);
+        if (json.has(JSON_CLASS))
+            vehicleclass=json.getString(JSON_CLASS);
+        if (json.has(JSON_CG))
+             mCg =json.getInt(JSON_CG);
+        if (json.has(JSON_HG))
+             mHg=json.getInt(JSON_HG);
+        if (json.has(JSON_WEIGHT))
+             mWv=json.getInt(JSON_WEIGHT);
+        if (json.has(JSON_TRACKLENGTH))
+            mTrackL=json.getInt(JSON_TRACKLENGTH);
+        if (json.has(JSON_TRACKWIDTH))
         mTrackW=json.getInt(JSON_TRACKWIDTH);
 
 
@@ -58,13 +65,13 @@ public class Vehicle {
 
     }
 
-    public int getTrackA() {
+    public double getTrackA() {
         return mTrackA;
     }
 
-    private int mTrackA = mTrackL*mTrackW; //track area
+    private double mTrackA = mTrackL*mTrackW; //track area
 
-    public String getType() {
+    public String getVehicleType() {
         return type;
     }
 
@@ -72,19 +79,19 @@ public class Vehicle {
         this.type = type;
     }
 
-    public int getCg() {
+    public double getCg() {
         return mCg;
     }
 
-    public void setCg(int cg) {
+    public void setCg(double cg) {
         mCg = cg;
     }
 
-    public int getHg() {
+    public double getHg() {
         return mHg;
     }
 
-    public void setHg(int hg) {
+    public void setHg(double hg) {
         mHg = hg;
     }
 
@@ -96,36 +103,36 @@ public class Vehicle {
         mWv = wv;
     }
 
-    public int getTrackL() {
+    public double getTrackL() {
         return mTrackL;
     }
 
-    public void setTrackL(int trackL) {
+    public void setTrackL(double trackL) {
         mTrackL = trackL;
     }
 
-    public int getTrackW() {
+    public double getTrackW() {
         return mTrackW;
     }
 
-    public void setTrackW(int trackW) {
+    public void setTrackW(double trackW) {
         mTrackW = trackW;
     }
 
-    public int getBladeW() {
+    public double getBladeW() {
         return mBladeW;
     }
 
-    public void setBladeW(int bladeW) {
+    public void setBladeW(double bladeW) {
         mBladeW = bladeW;
     }
 
 
-    public String getVehicleclass() {
+    public String getVehicleClass() {
         return vehicleclass;
     }
 
-    public void setVehicleclass(String vehicleclass) {
+    public void setVehicleClass(String vehicleclass) {
         this.vehicleclass = vehicleclass;
     }
 }

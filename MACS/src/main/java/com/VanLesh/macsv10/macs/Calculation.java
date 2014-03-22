@@ -265,7 +265,7 @@ public class Calculation {
     }
 
     //equation 8 in the publication
-    public double Pp(Vehicle v, Soil s, double Kp){
+    public double Pp(Vehicle v, Soil s){
         if (theta - beta >= .333 * delta)
             Kp = 0;
         else if (theta - beta >0)
@@ -276,9 +276,9 @@ public class Calculation {
         return .5*s.getunitW()*Math.pow(D_b,2)*v.getBladeW()*Kp + 2*s.getC()*v.getBladeW()* Math.sqrt(Kp);
     }
 
-    public double anchor_capacity(double A1,double A2, double Pp, int trackA, int weight, int cprime){
+    public double anchor_capacity(double A1,double A2, double Pp){
 
-        return(((cprime*trackA*A1)/A2) + ((Pp*A1)/A2) + (weight/A2));
+        return(((getSoil().getC()*getVehicle().getTrackA()*A1)/A2) + ((Pp*A1)/A2) + (getVehicle().getWv()/A2));
 
     }
 

@@ -7,8 +7,17 @@
           android:showAsAction="ifRoom|withText"
         />
 
-    <item android:id="@+id/menu_item_show_subtitle"
-          android:title="@string/show_subtitle"
-          android:showAsAction="never"/>
+
+    <item android:id="@+id/menu_item_publication"
+          android:title="Publication"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/menu_item_preferences"
+          android:title="Preferences"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/menu_about"
+          android:title="About"
+          android:showAsAction="never" />
 </menu>
 

@@ -81,7 +81,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="Hg: Height of vehicle COG"
-            android:inputType="number"/>
+            />
 
         <EditText
             android:id="@+id/Cg"
@@ -108,7 +108,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="Tl: Vehicle track length"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/Tw"
@@ -117,7 +117,18 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="Tw: Vehicle track width"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
+
+        <EditText
+            android:id="@+id/Wb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Wb: Blade Width"
+            android:inputType="numberDecimal"/>
+
+
 
     <TextView
         android:layout_width="match_parent"
@@ -203,6 +214,31 @@
             android:layout_marginRight="16dp"
             android:hint="Kp"
             android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/Ha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="Ha: Height of Anchor Attachement"
+            android:inputType="numberDecimal"/>
+
+        <EditText
+            android:id="@+id/La"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="La: Anchor Setback Distance"
+            android:inputType="numberDecimal"/>
+
+    <TextView
+        android:id="@+id/slide_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/slide"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
