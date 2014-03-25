@@ -4,6 +4,7 @@ package com.VanLesh.macsv10.macs;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -47,7 +49,14 @@ public class CalculationFragment extends Fragment{
     EditText mSoilFrictionAngle;
     EditText mSoilCohesionFactor;
 
+    EditText mSlopeAngle;
+    EditText mAnchorAngle;
+    EditText mAnchorHeight;
+    EditText mAnchorSetback;
+    EditText mBladeEmbedment;
+
     TextView mAnchorCapacity;
+    TextView mRollOver;
     Button mDateButton;
     Callbacks mCallbacks;
     Button mCalculateButton;
@@ -90,7 +99,6 @@ public class CalculationFragment extends Fragment{
         super.onCreate(savedInstanceState);
         UUID calculationId = (UUID)getArguments().getSerializable(EXTRA_CALCULATION_ID);
         mCalculation = CalculationLab.get(getActivity()).getCalculation(calculationId);
-
         setHasOptionsMenu(true);
     }
 
@@ -249,7 +257,7 @@ public class CalculationFragment extends Fragment{
 
         mWeight = (EditText)v.findViewById(R.id.Wv);
         if(mCalculation.getVehicle().getWv() != 0)
-            mWeight.setText(Integer.toString(mCalculation.getVehicle().getWv()));
+            mWeight.setText(Double.toString(mCalculation.getVehicle().getWv()));
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -258,7 +266,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setWv(Integer.parseInt(charSequence.toString()));
+                mCalculation.getVehicle().setWv(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -353,7 +361,7 @@ public class CalculationFragment extends Fragment{
 
         mSoilUnitWeight = (EditText)v.findViewById(R.id.Soilunitwt);
         if (mCalculation.getSoil().getunitW() != 0)
-            mSoilUnitWeight.setText(Integer.toString(mCalculation.getSoil().getunitW()));
+            mSoilUnitWeight.setText(Double.toString(mCalculation.getSoil().getunitW()));
         mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -362,7 +370,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setunitW(Integer.parseInt(charSequence.toString()));
+                mCalculation.getSoil().setunitW(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -374,7 +382,7 @@ public class CalculationFragment extends Fragment{
 
         mSoilCohesionFactor = (EditText)v.findViewById(R.id.Soilcohesion);
         if (mCalculation.getSoil().getC() !=0 )
-             mSoilCohesionFactor.setText(Integer.toString(mCalculation.getSoil().getC()));
+             mSoilCohesionFactor.setText(Double.toString(mCalculation.getSoil().getC()));
         mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -383,7 +391,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setC(Integer.parseInt(charSequence.toString()));
+                mCalculation.getSoil().setC(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
 
             }
@@ -415,7 +423,115 @@ public class CalculationFragment extends Fragment{
             }
         });
 
+        mSlopeAngle = (EditText)v.findViewById(R.id.Beta);
+        if (mCalculation.getBeta() != 0)
+            mSlopeAngle.setText(Integer.toString(mCalculation.getBeta()));
+        mSlopeAngle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.setBeta(Integer.parseInt(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mAnchorAngle = (EditText)v.findViewById(R.id.Theta);
+        if (mCalculation.getTheta() != 0)
+            mAnchorAngle.setText(Integer.toString(mCalculation.getTheta()));
+
+        mAnchorAngle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.setTheta(Integer.parseInt(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mAnchorHeight = (EditText)v.findViewById(R.id.Ha);
+        if (mCalculation.getHa() !=0)
+            mAnchorHeight.setText(Double.toString(mCalculation.getHa()));
+
+        mAnchorHeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.setHa(Double.parseDouble(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mAnchorSetback = (EditText)v.findViewById(R.id.La);
+        if (mCalculation.getLa() != 0)
+            mAnchorSetback.setText(Double.toString(mCalculation.getLa()));
+
+        mAnchorSetback.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.setLa(Double.parseDouble(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mBladeEmbedment = (EditText)v.findViewById(R.id.Db);
+        if (mCalculation.getD_b() != 0)
+            mBladeEmbedment.setText(Double.toString(mCalculation.getD_b()));
+
+        mBladeEmbedment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mCalculation.setD_b(Double.parseDouble(charSequence.toString()));
+                mCallbacks.onCalculationUpdated(mCalculation);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         mDateButton = (Button)v.findViewById(R.id.calculation_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -428,20 +544,38 @@ public class CalculationFragment extends Fragment{
         });
 
         mCalculateButton = (Button)v.findViewById(R.id.calc_button);
+        mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
+        mRollOver = (TextView)v.findViewById(R.id.roll_answer);
         mCalculateButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 double A1 = mCalculation.Alpha1();
                 double A2 = mCalculation.Alpha2();
+                DecimalFormat df = new DecimalFormat("#.##");
+
                 double Pp =mCalculation.Pp(mCalculation.getVehicle(),mCalculation.getSoil());
                 double AnchCap = mCalculation.anchor_capacity(A1,A2,Pp);
-                mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
-                mAnchorCapacity.setText(Double.toString(AnchCap));
+                double tipover = mCalculation.tip_over_moment(mCalculation.getVehicle(), Pp);
+                mAnchorCapacity.setText(df.format(AnchCap));
+                mRollOver.setText(df.format(tipover));
+
+                if (AnchCap >= tipover) {
+                    mAnchorCapacity.setTextColor(Color.RED);
+                    mAnchorCapacity.setHighlightColor(Color.YELLOW);
+                    }
+                else {
+                    mRollOver.setTextColor(Color.RED);
+                    mRollOver.setHighlightColor(Color.YELLOW);
+                }
+
             }
+
         });
+
+
+        setRetainInstance(true);
         return v;
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -457,8 +591,8 @@ public class CalculationFragment extends Fragment{
     }
 
     @Override
-    public void onStop(){
-        super.onStop();
+    public void onPause(){
+        super.onPause();
         CalculationLab.get(getActivity()).saveCalculations();
     }
 

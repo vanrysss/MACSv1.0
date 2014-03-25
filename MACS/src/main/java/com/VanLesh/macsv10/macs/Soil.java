@@ -13,9 +13,9 @@ public class Soil {
 
 
     private String mname; //hey lets uniquely name all of our soil types
-    private int munitW; //this is a force aka weight/volume
+    private double munitW; //this is a force aka weight/volume
     private int mfrictA; // the friction angle
-    private int mC; //cohesion of soil
+    private double mC; //cohesion of soil
 
     private static final String JSON_NAME="name";
     private static final String JSON_UNITW="unit weight";
@@ -40,11 +40,11 @@ public class Soil {
         if (json.has(JSON_NAME))
             mname =json.getString(JSON_NAME);
         if (json.has(JSON_UNITW))
-            munitW =json.getInt(JSON_UNITW);
+            munitW =json.getDouble(JSON_UNITW);
         if (json.has(JSON_FRICTIONANGLE))
             mfrictA = json.getInt(JSON_FRICTIONANGLE);
         if (json.has(JSON_COHESION))
-            mC = json.getInt(JSON_COHESION);
+            mC = json.getDouble(JSON_COHESION);
     }
      public int getfrictA() {
         return mfrictA;
@@ -63,19 +63,19 @@ public class Soil {
         this.mname = mname;
     }
 
-    public int getC() {
+    public double getC() {
         return mC;
     }
 
-    public void setC(int c) {
+    public void setC(double c) {
         mC = c;
     }
 
-    public int getunitW() {
+    public double getunitW() {
         return munitW;
     }
 
-    public void setunitW(int munitW) {
+    public void setunitW(double munitW) {
         this.munitW = munitW;
     }
 

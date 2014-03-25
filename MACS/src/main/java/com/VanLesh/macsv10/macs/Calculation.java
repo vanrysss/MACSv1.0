@@ -20,18 +20,17 @@ public class Calculation {
     private String mJobSite;
     private Date mDate;
     private UUID mId;
-    public boolean doemail = true;
 
 
 
     // Measurements
     private int beta; //angle of slope
-    private int D_b; //blade embedment
-    private int delta =1;
+    private double D_b; //blade embedment
+    private double delta =0.33;
     private int theta; //angle on guyline
     private double Kp; //another mystery
-    private int La; //Setback distance of anchor from soil
-    private int Ha; //height of Anchor
+    private double La; //Setback distance of anchor from soil
+    private double Ha; //height of Anchor
 
 
     //Class objects that matter for calculation
@@ -47,7 +46,6 @@ public class Calculation {
     private static final String JSON_TITLE = "title";
     private static final String JSON_DATE = "date";
     private static final String JSON_ENGINEER = "engineer";
-    private static final String JSON_DOEMAIL = "do email";
     private static final String JSON_SITE = "jobsite";
     private static final String JSON_BETA = "β";
     private static final String JSON_Db = "Db";
@@ -83,21 +81,20 @@ public class Calculation {
         mEngineerName = json.getString(JSON_ENGINEER);
         mJobSite = json.getString(JSON_SITE);
         mId = UUID.fromString(json.getString(JSON_ID));
-        doemail = json.getBoolean(JSON_DOEMAIL);
         beta = json.getInt(JSON_BETA);
-        D_b = json.getInt(JSON_Db);
-        delta = json.getInt(JSON_DELTA);
+        D_b = json.getDouble(JSON_Db);
+        delta = json.getDouble(JSON_DELTA);
         theta = json.getInt(JSON_THETA);
         Kp = json.getDouble(JSON_Db);
-        La = json.getInt(JSON_La);
-        Ha = json.getInt(JSON_Ha);
+        La = json.getDouble(JSON_La);
+        Ha = json.getDouble(JSON_Ha);
 
     }
     public JSONObject toJSON() throws JSONException{
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
         json.put(JSON_TITLE,mTitle);
-        json.put(JSON_DATE,mDate.toString());
+        json.put(JSON_DATE,mDate.getTime());
         json.put(JSON_ENGINEER,mEngineerName);
         json.put(JSON_SITE,mJobSite);
         json.put(JSON_BETA,beta);
@@ -128,19 +125,19 @@ public class Calculation {
         this.beta = beta;
     }
 
-    public int getD_b() {
+    public double getD_b() {
         return D_b;
     }
 
-    public void setD_b(int d_b) {
+    public void setD_b(double d_b) {
         D_b = d_b;
     }
 
-    public int getDelta() {
+    public double getDelta() {
         return delta;
     }
 
-    public void setDelta(int delta) {
+    public void setDelta(double delta) {
         this.delta = delta;
     }
 
@@ -160,19 +157,19 @@ public class Calculation {
         Kp = kp;
     }
 
-    public int getLa() {
+    public Double getLa() {
         return La;
     }
 
-    public void setLa(int la) {
+    public void setLa(Double la) {
         La = la;
     }
 
-    public int getHa() {
+    public Double getHa() {
         return Ha;
     }
 
-    public void setHa(int ha) {
+    public void setHa(Double ha) {
         Ha = ha;
     }
     public Date getDate() {
@@ -185,14 +182,6 @@ public class Calculation {
 
     public UUID getId() {
         return mId;
-    }
-
-    public boolean isDoemail() {
-        return doemail;
-    }
-
-    public void setDoemail(boolean doemail) {
-        this.doemail = doemail;
     }
 
     public void setTitle(String title) {
@@ -239,11 +228,11 @@ public class Calculation {
         return(Math.sin(Math.toRadians(param)));
     }
 
-    private double tcos(int param){
+    private double tcos(double param){
         return(Math.cos(Math.toRadians(param)));
     }
 
-    private double ttan(int param){
+    private double ttan(double param){
         return (Math.tan(Math.toRadians(param)));
     }
 
@@ -283,7 +272,7 @@ public class Calculation {
     }
 
     //equation 15 in the publication
-    public double tip_over_moment(Vehicle v, int Pp){
+    public double tip_over_moment(Vehicle v, double Pp){
 
         double top =(v.getWv()*(v.getCg()*tcos(beta)-(D_b+ v.getHg())*tsin(beta))+Pp*((1/3)*D_b));
         double bot = tcos(theta-beta)*(D_b+Ha) + tsin(theta-beta)*La;

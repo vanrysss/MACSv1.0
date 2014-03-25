@@ -13,8 +13,8 @@
     <string name="calc_beta_hint">β : Angle of slope</string>
     <string name="calc_theta_hint">θ : Angle of cable</string>
     <string name="calc_sigma_hint">σ : Anchor angle</string>
-    <string name="calc_delta_hint">δ : Ask Ben About me</string>
-    <string name="calc_Kp_hint">Kp : Ask Ben</string>
+    <string name="calc_delta_hint">δ : Soil interaction angle</string>
+    <string name="calc_Kp_hint">Kp : Soil Passive Pressure Coefficient</string>
     <string name="soil_params">Soil Parameters</string>
     <string name="calculations_title">Calculations</string>
     <string name="new_calc">New Calculation</string>
@@ -24,5 +24,6 @@
     <string name="subtitle">a subtitle</string>
     <string name="hide_subtitle">hide me</string>
     <string name="perform_calc">Perform Calculation</string>
-    <string name="slide">slide answer</string>
+    <string name="slide"> </string>
+    <string name="roll"> </string>
 </resources>

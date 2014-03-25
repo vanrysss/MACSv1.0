@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="@string/calc_single_title_hint"/>
 
 
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="@string/calc_engineer_name_hint"/>
 
         <EditText
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="@string/calc_job_site_hint"/>
 
         <Button
@@ -62,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Vehicle Class"
             />
 
@@ -71,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Vehicle Type"
             />
 
@@ -80,7 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Hg: Height of vehicle COG"
+            android:inputType="numberDecimal"
             />
 
         <EditText
@@ -89,8 +96,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Cg: Distance of COG from anchor"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/Wv"
@@ -98,8 +106,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Wv : Weight of the Vehicle"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/Tl"
@@ -107,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Tl: Vehicle track length"
             android:inputType="numberDecimal"/>
 
@@ -116,6 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Tw: Vehicle track width"
             android:inputType="numberDecimal"/>
 
@@ -125,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Wb: Blade Width"
             android:inputType="numberDecimal"/>
 
@@ -142,8 +154,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Soil Type"
-            android:inputType="number"/>
+           />
 
         <EditText
             android:id="@+id/Soilunitwt"
@@ -151,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Soil unit weight"
             android:inputType="number"/>
 
@@ -160,8 +174,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Φ : Soil friction angle"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/Soilcohesion"
@@ -169,8 +184,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="C : Soil cohesion"
-            android:inputType="number"/>
+            android:inputType="numberDecimal"/>
 
 
     <TextView
@@ -185,6 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="@string/calc_beta_hint"
             android:inputType="number"/>
 
@@ -194,33 +211,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="@string/calc_theta_hint"
             android:inputType="number"/>
 
-        <EditText
-            android:id="@+id/Delta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="@string/calc_delta_hint"
-            android:inputType="number"/>
-
-        <EditText
-            android:id="@+id/Kp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Kp"
-            android:inputType="number"/>
-
-        <EditText
+    <EditText
             android:id="@+id/Ha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="Ha: Height of Anchor Attachement"
             android:inputType="numberDecimal"/>
 
@@ -230,16 +231,63 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:editable="true"
             android:hint="La: Anchor Setback Distance"
             android:inputType="numberDecimal"/>
 
-    <TextView
-        android:id="@+id/slide_answer"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/Db"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/slide"
-        />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:editable="true"
+        android:hint="Db: Blade Embedment"
+        android:inputType="numberDecimal"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FORCE EQUILIBRIUM"/>
+        <TextView
+            android:id="@+id/slide_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/slide"
+            android:editable="true"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOMENT EQUILIBRIUM"/>
+        <TextView
+            android:id="@+id/roll_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/roll"
+            android:editable="true"
+            />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

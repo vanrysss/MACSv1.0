@@ -13,7 +13,7 @@ public class Vehicle {
 
     private double mCg; // distance of vehicle center of gravity from anchor
     private double mHg; // height of center of gravity from soil
-    private int mWv; // weight of vehicle
+    private double mWv; // weight of vehicle
     private double mTrackL; //track length
     private double mTrackW; //track width
     private double mBladeW; //blade width
@@ -26,6 +26,7 @@ public class Vehicle {
     private static final String JSON_WEIGHT ="weight";
     private static final String JSON_TRACKLENGTH ="track length";
     private static final String JSON_TRACKWIDTH="track width";
+    private static final String JSON_BLADEWIDTH="blade width";
 
     public Vehicle(){
 
@@ -38,16 +39,17 @@ public class Vehicle {
         if (json.has(JSON_CLASS))
             vehicleclass=json.getString(JSON_CLASS);
         if (json.has(JSON_CG))
-             mCg =json.getInt(JSON_CG);
+             mCg =json.getDouble(JSON_CG);
         if (json.has(JSON_HG))
-             mHg=json.getInt(JSON_HG);
+             mHg=json.getDouble(JSON_HG);
         if (json.has(JSON_WEIGHT))
-             mWv=json.getInt(JSON_WEIGHT);
+             mWv=json.getDouble(JSON_WEIGHT);
         if (json.has(JSON_TRACKLENGTH))
-            mTrackL=json.getInt(JSON_TRACKLENGTH);
+            mTrackL=json.getDouble(JSON_TRACKLENGTH);
         if (json.has(JSON_TRACKWIDTH))
-        mTrackW=json.getInt(JSON_TRACKWIDTH);
-
+            mTrackW=json.getDouble(JSON_TRACKWIDTH);
+        if (json.has(JSON_BLADEWIDTH))
+            mBladeW=json.getDouble(JSON_BLADEWIDTH);
 
     }
     public JSONObject toJSON() throws JSONException{
@@ -60,6 +62,7 @@ public class Vehicle {
         json.put(JSON_WEIGHT,mWv);
         json.put(JSON_TRACKLENGTH,mTrackL);
         json.put(JSON_TRACKWIDTH,mTrackW);
+        json.put(JSON_BLADEWIDTH,mBladeW);
 
         return json;
 
@@ -95,11 +98,11 @@ public class Vehicle {
         mHg = hg;
     }
 
-    public int getWv() {
+    public double getWv() {
         return mWv;
     }
 
-    public void setWv(int wv) {
+    public void setWv(Double wv) {
         mWv = wv;
     }
 
