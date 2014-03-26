@@ -28,7 +28,6 @@ public class Calculation {
     private double D_b; //blade embedment
     private double delta =0.33;
     private int theta; //angle on guyline
-    private double Kp; //another mystery
     private double La; //Setback distance of anchor from soil
     private double Ha; //height of Anchor
 
@@ -37,9 +36,11 @@ public class Calculation {
     public Soil mSoil;
     public Vehicle mVehicle;
 
+
     //final calculation values
     private int rollover;
     private int drag;
+    private double Kp;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -65,7 +66,6 @@ public class Calculation {
 
     }
 
-    //TODO: fill out the rest pls
     public Calculation(JSONObject json) throws JSONException{
         mId = UUID.fromString(json.getString(JSON_ID));
         if (json.has(JSON_TITLE))
@@ -255,6 +255,7 @@ public class Calculation {
 
     //equation 8 in the publication
     public double Pp(Vehicle v, Soil s){
+        Kp =Math.pow(Math.tan(45 +.5*getSoil().getfrictA()),2);
         if (theta - beta >= .333 * delta)
             Kp = 0;
         else if (theta - beta >0)
@@ -267,7 +268,7 @@ public class Calculation {
 
     public double anchor_capacity(double A1,double A2, double Pp){
 
-        return(((getSoil().getC()*getVehicle().getTrackA()*A1)/A2) + ((Pp*A1)/A2) + (getVehicle().getWv()/A2));
+        return(((getSoil().getC()*getVehicle().getTrackA()*A1)/A2) + ((Pp*A1)/A2) + (getVehicle().getTrackW()/A2));
 
     }
 

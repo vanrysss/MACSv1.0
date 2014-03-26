@@ -202,7 +202,7 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setVehicleClass(charSequence.toString());
+                mCalculation.getVehicle().setType(charSequence.toString());
             }
 
             @Override
@@ -329,14 +329,18 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setBladeW(Double.parseDouble(charSequence.toString()));
+                String sBladeWidth = mBladeW.getText().toString();
+                if (! sBladeWidth.matches("")){
+                    mCalculation.getVehicle().setBladeW(Double.parseDouble(charSequence.toString()));
+                }
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
 
-            }
+            @Override
+            public void afterTextChanged(Editable editable){
+        }
+
         });
 
         mSoilType = (EditText)v.findViewById(R.id.SoilName);
@@ -349,7 +353,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setName(charSequence.toString());
+                String sSoilType = mSoilType.getText().toString();
+                if (! sSoilType.matches(""))
+                     mCalculation.getSoil().setName(charSequence.toString());
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -370,7 +376,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setunitW(Double.parseDouble(charSequence.toString()));
+                String sSoilUnitWeight = mSoilType.getText().toString();
+                if (! sSoilUnitWeight.matches(""))
+                    mCalculation.getSoil().setunitW(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -391,7 +399,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setC(Double.parseDouble(charSequence.toString()));
+                String sSoilCohesionFactor = mSoilCohesionFactor.getText().toString();
+                if (!sSoilCohesionFactor.matches(""))
+                    mCalculation.getSoil().setC(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
 
             }
@@ -413,7 +423,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getSoil().setfrictA(Integer.parseInt(charSequence.toString()));
+                String sSoilFrictionAngle = mSoilFrictionAngle.getText().toString();
+                if (!sSoilFrictionAngle.matches(""))
+                     mCalculation.getSoil().setfrictA(Integer.parseInt(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -434,7 +446,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.setBeta(Integer.parseInt(charSequence.toString()));
+                String sSlopeAngle = mSlopeAngle.getText().toString();
+                if (!sSlopeAngle.matches("") && !sSlopeAngle.matches("-"))
+                    mCalculation.setBeta(Integer.parseInt(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -456,7 +470,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.setTheta(Integer.parseInt(charSequence.toString()));
+                String sAnchorAngle = mAnchorAngle.getText().toString();
+                if (!sAnchorAngle.matches("") && !sAnchorAngle.matches("-"))
+                     mCalculation.setTheta(Integer.parseInt(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -532,6 +548,10 @@ public class CalculationFragment extends Fragment{
 
             }
         });
+
+        mCalculateButton = (Button)v.findViewById(R.id.calc_button);
+        mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
+        mRollOver = (TextView)v.findViewById(R.id.roll_answer);
         mDateButton = (Button)v.findViewById(R.id.calculation_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -543,9 +563,7 @@ public class CalculationFragment extends Fragment{
             }
         });
 
-        mCalculateButton = (Button)v.findViewById(R.id.calc_button);
-        mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
-        mRollOver = (TextView)v.findViewById(R.id.roll_answer);
+
         mCalculateButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 double A1 = mCalculation.Alpha1();
@@ -555,10 +573,10 @@ public class CalculationFragment extends Fragment{
                 double Pp =mCalculation.Pp(mCalculation.getVehicle(),mCalculation.getSoil());
                 double AnchCap = mCalculation.anchor_capacity(A1,A2,Pp);
                 double tipover = mCalculation.tip_over_moment(mCalculation.getVehicle(), Pp);
-                mAnchorCapacity.setText(df.format(AnchCap));
-                mRollOver.setText(df.format(tipover));
+                mAnchorCapacity.setText(df.format(AnchCap)+"KN");
+                mRollOver.setText(df.format(tipover)+"KN");
 
-                if (AnchCap >= tipover) {
+                if (AnchCap <= tipover) {
                     mAnchorCapacity.setTextColor(Color.RED);
                     mAnchorCapacity.setHighlightColor(Color.YELLOW);
                     }
