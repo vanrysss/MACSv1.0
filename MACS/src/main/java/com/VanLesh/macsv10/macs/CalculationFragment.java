@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -60,6 +62,18 @@ public class CalculationFragment extends Fragment{
     Button mDateButton;
     Callbacks mCallbacks;
     Button mCalculateButton;
+
+    ImageButton HgQuestion;
+    ImageButton TgQuestion;
+    ImageButton DbQuestion;
+    ImageButton WbQueston;
+    ImageButton WvQuestion;
+    ImageButton LaQuestion;
+    ImageButton HaQuestion;
+    ImageButton CgQuestion;
+    ImageButton PhiQuestion;
+    ImageButton CohesionQuestion;
+    ImageButton UnitWeightQuestion;
 
 
     private static final int REQUEST_DATE = 0;
@@ -223,7 +237,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
+                String sVehicleHeight = mVehicleHeight.getText().toString();
+                if (! sVehicleHeight.matches(""))
+                     mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -245,7 +261,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setCg(Double.parseDouble(charSequence.toString()));
+                String sCOGDistance = mCOGDistance.getText().toString();
+                if (! sCOGDistance.matches(""))
+                    mCalculation.getVehicle().setCg(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -254,7 +272,7 @@ public class CalculationFragment extends Fragment{
 
             }
         });
-
+        //TODO null validation
         mWeight = (EditText)v.findViewById(R.id.Wv);
         if(mCalculation.getVehicle().getWv() != 0)
             mWeight.setText(Double.toString(mCalculation.getVehicle().getWv()));
@@ -266,7 +284,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setWv(Double.parseDouble(charSequence.toString()));
+                String sWeight = mWeight.getText().toString();
+                if (! sWeight.matches(""))
+                    mCalculation.getVehicle().setWv(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -275,7 +295,7 @@ public class CalculationFragment extends Fragment{
 
             }
         });
-
+        //TODO null validation
         mTrackL = (EditText)v.findViewById(R.id.Tl);
         if(mCalculation.getVehicle().getTrackL() !=0)
             mTrackL.setText(Double.toString(mCalculation.getVehicle().getTrackL()));
@@ -287,7 +307,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setTrackL(Double.parseDouble(charSequence.toString()));
+                String sTrackLength = mTrackL.getText().toString();
+                if (! sTrackLength.matches(""))
+                    mCalculation.getVehicle().setTrackL(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -296,7 +318,7 @@ public class CalculationFragment extends Fragment{
 
             }
         });
-
+        //TODO: null validation
         mTrackW = (EditText)v.findViewById(R.id.Tw);
         if(mCalculation.getVehicle().getTrackW() != 0)
             mTrackW.setText(Double.toString(mCalculation.getVehicle().getTrackW()));
@@ -308,7 +330,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.getVehicle().setTrackW(Double.parseDouble(charSequence.toString()));
+                String sTrackWidth = mTrackW.getText().toString();
+                if (! sTrackWidth.matches(""))
+                     mCalculation.getVehicle().setTrackW(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -494,7 +518,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.setHa(Double.parseDouble(charSequence.toString()));
+                String sAnchorHeight = mAnchorHeight.getText().toString();
+                if (! sAnchorHeight.matches(""))
+                    mCalculation.setHa(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -516,7 +542,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.setLa(Double.parseDouble(charSequence.toString()));
+                String sAnchorSetback = mAnchorSetback.getText().toString();
+                if (! sAnchorSetback.matches(""))
+                    mCalculation.setLa(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
 
             }
@@ -539,7 +567,9 @@ public class CalculationFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mCalculation.setD_b(Double.parseDouble(charSequence.toString()));
+                String sBladeEmbedment = mBladeEmbedment.getText().toString();
+                if (!sBladeEmbedment.matches(""))
+                     mCalculation.setD_b(Double.parseDouble(charSequence.toString()));
                 mCallbacks.onCalculationUpdated(mCalculation);
             }
 
@@ -573,8 +603,8 @@ public class CalculationFragment extends Fragment{
                 double Pp =mCalculation.Pp(mCalculation.getVehicle(),mCalculation.getSoil());
                 double AnchCap = mCalculation.anchor_capacity(A1,A2,Pp);
                 double tipover = mCalculation.tip_over_moment(mCalculation.getVehicle(), Pp);
-                mAnchorCapacity.setText(df.format(AnchCap)+"KN");
-                mRollOver.setText(df.format(tipover)+"KN");
+                mAnchorCapacity.setText(df.format(AnchCap)+"KGf");
+                mRollOver.setText(df.format(tipover)+"KGf");
 
                 if (AnchCap <= tipover) {
                     mAnchorCapacity.setTextColor(Color.RED);
@@ -588,6 +618,42 @@ public class CalculationFragment extends Fragment{
             }
 
         });
+
+        //Block that provides functionality for the Question Mark Buttons
+        //We assign them the correct ID and provide the relevant string and ID for the toast
+        HgQuestion = (ImageButton)v.findViewById(R.id.question_hg);
+        ToastMaker(R.string.hg_popup,HgQuestion);
+
+        DbQuestion = (ImageButton)v.findViewById(R.id.question_db);
+        ToastMaker(R.string.db_popup,DbQuestion);
+
+        WbQueston = (ImageButton)v.findViewById(R.id.question_wb);
+        ToastMaker(R.string.wb_popup,WbQueston);
+
+        WvQuestion = (ImageButton)v.findViewById(R.id.question_wv);
+        ToastMaker(R.string.wv_popup,WvQuestion);
+
+        LaQuestion = (ImageButton)v.findViewById(R.id.question_la);
+        ToastMaker(R.string.la_popup,LaQuestion);
+
+        HaQuestion = (ImageButton)v.findViewById(R.id.question_ha);
+        ToastMaker(R.string.ha_popup,HaQuestion);
+
+        CgQuestion = (ImageButton)v.findViewById(R.id.question_cg);
+        ToastMaker(R.string.cg_popup,CgQuestion);
+
+        HgQuestion = (ImageButton)v.findViewById(R.id.question_hg);
+        ToastMaker(R.string.hg_popup,HgQuestion);
+
+        PhiQuestion = (ImageButton)v.findViewById(R.id.question_fricta);
+        ToastMaker(R.string.fricta_popup,PhiQuestion);
+
+        CohesionQuestion = (ImageButton)v.findViewById(R.id.question_cohesion);
+        ToastMaker(R.string.cohesion_popup,CohesionQuestion);
+
+        UnitWeightQuestion = (ImageButton)v.findViewById(R.id.question_ws);
+        ToastMaker(R.string.ws_popup,UnitWeightQuestion);
+
 
 
         setRetainInstance(true);
@@ -605,6 +671,17 @@ public class CalculationFragment extends Fragment{
             mCallbacks.onCalculationUpdated(mCalculation);
             updateDate();
         }
+
+    }
+
+    // A Simple toast function, displays text by resource Id depending on what imagebutton was clicked
+    public void ToastMaker(final int display, ImageButton button){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),getResources().getString(display),Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

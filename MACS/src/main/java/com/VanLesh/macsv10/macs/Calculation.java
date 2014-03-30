@@ -41,6 +41,7 @@ public class Calculation {
     private int rollover;
     private int drag;
     private double Kp;
+    private static double KG_CONVERTER =10.1971;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -278,7 +279,7 @@ public class Calculation {
         double top =(v.getWv()*(v.getCg()*tcos(beta)-(D_b+ v.getHg())*tsin(beta))+Pp*((1/3)*D_b));
         double bot = tcos(theta-beta)*(D_b+Ha) + tsin(theta-beta)*La;
 
-        return top/bot;
+        return (top/bot)* KG_CONVERTER;
 
     }
 
