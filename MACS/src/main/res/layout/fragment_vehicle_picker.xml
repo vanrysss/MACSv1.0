@@ -1,204 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/scrollView">
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
-
-    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView">
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/calc_meta_label"
-        style="?android:listSeparatorTextViewStyle"/>
-
-        <EditText
-            android:id="@+id/calculation_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:editable="true"
-            android:hint="@string/calc_single_title_hint"/>
-
-
-        <EditText
-            android:id="@+id/calculation_engineer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:editable="true"
-            android:hint="@string/calc_engineer_name_hint"/>
-
-        <EditText
-            android:id="@+id/calculation_jobsite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:editable="true"
-            android:hint="@string/calc_job_site_hint"/>
-
-        <Button
-            android:id="@+id/calculation_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
-
-        <ToggleButton
-            android:id="@+id/toggle_units"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textOn="IMPERIAL"
-            android:textOff="METRIC"
-            android:onClick="onUnitsToggled"
-            android:layout_gravity="center_horizontal"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/vehicle_params"
-        style="?android:listSeparatorTextViewStyle"/>
-
-    <Spinner
-        android:id="@+id/vehicle_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-        </Spinner>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/soil_params"
-        style="?android:listSeparatorTextViewStyle"/>
-
-    <Spinner
-        android:id="@+id/soil_spinner"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-    </Spinner>
 
 
-
-    <TextView
+    <EditText
+        android:id="@+id/input_vehicle_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/measurements"
-        style="?android:listSeparatorTextViewStyle"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:editable="true"
+        android:hint="Vehicle Class"
+        />
 
-
+    <EditText
+        android:id="@+id/input_vehicle_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:editable="true"
+        android:hint="Vehicle Type"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:weightSum="1.0">
+        android:layout_marginRight="16dp">
 
         <TextView
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:text="β"/>
+            android:text="Hg"
+            />
+
+
         <EditText
-            android:id="@+id/Beta"
+            android:id="@+id/input_vehicle_height"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:editable="true"
-            android:hint="@string/calc_beta_hint"
-            android:inputType="numberSigned"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:text="degrees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_beta"/>
-
-     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:weightSum="1.0">
-
-        <TextView
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:text="θ"/>
-        <EditText
-            android:id="@+id/Theta"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:editable="true"
-            android:hint="@string/calc_theta_hint"
-            android:inputType="numberSigned"
-            android:layout_weight="1"/>
-        <TextView
-            android:text="degrees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_theta"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:weightSum="1.0">
-
-        <TextView
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:text="Ha"/>
-         <EditText
-            android:id="@+id/Ha"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:editable="true"
-            android:hint="Height of Anchor Attachement"
+            android:hint="Height of vehicle COG"
             android:inputType="numberDecimal"
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/Ha_unit"
+            android:id="@+id/VehicleHeight_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -211,35 +69,40 @@
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_ha"/>
+            android:id="@+id/question_hg"/>
+
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:weightSum="1.0">
+        android:layout_marginRight="16dp">
 
         <TextView
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:text="La"/>
+            android:text="Cg"
+            />
+
         <EditText
-            android:id="@+id/La"
+            android:id="@+id/Cg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:editable="true"
-            android:hint="Anchor Setback Distance"
+            android:hint="Distance of COG from anchor"
             android:inputType="numberDecimal"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
         <TextView
-            android:id="@+id/La_unit"
+            android:id="@+id/VehicleCg_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -252,8 +115,131 @@
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_la"/>
+            android:id="@+id/question_cg"/>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:text="Wv"/>
+        <EditText
+            android:id="@+id/Wv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:editable="true"
+            android:hint="Weight of the Vehicle"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:id="@+id/VehicleWeight_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/metric_weight"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            android:src="@drawable/ic_menu_help_holo_light"
+            android:id="@+id/question_wv"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:text="Tl"
+            />
+
+        <EditText
+            android:id="@+id/Tl"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:editable="true"
+            android:hint="Vehicle track length"
+            android:inputType="numberDecimal"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/VehicleTrackLength_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/metric_distance"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            android:src="@drawable/ic_menu_help_holo_light"
+            android:id="@+id/question_tl"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:text="Tw"/>
+
+        <EditText
+            android:id="@+id/Tw"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:editable="true"
+            android:hint="Vehicle track width"
+            android:inputType="numberDecimal"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/VehicleTrackWidth_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/metric_distance"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            android:src="@drawable/ic_menu_help_holo_light"
+            android:id="@+id/question_tw"/>
     </LinearLayout>
 
     <LinearLayout
@@ -267,100 +253,67 @@
         <TextView
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:text="Db"/>
+            android:text="Wb"
+            />
+
         <EditText
-            android:id="@+id/Db"
+            android:id="@+id/Wb"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:editable="true"
-            android:hint="Blade Embedment"
+            android:hint="Blade Width"
             android:inputType="numberDecimal"
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/Db_unit"
+            android:id="@+id/VehicleBladeWidth_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="@string/metric_distance"/>
+            android:text="@string/metric_distance"
+            />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_db"/>
+            android:id="@+id/question_wb"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FORCE EQUILIBRIUM"/>
-        <TextView
-            android:id="@+id/slide_answer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/slide"
-            android:editable="true"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MOMENT EQUILIBRIUM"/>
-        <TextView
-            android:id="@+id/roll_answer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/roll"
-            android:editable="true"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:weightSum="1.0">
 
         <Button
-            android:id="@+id/calc_button"
+            android:id="@+id/vehicle_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/perform_calc"
-           />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="CANCEL"
+            android:layout_weight="0.5"/>
         <Button
-            android:id="@+id/report_button"
+            android:id="@+id/vehicle_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Send Report"/>
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="SAVE"
+            android:layout_weight="0.5"/>
+        </LinearLayout>
+
 </LinearLayout>
-</ScrollView>
 
+    </ScrollView>
 
 

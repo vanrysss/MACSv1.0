@@ -100,10 +100,10 @@ public class CalculationListFragment extends ListFragment{
                     switch (item.getItemId()) {
                         case R.id.menu_item_delete_calc:
                             CalculationAdapter adapter = (CalculationAdapter)getListAdapter();
-                            CalculationLab crimeLab = CalculationLab.get(getActivity());
+                            CalculationLab calcLab = CalculationLab.get(getActivity());
                             for (int i = adapter.getCount() - 1; i >= 0; i--) {
                                 if (getListView().isItemChecked(i)) {
-                                    crimeLab.deleteCalculation(adapter.getItem(i));
+                                    calcLab.deleteCalculation(adapter.getItem(i));
                                 }
                             }
                             mode.finish();
@@ -143,11 +143,7 @@ public class CalculationListFragment extends ListFragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu,inflater);
         inflater.inflate(R.menu.fragment_calc_list,menu);
-  /*      MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
-       if (mSubtitleVisible && showSubtitle != null){
-            showSubtitle.setTitle(R.string.hide_subtitle);
-        }
-        */
+
     }
 
     @TargetApi(11)

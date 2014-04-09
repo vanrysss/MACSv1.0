@@ -3,7 +3,6 @@
 
     <string name="app_name">MACS v1.0</string>
     <string name="title_activity_calculation">CalculationActivity</string>
-    <string name="action_settings">wtf</string>
     <string name="calc_meta_label">Project Information</string>
     <string name="vehicle_params">Vehicle Parameters</string>
     <string name="calc_single_title_hint">Unique Calculation Identifier</string>
@@ -29,10 +28,18 @@
     <string name="altitude">Altitude</string>
     <string name="gps_enabled">GPS Enabled</string>
     <string name="gps_disabled">GPS Disabled</string>
+    <string name="metric_weight">KGs </string>
+    <string name="metric_distance">Meters </string>
+    <string name="imperial_weight">LBs</string>
+    <string name="imperial_distance">Feet</string>
+    <string name="metric_soilunitwt">KG/cubic M</string>
+    <string name="imperial_soilunitwt">Lbs/cubic Ft</string>
+    <string name="imperial_soilc">psf</string>
+    <string name="metric_soilc">KPa</string>
+    <string name="imperial_answer">LBsF</string>
+    <string name="metric_answer">KGsF</string>
     <string name="slide"> </string>
     <string name="roll"> </string>
-    <string name="metric_units">Kg</string>
-    <string name="imperial_units">Lbs</string>
     <string name="hg_popup">Hg is the vertical distance between the ground supporting the equipment and the vehicular center of gravity.
         The lower Hg is, the more stable the equipment anchor will be against overturning. For more details, see figure 1.</string>
     <string name="cg_popup">Cg is the lateral distance between the point of rotation (i.e. the bottom of an embedded blade, 
@@ -57,5 +64,13 @@
     <string name="cohesion_popup">C is soil cohesion. Cohesion defines the non-stress dependent shear strength of soil and should be used with caution. Typically,
         cohesion occurs in stiff, over-consolidated clays or cemented native soils. Cohesion should be neglected if the designer is unsure of its presence.</string>
     <string name="ws_popup">Ws is the unit weight of the soil. This value represents the approximate bulk weight in a certain volume of soil.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <string-array name="classes">
+        <item>Excavator</item>
+        <item>Bulldozer</item>
+        <item>Crane</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>

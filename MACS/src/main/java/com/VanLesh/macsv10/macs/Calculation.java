@@ -14,6 +14,7 @@ import java.util.UUID;
  *
  */
 public class Calculation {
+
     //metadata
     private String mTitle;
     private String mEngineerName;
@@ -26,7 +27,7 @@ public class Calculation {
     // Measurements
     private int beta; //angle of slope
     private double D_b; //blade embedment
-    private double delta =0.33;
+    private static double delta =0.33;//figure provided by Ben
     private int theta; //angle on guyline
     private double La; //Setback distance of anchor from soil
     private double Ha; //height of Anchor
@@ -41,7 +42,10 @@ public class Calculation {
     private int rollover;
     private int drag;
     private double Kp;
-    private static double KG_CONVERTER =10.1971;
+    private static double KN_TO_KG =10.1971;
+    private static double LBS_TO_KG = 0.453592;
+    private static double FEET_TO_METERS = 0.3048;
+    private static double HALF = 0.5;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -254,8 +258,14 @@ public class Calculation {
         return (out *(top/bot));
     }
 
+    public void imperialconversion(){
+        D_b = D_b * FEET_TO_METERS;
+        La = La * FEET_TO_METERS;
+        Ha = Ha * FEET_TO_METERS;
+
+    }
     //equation 8 in the publication
-    public double Pp(Vehicle v, Soil s){
+    public double Pp(){
         Kp =Math.pow(Math.tan(45 +.5*getSoil().getfrictA()),2);
         if (theta - beta >= .333 * delta)
             Kp = 0;
@@ -264,22 +274,37 @@ public class Calculation {
         else
             Kp = Kp;
 
-        return .5*s.getunitW()*Math.pow(D_b,2)*v.getBladeW()*Kp + 2*s.getC()*v.getBladeW()* Math.sqrt(Kp);
+        return HALF * getSoil().getunitW()* Math.pow(D_b,2) * getVehicle().getBladeW()*Kp
+                    + 2*getSoil().getC()* getVehicle().getBladeW() * Math.sqrt(Kp);
     }
+    //figure 7
+    public double anchor_capacity(){
+        double c = getSoil().getC();
+        double TrackArea = getVehicle().getTrackA();
+        double TrackWidth = getVehicle().getTrackW();
 
-    public double anchor_capacity(double A1,double A2, double Pp){
+        double first = ((c *TrackArea *Alpha1())/Alpha2());
+        double second = ((Pp() * Alpha1())/Alpha2());
+        double third = (TrackWidth/Alpha2());
 
-        return(((getSoil().getC()*getVehicle().getTrackA()*A1)/A2) + ((Pp*A1)/A2) + (getVehicle().getTrackW()/A2));
 
+        return( first + second + third) * KN_TO_KG;
+        //return Alpha2();
     }
 
     //equation 15 in the publication
-    public double tip_over_moment(Vehicle v, double Pp){
+    public double tip_over_moment(Vehicle v, boolean isimperial){
 
-        double top =(v.getWv()*(v.getCg()*tcos(beta)-(D_b+ v.getHg())*tsin(beta))+Pp*((1/3)*D_b));
+        double top =(v.getWv()*(v.getCg()*tcos(beta)-(D_b+ v.getHg())*tsin(beta))+Pp()*((1/3)*D_b));
         double bot = tcos(theta-beta)*(D_b+Ha) + tsin(theta-beta)*La;
 
-        return (top/bot)* KG_CONVERTER;
+        double prelim = (top/bot)* KN_TO_KG;
+        if (isimperial){
+            return prelim/LBS_TO_KG;
+
+        }else
+            return prelim;
+
 
     }
 

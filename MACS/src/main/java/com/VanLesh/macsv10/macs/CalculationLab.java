@@ -31,6 +31,7 @@ public class CalculationLab {
             mCalculations = mSerializer.loadCalculations();
         }catch (Exception e){
             mCalculations = new ArrayList<Calculation>();
+
             Log.e(TAG,"Error loading calcs:", e);
 
         }

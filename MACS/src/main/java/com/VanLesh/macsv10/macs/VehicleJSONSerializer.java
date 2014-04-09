@@ -45,7 +45,7 @@ public class VehicleJSONSerializer {
             }
             // parse using a tokener
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
-            //build the array of calculations
+            //build the array of vehicles
             for (int i=0; i< array.length(); i++){
                 vehicles.add(new Vehicle(array.getJSONObject(i)));
             }

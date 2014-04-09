@@ -8,6 +8,7 @@ import org.json.JSONObject;
  */
 public class Vehicle {
 
+    public static Double KN_TO_KG = 10.109776;
     private String type;
     private String vehicleclass;
 
