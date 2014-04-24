@@ -20,6 +20,11 @@ public class Vehicle {
     private double mBladeW; //blade width
     private double TrackA = mTrackL*mTrackW;
 
+    private static double LBS_TO_KG = 0.453592;
+    private static double FEET_TO_METERS = 0.3048;
+
+    public boolean isimperial=false;
+
     private static final String JSON_TYPE ="type";
     private static final String JSON_CLASS="class";
     private static final String JSON_CG ="center of gravity";
@@ -29,8 +34,18 @@ public class Vehicle {
     private static final String JSON_TRACKWIDTH="track width";
     private static final String JSON_BLADEWIDTH="blade width";
 
-    public Vehicle(){
+    public Vehicle(){}
 
+    public void convertToMetric(){
+        if (isimperial){
+            mTrackL = mTrackL * FEET_TO_METERS;
+            mTrackW = mTrackW * FEET_TO_METERS;
+            mTrackA = mTrackA * FEET_TO_METERS;
+            mBladeW = mBladeW * FEET_TO_METERS;
+            mHg = mHg * FEET_TO_METERS;
+            mWv = mWv * LBS_TO_KG;
+            mCg = mCg * FEET_TO_METERS;
+        }
     }
 
     public Vehicle(JSONObject json) throws JSONException {

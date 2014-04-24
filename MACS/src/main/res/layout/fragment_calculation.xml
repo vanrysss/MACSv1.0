@@ -45,6 +45,49 @@
             android:editable="true"
             android:hint="@string/calc_job_site_hint"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Latitude: ">
+        </TextView>
+
+        <TextView
+            android:id="@+id/LatitudeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unknown">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Longitute: ">
+        </TextView>
+
+        <TextView
+            android:id="@+id/LongitudeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unknown">
+        </TextView>
+    </LinearLayout>
+
         <Button
             android:id="@+id/calculation_date"
             android:layout_width="match_parent"
@@ -96,7 +139,11 @@
         android:text="@string/measurements"
         style="?android:listSeparatorTextViewStyle"/>
 
-
+    <ImageView
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:src="@drawable/moment_basic"
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,6 +152,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:weightSum="1.0">
+
 
         <TextView
             android:layout_width="36dp"
@@ -128,13 +176,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
 
-        <ImageButton
+   <!--     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_beta"/>
-
+-->
      </LinearLayout>
 
     <LinearLayout
@@ -166,12 +214,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
 
-        <ImageButton
+ <!--       <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_theta"/>
+            -->
     </LinearLayout>
 
     <LinearLayout

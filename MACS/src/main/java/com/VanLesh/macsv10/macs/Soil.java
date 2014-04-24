@@ -17,14 +17,17 @@ public class Soil {
     private int mfrictA; // the friction angle
     private double mC; //cohesion of soil
 
+    private static final double KPa_To_Psf = 0.04788;
+    private static final double KGm3_To_Pf3 = 77.8555;
+
     private static final String JSON_NAME="name";
     private static final String JSON_UNITW="unit weight";
     private static final String JSON_FRICTIONANGLE = "friction angle";
     private static final String JSON_COHESION="cohesion";
 
-    public Soil(){
+    public boolean isimperial = false;
 
-    }
+    public Soil(){}
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
@@ -46,7 +49,16 @@ public class Soil {
         if (json.has(JSON_COHESION))
             mC = json.getDouble(JSON_COHESION);
     }
-     public int getfrictA() {
+
+
+    public void convertToMetric(){
+        if (isimperial){
+            mC= mC * KPa_To_Psf;
+            munitW = munitW/KGm3_To_Pf3;
+        }
+    }
+
+    public int getfrictA() {
         return mfrictA;
     }
 

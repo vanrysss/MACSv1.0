@@ -23,29 +23,42 @@ public class Calculation {
     private UUID mId;
 
 
+    private double latitude;
+    private double longitude;
+
 
     // Measurements
     private int beta; //angle of slope
     private double D_b; //blade embedment
-    private static double delta =0.33;//figure provided by Ben
+    private double delta;//figure provided by Ben
     private int theta; //angle on guyline
     private double La; //Setback distance of anchor from soil
     private double Ha; //height of Anchor
 
 
+    public boolean isimperial = false;
     //Class objects that matter for calculation
     public Soil mSoil;
     public Vehicle mVehicle;
 
 
+    public double getRollover() {
+        return rollover;
+    }
+
+    public double getDrag() {
+        return drag;
+    }
+
     //final calculation values
-    private int rollover;
-    private int drag;
+    private double rollover;
+    private double drag;
     private double Kp;
-    private static double KN_TO_KG =10.1971;
+    private static double KN_TO_KG =101.971;
+    private static double KG_TO_KN = 0.00980665;
     private static double LBS_TO_KG = 0.453592;
     private static double FEET_TO_METERS = 0.3048;
-    private static double HALF = 0.5;
+    private static double KG_TO_LBS = 2.205;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -62,6 +75,8 @@ public class Calculation {
     private static final String JSON_Ha = "Ha";
     private static final String JSON_VEHICLE = "vehicle";
     private static final String JSON_SOIL = "soil";
+    private static final String JSON_LONGITUDE ="longitude";
+    private static final String JSON_LATITUDE="latitude";
 
     public Calculation(){
         mId = UUID.randomUUID();
@@ -93,6 +108,8 @@ public class Calculation {
         Kp = json.getDouble(JSON_Db);
         La = json.getDouble(JSON_La);
         Ha = json.getDouble(JSON_Ha);
+        latitude = json.getDouble(JSON_LATITUDE);
+        longitude = json.getDouble(JSON_LONGITUDE);
 
     }
     public JSONObject toJSON() throws JSONException{
@@ -109,6 +126,10 @@ public class Calculation {
         json.put(JSON_Kp,Kp);
         json.put(JSON_La,La);
         json.put(JSON_Ha,Ha);
+        if (latitude !=0)
+            json.put(JSON_LATITUDE,latitude);
+        if (longitude != 0)
+            json.put(JSON_LONGITUDE,longitude);
         if (mVehicle != null)
             json.put(JSON_VEHICLE, mVehicle.toJSON());
         if (mSoil != null)
@@ -116,6 +137,22 @@ public class Calculation {
 
         return json;
 
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latititude) {
+        this.latitude = latititude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public void setId(UUID id) {
@@ -242,68 +279,89 @@ public class Calculation {
     }
 
     public double Alpha1(){
-        double out = (tsin(beta)+tcos(delta));
-        double top = (tcos(beta)-ttan(delta)*tsin(beta));
-        double bot = (tsin(beta) + ttan(delta)*tcos(beta));
+        delta =  (getSoil().getfrictA())/3;
 
-        return (out *(top/bot));
+        double top = (Math.cos(Math.toRadians(beta)) - Math.tan(Math.toRadians(delta)) * Math.sin(Math.toRadians(beta)));
+        double bot = (Math.sin(Math.toRadians(beta)) + Math.tan(Math.toRadians(delta)) * Math.cos(Math.toRadians(beta)));
+
+        return Math.sin(Math.toRadians(beta))+ Math.cos(Math.toRadians((beta))*(top/bot));
     }
 
     public double Alpha2(){
+        delta = (getSoil().getfrictA())/3;
+        double top = (Math.cos(Math.toRadians(beta)) - Math.tan(Math.toRadians(delta)) * Math.sin(Math.toRadians(beta)));
+        double bot = (Math.sin(Math.toRadians(beta)) + Math.tan(Math.toRadians(delta)) * Math.cos(Math.toRadians(beta)));
 
-        double out = (tsin(theta)+tcos(theta));
-        double top = (tcos(beta)-ttan(delta)*tsin(beta));
-        double bot = (tsin(beta) + ttan(delta)*tcos(beta));
-
-        return (out *(top/bot));
+        return Math.sin(Math.toRadians(beta)) + Math.sin(Math.toRadians(theta))*(top/bot);
     }
 
     public void imperialconversion(){
-        D_b = D_b * FEET_TO_METERS;
-        La = La * FEET_TO_METERS;
-        Ha = Ha * FEET_TO_METERS;
 
+        if (isimperial) {
+            D_b = D_b * FEET_TO_METERS;
+            La = La * FEET_TO_METERS;
+            Ha = Ha * FEET_TO_METERS;
+        }
     }
+
     //equation 8 in the publication
     public double Pp(){
-        Kp =Math.pow(Math.tan(45 +.5*getSoil().getfrictA()),2);
-        if (theta - beta >= .333 * delta)
+
+        return 0.5 * (getSoil().getunitW()*KG_TO_KN) * Math.pow(D_b,2) * getVehicle().getBladeW()*Kp
+                    + 2*getSoil().getC()* getVehicle().getBladeW() * Math.sqrt(Kp);
+    }
+
+    //figure 7
+    public double anchor_capacity(boolean isimperial){
+        delta =  (getSoil().getfrictA())/3;
+
+        double alph1=Alpha1();
+        double alph2=Alpha2();
+        Kp =Math.pow(Math.tan(45 * Math.toRadians(getSoil().getfrictA())/2),2);
+ /*       if (theta - beta >= delta)
             Kp = 0;
         else if (theta - beta >0)
             Kp = .5 * Kp;
         else
             Kp = Kp;
-
-        return HALF * getSoil().getunitW()* Math.pow(D_b,2) * getVehicle().getBladeW()*Kp
-                    + 2*getSoil().getC()* getVehicle().getBladeW() * Math.sqrt(Kp);
-    }
-    //figure 7
-    public double anchor_capacity(){
+*/
+        double gamma = getSoil().getunitW() * KG_TO_KN;
+        double Wb = getVehicle().getBladeW();
+        double Nb = Kp * alph1;
         double c = getSoil().getC();
-        double TrackArea = getVehicle().getTrackA();
-        double TrackWidth = getVehicle().getTrackW();
+        double Nc = 2 * Math.sqrt(Kp) * alph1;
+        double Nct = alph1 / alph2;
+        double Nw = 1/alph2;
+        double At = getVehicle().getTrackA();
+        double Wv = getVehicle().getWv()*KG_TO_KN;
 
-        double first = ((c *TrackArea *Alpha1())/Alpha2());
-        double second = ((Pp() * Alpha1())/Alpha2());
-        double third = (TrackWidth/Alpha2());
+        double prelim = 0.5 * gamma *Math.pow(D_b,2)*Wb *Nb + (c*Wb*Nc)+(c*At*Nct)+(Wv*Nw);
+       if (isimperial){
+            drag = prelim * KN_TO_KG * KG_TO_LBS;
+          return drag;
+       }else{
+            drag = prelim * KN_TO_KG;
+            return drag;
+       }
 
-
-        return( first + second + third) * KN_TO_KG;
-        //return Alpha2();
     }
 
     //equation 15 in the publication
-    public double tip_over_moment(Vehicle v, boolean isimperial){
+    public double tip_over_moment(boolean isimperial) {
 
-        double top =(v.getWv()*(v.getCg()*tcos(beta)-(D_b+ v.getHg())*tsin(beta))+Pp()*((1/3)*D_b));
-        double bot = tcos(theta-beta)*(D_b+Ha) + tsin(theta-beta)*La;
+        double Wv = getVehicle().getWv() * KG_TO_KN;
 
-        double prelim = (top/bot)* KN_TO_KG;
-        if (isimperial){
-            return prelim/LBS_TO_KG;
+        Vehicle v = getVehicle();
+        double top = (Wv * (v.getCg() * tcos(beta) - (D_b + v.getHg()) * tsin(beta)) + Pp() * ( D_b/3));
+        double bot = tcos(theta - beta) * (D_b + Ha) + tsin(theta - beta) * La;
 
-        }else
-            return prelim;
+        double prelim = (top / bot);
+        if (isimperial) {
+                rollover = prelim * KN_TO_KG * KG_TO_LBS;
+                return rollover;
+        } else
+            rollover = prelim * KN_TO_KG;
+            return rollover;
 
 
     }

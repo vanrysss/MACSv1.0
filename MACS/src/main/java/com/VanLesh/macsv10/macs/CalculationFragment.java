@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -34,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
-
 
 /**
  *
@@ -63,6 +64,7 @@ public class CalculationFragment extends Fragment{
     ToggleButton mUnitsButton;
     Callbacks mCallbacks;
     Button mCalculateButton;
+    Button mReportButton;
 
     ImageButton HgQuestion;
     ImageButton TgQuestion;
@@ -76,8 +78,19 @@ public class CalculationFragment extends Fragment{
     ImageButton CohesionQuestion;
     ImageButton UnitWeightQuestion;
 
+    TextView latituteField;
+    TextView longitudeField;
+    double lat;
+    double longi;
+
+    GPSTracker gps;
+
+
     String AnswerUnits;
     boolean isimperial =false;
+    boolean hasbeencalculated =false;
+
+
 
 
     private static final int REQUEST_DATE = 0;
@@ -90,7 +103,6 @@ public class CalculationFragment extends Fragment{
 
     private ArrayList<Vehicle> mVehicles;
     private ArrayList<Soil> mSoils;
-
 
 
     public interface Callbacks{
@@ -123,6 +135,7 @@ public class CalculationFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         UUID calculationId = (UUID)getArguments().getSerializable(EXTRA_CALCULATION_ID);
         mCalculation = CalculationLab.get(getActivity()).getCalculation(calculationId);
 
@@ -131,6 +144,18 @@ public class CalculationFragment extends Fragment{
 
         mVehicles = VehicleLab.get(getActivity()).getVehicles();
         staticVehicles(mVehicles);
+
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()){
+            lat = gps.getLatitude();
+            longi=gps.getLongitude();
+        }else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
@@ -146,14 +171,17 @@ public class CalculationFragment extends Fragment{
         final Dialog vehicledialog = new Dialog(getActivity());
 
 
-
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
                  getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         AnswerUnits= getResources().getString(R.string.metric_answer);
 
+        latituteField = (TextView)v.findViewById(R.id.LatitudeText);
+        longitudeField = (TextView)v.findViewById(R.id.LongitudeText);
+
+        latituteField.setText(String.valueOf(lat));
+        longitudeField.setText(String.valueOf(longi));
 
         mTitleField = (EditText)v.findViewById(R.id.calculation_title);
         mTitleField.setText(mCalculation.getTitle());
@@ -332,7 +360,58 @@ public class CalculationFragment extends Fragment{
             }
         });
 
-        mCalculateButton = (Button)v.findViewById(R.id.calc_button);
+        mUnitsButton = (ToggleButton)v.findViewById(R.id.toggle_units);
+        mUnitsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //Unit textfield declarations for main view
+                TextView HaUnit = (TextView)v.findViewById(R.id.Ha_unit);
+                TextView LaUnit = (TextView)v.findViewById(R.id.La_unit);
+                TextView DbUnit = (TextView)v.findViewById(R.id.Db_unit);
+                //for the soil dialog
+
+                //for the vehicles dialog
+
+                // if it's checked lets set all of the textview to their imperial counterparts
+                if (isChecked) {
+                    HaUnit.setText(getResources().getString(R.string.imperial_distance));
+                    LaUnit.setText(getResources().getString(R.string.imperial_distance));
+                    DbUnit.setText(getResources().getString(R.string.imperial_distance));
+
+                    AnswerUnits= getResources().getString(R.string.imperial_answer);
+                    mCalculation.isimperial = true;
+                    mCalculation.getVehicle().isimperial=true;
+                    mCalculation.getSoil().isimperial=true;
+                    hasbeencalculated =false;
+
+                    // default behavior for the program is metric units
+                } else {
+                    HaUnit.setText(getResources().getString(R.string.metric_distance));
+                    LaUnit.setText(getResources().getString(R.string.metric_distance));
+                    DbUnit.setText(getResources().getString(R.string.metric_distance));
+
+                    AnswerUnits= getResources().getString(R.string.metric_answer);
+                    mCalculation.isimperial =false;
+                    mCalculation.getVehicle().isimperial=false;
+                    mCalculation.getSoil().isimperial=false;
+                    hasbeencalculated =false;
+
+                }
+                // invalidating the view forces it to re-render. This will display our changes
+                //without the user having to perform an action.
+                v.invalidate();
+            }
+        });
+
+        HaQuestion = (ImageButton)v.findViewById(R.id.question_ha);
+        ToastMaker(R.string.ha_popup,HaQuestion,v);
+
+        LaQuestion = (ImageButton)v.findViewById(R.id.question_la);
+        ToastMaker(R.string.la_popup,LaQuestion,v);
+
+        DbQuestion = (ImageButton)v.findViewById(R.id.question_db);
+        ToastMaker(R.string.db_popup,DbQuestion,v);
+
         mAnchorCapacity = (TextView)v.findViewById(R.id.slide_answer);
         mRollOver = (TextView)v.findViewById(R.id.roll_answer);
         mDateButton = (Button)v.findViewById(R.id.calculation_date);
@@ -347,78 +426,10 @@ public class CalculationFragment extends Fragment{
         });
 
 
-        mCalculateButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-
-                DecimalFormat df = new DecimalFormat("#.##");
-
-                double AnchCap = mCalculation.anchor_capacity();
-                double tipover = mCalculation.tip_over_moment(mCalculation.getVehicle(),isimperial);
-                mAnchorCapacity.setText(df.format(AnchCap)+AnswerUnits);
-                mRollOver.setText(df.format(tipover)+AnswerUnits);
-
-                if (AnchCap <= tipover) {
-                    mAnchorCapacity.setTextColor(Color.RED);
-                    mAnchorCapacity.setHighlightColor(Color.YELLOW);
-                    }
-                else {
-                    mRollOver.setTextColor(Color.RED);
-                    mRollOver.setHighlightColor(Color.YELLOW);
-                }
-
-            }
-
-        });
-
-        mUnitsButton = (ToggleButton)v.findViewById(R.id.toggle_units);
-        mUnitsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                //Unit textfield declarations for main view
-                TextView HaUnit = (TextView)v.findViewById(R.id.Ha_unit);
-                TextView LaUnit = (TextView)v.findViewById(R.id.La_unit);
-                TextView DbUnit = (TextView)v.findViewById(R.id.Db_unit);
-                //for the soil dialog
-
-                //for the vehicles dialog
-
-
-                // if it's checked lets set all of the textview to their imperial counterparts
-                if (isChecked) {
-                        HaUnit.setText(getResources().getString(R.string.imperial_distance));
-                        LaUnit.setText(getResources().getString(R.string.imperial_distance));
-                        DbUnit.setText(getResources().getString(R.string.imperial_distance));
-
-
-
-                        AnswerUnits= getResources().getString(R.string.imperial_answer);
-                        isimperial = true;
-
-                    // default behavior for the program is metric units
-                } else {
-                    HaUnit.setText(getResources().getString(R.string.metric_distance));
-                    LaUnit.setText(getResources().getString(R.string.metric_distance));
-                    DbUnit.setText(getResources().getString(R.string.metric_distance));
-
-
-
-                    AnswerUnits= getResources().getString(R.string.metric_answer);
-                    isimperial =false;
-
-                }
-                // invalidating the view forces it to re-render. This will display our changes
-                //without the user having to perform an action.
-                v.invalidate();
-            }
-        });
-
-
-
         final ArrayList<String> vehicleoutputlist = new ArrayList<String>();
-        String SingleVehicle="";
-        for (int i=0; i< mVehicles.size(); i++){
+        String SingleVehicle;
+        for (Vehicle vehicle : mVehicles){
 
-            Vehicle vehicle = mVehicles.get(i);
             SingleVehicle = vehicle.getVehicleType();
             if (! vehicleoutputlist.contains(SingleVehicle))
                  vehicleoutputlist.add(SingleVehicle);
@@ -465,6 +476,7 @@ public class CalculationFragment extends Fragment{
                           VehicleTrackLength.setText(getResources().getString(R.string.imperial_distance));
                           VehicleTrackWidth.setText(getResources().getString(R.string.imperial_distance));
 
+
                       }else{
                           VehicleHeight.setText(getResources().getString(R.string.metric_distance));
                           VehicleCg.setText(getResources().getString(R.string.metric_distance));
@@ -472,6 +484,9 @@ public class CalculationFragment extends Fragment{
                           VehicleTrackLength.setText(getResources().getString(R.string.metric_distance));
                           VehicleTrackWidth.setText(getResources().getString(R.string.metric_distance));
                           VehicleWeight.setText(getResources().getString(R.string.metric_weight));
+
+
+
                       }
 
                       //this unfortunately long block defines all of our EditText fields
@@ -676,10 +691,10 @@ public class CalculationFragment extends Fragment{
                       mSaveButton.setOnClickListener(new OnClickListener(){
 
                           public void onClick(View v){
+                              mCalculation.getVehicle().convertToMetric();
                               mVehicles.add(mCalculation.getVehicle());
                               vehicleoutputlist.add(mCalculation.getVehicle().getVehicleType());
                               VehicleLab.get(getActivity()).saveVehicles();
-
                               vehicledialog.dismiss();
 
                           }
@@ -709,8 +724,7 @@ public class CalculationFragment extends Fragment{
                     // if a real vehicle is selected we'll loop through our array, match "types"
                     // and set our Calculation's vehicle to that vehicle
                   }else{
-                        for (int j=0; j<mVehicles.size(); j++){
-                            Vehicle checkvehicle = mVehicles.get(j);
+                        for (Vehicle checkvehicle : mVehicles){
                             if(check.matches(checkvehicle.getVehicleType())){
                                 mCalculation.setVehicle(checkvehicle);
 
@@ -763,9 +777,16 @@ public class CalculationFragment extends Fragment{
                     if (mUnitsButton.isChecked()){
                         SoilWtUnit.setText(getResources().getString(R.string.imperial_soilunitwt));
                         SoilCUnit.setText(getResources().getString(R.string.imperial_soilc));
+
+                        //mCalculation.getSoil().isimperial = true;
+
+
                     }else{
                         SoilWtUnit.setText(getResources().getString(R.string.metric_soilunitwt));
                         SoilCUnit.setText(getResources().getString(R.string.metric_soilc));
+
+                        //mCalculation.getSoil().isimperial =false;
+
                     }
 
 
@@ -874,8 +895,9 @@ public class CalculationFragment extends Fragment{
                     mSaveButton.setOnClickListener(new OnClickListener(){
 
                         public void onClick(View v){
+                            mCalculation.getSoil().convertToMetric();
                             mSoils.add(mCalculation.getSoil());
-                           SoilOutputList.add(mCalculation.getSoil().getName());
+                            SoilOutputList.add(mCalculation.getSoil().getName());
                             SoilLab.get(getActivity()).saveSoils();
 
                             soildialog.dismiss();
@@ -913,6 +935,53 @@ public class CalculationFragment extends Fragment{
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
+        mCalculateButton = (Button)v.findViewById(R.id.calc_button);
+        mCalculateButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                DecimalFormat df = new DecimalFormat("#.##");
+                if (!hasbeencalculated) {
+
+                    mCalculation.imperialconversion();
+                    double AnchCap = mCalculation.anchor_capacity(isimperial);
+                    double tipover = mCalculation.tip_over_moment(isimperial);
+                    mAnchorCapacity.setText(df.format(AnchCap) +"     "+ AnswerUnits);
+                    mRollOver.setText(df.format(tipover) +"     " +AnswerUnits);
+
+                    if (AnchCap <= tipover) {
+                        mAnchorCapacity.setTextColor(Color.RED);
+                        mAnchorCapacity.setHighlightColor(Color.YELLOW);
+                    } else {
+                        mRollOver.setTextColor(Color.RED);
+                        mRollOver.setHighlightColor(Color.YELLOW);
+                    }
+                    //hasbeencalculated = true;
+
+                }
+
+                }
+
+        });
+
+        mReportButton = (Button)v.findViewById(R.id.report_button);
+        mReportButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                Pdf.maker(mCalculation);
+                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
+                     new String[]{});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "MACS Report");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This email sent by the MACS App");
+                // Here my file name is shortcuts.pdf which i have stored in /res/raw folder
+                Uri emailUri = Uri.parse("file://" + Environment.getExternalStorageDirectory().getPath()+ "/Report.pdf");
+                emailIntent.putExtra(Intent.EXTRA_STREAM, emailUri);
+                emailIntent.setType("application/pdf");
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+
+            }
+        });
 
         setRetainInstance(true);
         return v;
@@ -965,23 +1034,13 @@ public class CalculationFragment extends Fragment{
         }
     }
 
-    private void showVehicleDialog(){
-        FragmentManager fm = getFragmentManager();
-        VehiclePickerFragment vehiclepicker = VehiclePickerFragment.newInstance("Choose");
-        vehiclepicker.show(fm,"fragment_vehicle_picker");
-
-    }
-
-    public void onFinishedEditDialog(String inputText){
-        mCalculation.getVehicle().setType(inputText);
-    }
 
     private void staticVehicles(ArrayList<Vehicle> v){
 
         Vehicle ex1 = new Vehicle();
         ex1.setVehicleClass("Bulldozer");
         ex1.setType("Caterpillar D8");
-        ex1.setWv(355 * Vehicle.KN_TO_KG);
+        ex1.setWv(36199.93);
         ex1.setBladeW(3.255);
         ex1.setCg(3.51);
         ex1.setTrackL(3.255);
@@ -990,7 +1049,7 @@ public class CalculationFragment extends Fragment{
         Vehicle ex2 = new Vehicle();
         ex2.setVehicleClass("Excavator");
         ex2.setType("Caterpillar 320C");
-        ex2.setWv(214 * Vehicle.KN_TO_KG);
+        ex2.setWv(21821.93);
         ex2.setBladeW(1.55);
         ex2.setCg(7.75);
         ex2.setTrackL(3.72);

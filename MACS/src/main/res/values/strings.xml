@@ -13,7 +13,6 @@
     <string name="calc_theta_hint">Angle of cable from horizontal plane</string>
     <string name="calc_sigma_hint">σ : Anchor angle</string>
     <string name="calc_delta_hint">δ : Soil interaction angle</string>
-    <string name="calc_Kp_hint">Kp : Soil Passive Pressure Coefficient</string>
     <string name="soil_params">Soil Parameters</string>
     <string name="calculations_title">Calculations</string>
     <string name="new_calc">New Calculation</string>
@@ -36,8 +35,8 @@
     <string name="imperial_soilunitwt">Lbs/cubic Ft</string>
     <string name="imperial_soilc">psf</string>
     <string name="metric_soilc">KPa</string>
-    <string name="imperial_answer">LBsF</string>
-    <string name="metric_answer">KGsF</string>
+    <string name="imperial_answer">LBS</string>
+    <string name="metric_answer">KGS</string>
     <string name="slide"> </string>
     <string name="roll"> </string>
     <string name="hg_popup">Hg is the vertical distance between the ground supporting the equipment and the vehicular center of gravity.
