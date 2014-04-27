@@ -15,14 +15,12 @@ import com.VanLesh.macsv10.macs.R;
  */
 public class SplashScreen extends Activity {
 
-    //timer in milliseconds
-    private static int TIME_OUT = 3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        int TIME_OUT = 3000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

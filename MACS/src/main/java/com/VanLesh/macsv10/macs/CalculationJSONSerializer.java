@@ -37,7 +37,7 @@ public class CalculationJSONSerializer {
             InputStream in = mContext.openFileInput(mFilename);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
-            String line = null;
+            String line;
 
             while ((line = reader.readLine()) != null){
                 // line breaks don't matter

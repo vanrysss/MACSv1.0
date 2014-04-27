@@ -6,13 +6,13 @@ dependencies {
     compile 'com.android.support:support-v4:19.+'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/itext/itextg-5.5.0.jar')
-   // compile files('libs/itext/itextg-5.5.0-javadoc.jar')
-   // compile files('libs/itext/itextg-5.5.0-sources.jar')
+    // compile files('libs/itext/itextg-5.5.0-javadoc.jar')
+    // compile files('libs/itext/itextg-5.5.0-sources.jar')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.0'
+    buildToolsVersion '19.0.3'
 
     defaultConfig {
         minSdkVersion 8
@@ -24,6 +24,7 @@ android {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            debuggable true
         }
     }
 

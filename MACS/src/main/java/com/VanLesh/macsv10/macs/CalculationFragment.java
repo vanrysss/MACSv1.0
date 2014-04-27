@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -35,6 +37,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.UUID;
 
 /**
@@ -46,19 +49,18 @@ import java.util.UUID;
  * seperate fragments but that proved to be cumbersome.
  */
 public class CalculationFragment extends Fragment{
-    Calculation mCalculation;
-    Vehicle mVehicle;
-    EditText mTitleField;
-    EditText mEngineerName;
-    EditText mJobsite;
+    private Calculation mCalculation;
+    private EditText mTitleField;
+    private EditText mEngineerName;
+    private EditText mJobsite;
 
-    EditText mSlopeAngle;
-    EditText mAnchorAngle;
-    EditText mAnchorHeight;
-    EditText mAnchorSetback;
+    private EditText mSlopeAngle;
+    private EditText mAnchorAngle;
+    private EditText mAnchorHeight;
+    private EditText mAnchorSetback;
     EditText mBladeEmbedment;
 
-    TextView mAnchorCapacity;
+    private TextView mAnchorCapacity;
     TextView mRollOver;
     Button mDateButton;
     ToggleButton mUnitsButton;
@@ -67,7 +69,6 @@ public class CalculationFragment extends Fragment{
     Button mReportButton;
 
     ImageButton HgQuestion;
-    ImageButton TgQuestion;
     ImageButton DbQuestion;
     ImageButton WbQueston;
     ImageButton WvQuestion;
@@ -77,6 +78,11 @@ public class CalculationFragment extends Fragment{
     ImageButton PhiQuestion;
     ImageButton CohesionQuestion;
     ImageButton UnitWeightQuestion;
+
+    ImageButton AddVehicle;
+    ImageButton DeleteVehicle;
+    ImageButton AddSoil;
+    ImageButton DeleteSoil;
 
     TextView latituteField;
     TextView longitudeField;
@@ -94,12 +100,10 @@ public class CalculationFragment extends Fragment{
 
 
     private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_VEHICLE = 10;
 
     public static String EXTRA_CALCULATION_ID = "calculationintent.calculation_id";
 
     private static final String DIALOG_DATE = "date";
-    private static final String DIALOG_VEHICLE = "vehicle";
 
     private ArrayList<Vehicle> mVehicles;
     private ArrayList<Soil> mSoils;
@@ -445,294 +449,14 @@ public class CalculationFragment extends Fragment{
         mVehicleSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
               @Override
               public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
-                  String check = (String) mVehicleSpin.getSelectedItem();
-                  if(check.matches("new")){
-                      //custom vehicle dialog
-
-                      vehicledialog.setContentView(R.layout.fragment_vehicle_picker);
-                      vehicledialog.setTitle("Enter Vehicle Data");
-
-                      final EditText mVehicleclass;
-                      final EditText mVehicletype;
-                      final EditText mVehicleHeight;
-                      final EditText mCOGDistance;
-                      final EditText mWeight;
-                      final EditText mTrackL;
-                      final EditText mTrackW;
-                      final EditText mBladeW;
-                      TextView VehicleWeight = (TextView)vehicledialog.findViewById(R.id.VehicleWeight_unit);
-                      TextView VehicleTrackLength = (TextView)vehicledialog.findViewById(R.id.VehicleTrackLength_unit);
-                      TextView VehicleTrackWidth = (TextView)vehicledialog.findViewById(R.id.VehicleTrackWidth_unit);
-                      TextView VehicleCg = (TextView)vehicledialog.findViewById(R.id.VehicleCg_unit);
-                      TextView VehicleBladeWidth = (TextView)vehicledialog.findViewById(R.id.VehicleBladeWidth_unit);
-                      TextView VehicleHeight = (TextView)vehicledialog.findViewById(R.id.VehicleHeight_unit);
-
-
-                      if (mUnitsButton.isChecked()){
-                          VehicleHeight.setText(getResources().getString(R.string.imperial_distance));
-                          VehicleWeight.setText(getResources().getString(R.string.imperial_weight));
-                          VehicleCg.setText(getResources().getString(R.string.imperial_distance));
-                          VehicleBladeWidth.setText(getResources().getString(R.string.imperial_distance));
-                          VehicleTrackLength.setText(getResources().getString(R.string.imperial_distance));
-                          VehicleTrackWidth.setText(getResources().getString(R.string.imperial_distance));
-
-
-                      }else{
-                          VehicleHeight.setText(getResources().getString(R.string.metric_distance));
-                          VehicleCg.setText(getResources().getString(R.string.metric_distance));
-                          VehicleBladeWidth.setText(getResources().getString(R.string.metric_distance));
-                          VehicleTrackLength.setText(getResources().getString(R.string.metric_distance));
-                          VehicleTrackWidth.setText(getResources().getString(R.string.metric_distance));
-                          VehicleWeight.setText(getResources().getString(R.string.metric_weight));
-
-
-
+                  String vcheck =(String)mVehicleSpin.getSelectedItem();
+                  Iterator<Vehicle> iterv = mVehicles.iterator();
+                  while (iterv.hasNext()){
+                      Vehicle currentv = iterv.next();
+                      if (currentv.getVehicleType().matches(vcheck)){
+                          mCalculation.setVehicle(currentv);
                       }
-
-                      //this unfortunately long block defines all of our EditText fields
-                      // each EditText is mapped to it's resource Id, we check if the field needs to be filled
-                      // then assign the Calculation's appropriate vehicle parameter if something is entered into
-                      //the field
-                      mVehicleclass = (EditText)vehicledialog.findViewById(R.id.input_vehicle_class);
-                      //mVehicleclass.setText(mCalculation.getVehicle().getVehicleClass());
-                      mVehicleclass.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              mCalculation.getVehicle().setVehicleClass(charSequence.toString());
-
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-
-                      mVehicletype = (EditText)vehicledialog.findViewById(R.id.input_vehicle_type);
-                      //mVehicletype.setText(mCalculation.getVehicle().getVehicleType());
-                      mVehicletype.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              mCalculation.getVehicle().setType(charSequence.toString());
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-
-                      mVehicleHeight = (EditText)vehicledialog.findViewById(R.id.input_vehicle_height);
-                     // if (mCalculation.getVehicle().getHg() != 0)
-                     //     mVehicleHeight.setText(Double.toString(mCalculation.getVehicle().getHg()));
-
-                      mVehicleHeight.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sVehicleHeight = mVehicleHeight.getText().toString();
-                              if (! sVehicleHeight.matches(""))
-                                  mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-
-                      mCOGDistance = (EditText)vehicledialog.findViewById(R.id.Cg);
-                    //  if(mCalculation.getVehicle().getCg() != 0)
-                    //      mCOGDistance.setText(Double.toString(mCalculation.getVehicle().getCg()));
-
-                      mCOGDistance.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sCOGDistance = mCOGDistance.getText().toString();
-                              if (! sCOGDistance.matches(""))
-                                  mCalculation.getVehicle().setCg(Double.parseDouble(charSequence.toString()));
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-                      //TODO null validation
-                      mWeight = (EditText)vehicledialog.findViewById(R.id.Wv);
-                    //  if(mCalculation.getVehicle().getWv() != 0)
-                    //      mWeight.setText(Double.toString(mCalculation.getVehicle().getWv()));
-                      mWeight.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sWeight = mWeight.getText().toString();
-                              if (! sWeight.matches(""))
-                                  mCalculation.getVehicle().setWv(Double.parseDouble(charSequence.toString()));
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-                      //TODO null validation
-                      mTrackL = (EditText)vehicledialog.findViewById(R.id.Tl);
-                    //  if(mCalculation.getVehicle().getTrackL() !=0)
-                    //      mTrackL.setText(Double.toString(mCalculation.getVehicle().getTrackL()));
-                      mTrackL.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sTrackLength = mTrackL.getText().toString();
-                              if (! sTrackLength.matches(""))
-                                  mCalculation.getVehicle().setTrackL(Double.parseDouble(charSequence.toString()));
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-                      //TODO: null validation
-                      mTrackW = (EditText)vehicledialog.findViewById(R.id.Tw);
-                    //  if(mCalculation.getVehicle().getTrackW() != 0)
-                    //      mTrackW.setText(Double.toString(mCalculation.getVehicle().getTrackW()));
-                      mTrackW.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sTrackWidth = mTrackW.getText().toString();
-                              if (! sTrackWidth.matches(""))
-                                  mCalculation.getVehicle().setTrackW(Double.parseDouble(charSequence.toString()));
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-                          @Override
-                          public void afterTextChanged(Editable editable) {
-
-                          }
-                      });
-
-                      mBladeW =(EditText)vehicledialog.findViewById(R.id.Wb);
-                     // if (mCalculation.getVehicle().getBladeW() !=0)
-                     //     mBladeW.setText(Double.toString(mCalculation.getVehicle().getBladeW()));
-                      mBladeW.addTextChangedListener(new TextWatcher() {
-                          @Override
-                          public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                          }
-
-                          @Override
-                          public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                              String sBladeWidth = mBladeW.getText().toString();
-                              if (! sBladeWidth.matches("")){
-                                  mCalculation.getVehicle().setBladeW(Double.parseDouble(charSequence.toString()));
-                              }
-                              mCallbacks.onCalculationUpdated(mCalculation);
-                          }
-
-
-                          @Override
-                          public void afterTextChanged(Editable editable){
-                          }
-
-                      });
-
-
-
-                      Button mCancelButton =(Button)vehicledialog.findViewById(R.id.vehicle_cancel);
-                      mCancelButton.setOnClickListener(new View.OnClickListener(){
-
-                          public void onClick(View v){
-                              mCalculation.setVehicle(null);
-                              vehicledialog.dismiss();
-
-                          }
-
-                      });
-
-                      Button mSaveButton = (Button)vehicledialog.findViewById(R.id.vehicle_save);
-                      mSaveButton.setOnClickListener(new OnClickListener(){
-
-                          public void onClick(View v){
-                              mCalculation.getVehicle().convertToMetric();
-                              mVehicles.add(mCalculation.getVehicle());
-                              vehicleoutputlist.add(mCalculation.getVehicle().getVehicleType());
-                              VehicleLab.get(getActivity()).saveVehicles();
-                              vehicledialog.dismiss();
-
-                          }
-                      });
-
-
-                      // this code block defines the "?" buttons
-                      //We assign them the correct ID and provide the relevant string and ID for the toast
-
-                      HgQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_hg);
-                      ToastMaker(R.string.hg_popup,HgQuestion, v);
-
-                      WbQueston = (ImageButton)vehicledialog.findViewById(R.id.question_wb);
-                      ToastMaker(R.string.wb_popup,WbQueston,  v);
-
-                      WvQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_wv);
-                      ToastMaker(R.string.wv_popup,WvQuestion, v);
-
-                      CgQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_cg);
-                      ToastMaker(R.string.cg_popup,CgQuestion, v);
-
-
-
-
-                      vehicledialog.show();
-
-                    // if a real vehicle is selected we'll loop through our array, match "types"
-                    // and set our Calculation's vehicle to that vehicle
-                  }else{
-                        for (Vehicle checkvehicle : mVehicles){
-                            if(check.matches(checkvehicle.getVehicleType())){
-                                mCalculation.setVehicle(checkvehicle);
-
-                            }
-                        }
-
-                      }
-
+                  }
                }
 
               @Override
@@ -740,13 +464,304 @@ public class CalculationFragment extends Fragment{
 
         });
 
+        DeleteVehicle = (ImageButton)v.findViewById(R.id.vehicle_delete);
+        DeleteVehicle.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v){
+                for(Vehicle checkvehicle : mVehicles){
+                    if (checkvehicle.equals(mVehicleSpin.getSelectedItem()))
+                        mVehicles.remove(checkvehicle);
+                }
+                vadapter.remove((String)mVehicleSpin.getSelectedItem());
+                vadapter.notifyDataSetChanged();
+                }
+
+
+        });
+
+        AddVehicle = (ImageButton)v.findViewById(R.id.vehicle_add);
+        AddVehicle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vehicledialog.setContentView(R.layout.fragment_vehicle_picker);
+                vehicledialog.setTitle("Enter Vehicle Data");
+
+                final EditText mVehicleclass;
+                final EditText mVehicletype;
+                final EditText mVehicleHeight;
+                final EditText mCOGDistance;
+                final EditText mWeight;
+                final EditText mTrackL;
+                final EditText mTrackW;
+                final EditText mBladeW;
+                TextView VehicleWeight = (TextView)vehicledialog.findViewById(R.id.VehicleWeight_unit);
+                TextView VehicleTrackLength = (TextView)vehicledialog.findViewById(R.id.VehicleTrackLength_unit);
+                TextView VehicleTrackWidth = (TextView)vehicledialog.findViewById(R.id.VehicleTrackWidth_unit);
+                TextView VehicleCg = (TextView)vehicledialog.findViewById(R.id.VehicleCg_unit);
+                TextView VehicleBladeWidth = (TextView)vehicledialog.findViewById(R.id.VehicleBladeWidth_unit);
+                TextView VehicleHeight = (TextView)vehicledialog.findViewById(R.id.VehicleHeight_unit);
+
+
+                if (mUnitsButton.isChecked()){
+                    VehicleHeight.setText(getResources().getString(R.string.imperial_distance));
+                    VehicleWeight.setText(getResources().getString(R.string.imperial_weight));
+                    VehicleCg.setText(getResources().getString(R.string.imperial_distance));
+                    VehicleBladeWidth.setText(getResources().getString(R.string.imperial_distance));
+                    VehicleTrackLength.setText(getResources().getString(R.string.imperial_distance));
+                    VehicleTrackWidth.setText(getResources().getString(R.string.imperial_distance));
+
+
+                }else{
+                    VehicleHeight.setText(getResources().getString(R.string.metric_distance));
+                    VehicleCg.setText(getResources().getString(R.string.metric_distance));
+                    VehicleBladeWidth.setText(getResources().getString(R.string.metric_distance));
+                    VehicleTrackLength.setText(getResources().getString(R.string.metric_distance));
+                    VehicleTrackWidth.setText(getResources().getString(R.string.metric_distance));
+                    VehicleWeight.setText(getResources().getString(R.string.metric_weight));
+
+
+
+                }
+
+                //this unfortunately long block defines all of our EditText fields
+                // each EditText is mapped to it's resource Id, we check if the field needs to be filled
+                // then assign the Calculation's appropriate vehicle parameter if something is entered into
+                //the field
+                mVehicleclass = (EditText)vehicledialog.findViewById(R.id.input_vehicle_class);
+                //mVehicleclass.setText(mCalculation.getVehicle().getVehicleClass());
+                mVehicleclass.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        mCalculation.getVehicle().setVehicleClass(charSequence.toString());
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mVehicletype = (EditText)vehicledialog.findViewById(R.id.input_vehicle_type);
+                //mVehicletype.setText(mCalculation.getVehicle().getVehicleType());
+                mVehicletype.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        mCalculation.getVehicle().setType(charSequence.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mVehicleHeight = (EditText)vehicledialog.findViewById(R.id.input_vehicle_height);
+                // if (mCalculation.getVehicle().getHg() != 0)
+                //     mVehicleHeight.setText(Double.toString(mCalculation.getVehicle().getHg()));
+
+                mVehicleHeight.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sVehicleHeight = mVehicleHeight.getText().toString();
+                        if (! sVehicleHeight.matches(""))
+                            mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mCOGDistance = (EditText)vehicledialog.findViewById(R.id.Cg);
+                //  if(mCalculation.getVehicle().getCg() != 0)
+                //      mCOGDistance.setText(Double.toString(mCalculation.getVehicle().getCg()));
+
+                mCOGDistance.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sCOGDistance = mCOGDistance.getText().toString();
+                        if (! sCOGDistance.matches(""))
+                            mCalculation.getVehicle().setCg(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+                //TODO null validation
+                mWeight = (EditText)vehicledialog.findViewById(R.id.Wv);
+                //  if(mCalculation.getVehicle().getWv() != 0)
+                //      mWeight.setText(Double.toString(mCalculation.getVehicle().getWv()));
+                mWeight.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sWeight = mWeight.getText().toString();
+                        if (! sWeight.matches(""))
+                            mCalculation.getVehicle().setWv(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+                //TODO null validation
+                mTrackL = (EditText)vehicledialog.findViewById(R.id.Tl);
+                //  if(mCalculation.getVehicle().getTrackL() !=0)
+                //      mTrackL.setText(Double.toString(mCalculation.getVehicle().getTrackL()));
+                mTrackL.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sTrackLength = mTrackL.getText().toString();
+                        if (! sTrackLength.matches(""))
+                            mCalculation.getVehicle().setTrackL(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+                //TODO: null validation
+                mTrackW = (EditText)vehicledialog.findViewById(R.id.Tw);
+                //  if(mCalculation.getVehicle().getTrackW() != 0)
+                //      mTrackW.setText(Double.toString(mCalculation.getVehicle().getTrackW()));
+                mTrackW.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sTrackWidth = mTrackW.getText().toString();
+                        if (! sTrackWidth.matches(""))
+                            mCalculation.getVehicle().setTrackW(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mBladeW =(EditText)vehicledialog.findViewById(R.id.Wb);
+                // if (mCalculation.getVehicle().getBladeW() !=0)
+                //     mBladeW.setText(Double.toString(mCalculation.getVehicle().getBladeW()));
+                mBladeW.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sBladeWidth = mBladeW.getText().toString();
+                        if (! sBladeWidth.matches("")){
+                            mCalculation.getVehicle().setBladeW(Double.parseDouble(charSequence.toString()));
+                        }
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+
+                    @Override
+                    public void afterTextChanged(Editable editable){
+                    }
+
+                });
+
+
+
+                Button mCancelButton =(Button)vehicledialog.findViewById(R.id.vehicle_cancel);
+                mCancelButton.setOnClickListener(new View.OnClickListener(){
+
+                    public void onClick(View v){
+                        mCalculation.setVehicle(null);
+                        vehicledialog.dismiss();
+
+                    }
+
+                });
+
+                Button mSaveButton = (Button)vehicledialog.findViewById(R.id.vehicle_save);
+                mSaveButton.setOnClickListener(new OnClickListener(){
+
+                    public void onClick(View v){
+                        mCalculation.getVehicle().convertToMetric();
+                        mVehicles.add(mCalculation.getVehicle());
+                        vehicleoutputlist.add(mCalculation.getVehicle().getVehicleType());
+                        VehicleLab.get(getActivity()).saveVehicles();
+                        vehicledialog.dismiss();
+
+                    }
+                });
+
+
+                // this code block defines the "?" buttons
+                //We assign them the correct ID and provide the relevant string and ID for the toast
+
+                HgQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_hg);
+                ToastMaker(R.string.hg_popup,HgQuestion, v);
+
+                WbQueston = (ImageButton)vehicledialog.findViewById(R.id.question_wb);
+                ToastMaker(R.string.wb_popup,WbQueston,  v);
+
+                WvQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_wv);
+                ToastMaker(R.string.wv_popup,WvQuestion, v);
+
+                CgQuestion = (ImageButton)vehicledialog.findViewById(R.id.question_cg);
+                ToastMaker(R.string.cg_popup,CgQuestion, v);
+
+
+
+
+                vehicledialog.show();
+            }
+        });
 
         final ArrayList<String> SoilOutputList = new ArrayList<String>();
-        String SingleSoil="";
-        for (int i = 0; i <mSoils.size(); i++){
-            Soil soil = mSoils.get(i);
+        String SingleSoil;
+        for (Soil soil : mSoils) {
             SingleSoil = soil.getName();
-            if (! SoilOutputList.contains(SingleSoil))
+            if (!SoilOutputList.contains(SingleSoil))
                 SoilOutputList.add(SingleSoil);
         }
         Collections.sort(SoilOutputList);
@@ -760,179 +775,191 @@ public class CalculationFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l){
                 String check = (String)mSoilSpin.getSelectedItem();
-                if(check.matches("new")) {
-                    //custom soil dialog launches on new selection
 
-                    soildialog.setContentView(R.layout.fragment_soil_picker);
-                    soildialog.setTitle("Enter Soil Data");
+                Iterator<Soil> iter = mSoils.iterator();
+                while (iter.hasNext()) {
+                    Soil currents = iter.next();
+                    if (currents.getName().matches(check))
+                        mCalculation.setSoil(currents);
 
-                    final EditText mSoilType;
-                    final EditText mSoilUnitWeight;
-                    final EditText mSoilFrictionAngle;
-                    final EditText mSoilCohesionFactor;
-
-                    TextView SoilWtUnit = (TextView)soildialog.findViewById(R.id.SoilWt_unit);
-                    TextView SoilCUnit = (TextView)soildialog.findViewById(R.id.Soilc_unit);
-
-                    if (mUnitsButton.isChecked()){
-                        SoilWtUnit.setText(getResources().getString(R.string.imperial_soilunitwt));
-                        SoilCUnit.setText(getResources().getString(R.string.imperial_soilc));
-
-                        //mCalculation.getSoil().isimperial = true;
-
-
-                    }else{
-                        SoilWtUnit.setText(getResources().getString(R.string.metric_soilunitwt));
-                        SoilCUnit.setText(getResources().getString(R.string.metric_soilc));
-
-                        //mCalculation.getSoil().isimperial =false;
-
-                    }
-
-
-                    mSoilType = (EditText)soildialog.findViewById(R.id.SoilName);
-                //    mSoilType.setText(mCalculation.getSoil().getName());
-                    mSoilType.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                            mCalculation.getSoil().setName(charSequence.toString());
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-
-                        }
-                    });
-
-                    mSoilUnitWeight = (EditText)soildialog.findViewById(R.id.Soilunitwt);
-                 //   if (mCalculation.getSoil().getunitW() != 0)
-                 //       mSoilUnitWeight.setText(Double.toString(mCalculation.getSoil().getunitW()));
-                    mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            String sSoilUnitWeight = mSoilType.getText().toString();
-                            if (! sSoilUnitWeight.matches(""))
-                                mCalculation.getSoil().setunitW(Double.parseDouble(charSequence.toString()));
-                            mCallbacks.onCalculationUpdated(mCalculation);
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-
-                        }
-                    });
-
-                    mSoilCohesionFactor = (EditText)soildialog.findViewById(R.id.Soilcohesion);
-                //    if (mCalculation.getSoil().getC() !=0 )
-                //        mSoilCohesionFactor.setText(Double.toString(mCalculation.getSoil().getC()));
-                    mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            String sSoilCohesionFactor = mSoilCohesionFactor.getText().toString();
-                            if (!sSoilCohesionFactor.matches(""))
-                                mCalculation.getSoil().setC(Double.parseDouble(charSequence.toString()));
-                            mCallbacks.onCalculationUpdated(mCalculation);
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-
-                        }
-                    });
-
-                    mSoilFrictionAngle = (EditText)soildialog.findViewById(R.id.Soilfricta);
-                    if (mCalculation.getSoil().getfrictA() != 0)
-                        mSoilFrictionAngle.setText(Integer.toString(mCalculation.getSoil().getfrictA()));
-                    mSoilFrictionAngle.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            String sSoilFrictionAngle = mSoilFrictionAngle.getText().toString();
-                            if (!sSoilFrictionAngle.matches(""))
-                                mCalculation.getSoil().setfrictA(Integer.parseInt(charSequence.toString()));
-                            mCallbacks.onCalculationUpdated(mCalculation);
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-
-                        }
-                    });
-
-                    Button mCancelButton =(Button)soildialog.findViewById(R.id.soil_cancel);
-                    mCancelButton.setOnClickListener(new View.OnClickListener(){
-
-                        public void onClick(View v){
-                            mCalculation.setSoil(null);
-                            soildialog.dismiss();
-
-                        }
-
-                    });
-
-                    Button mSaveButton = (Button)soildialog.findViewById(R.id.soil_save);
-                    mSaveButton.setOnClickListener(new OnClickListener(){
-
-                        public void onClick(View v){
-                            mCalculation.getSoil().convertToMetric();
-                            mSoils.add(mCalculation.getSoil());
-                            SoilOutputList.add(mCalculation.getSoil().getName());
-                            SoilLab.get(getActivity()).saveSoils();
-
-                            soildialog.dismiss();
-
-                        }
-                    });
-
-                    PhiQuestion = (ImageButton)soildialog.findViewById(R.id.question_fricta);
-                    ToastMaker(R.string.fricta_popup,PhiQuestion,v);
-
-                    CohesionQuestion = (ImageButton)soildialog.findViewById(R.id.question_cohesion);
-                    ToastMaker(R.string.cohesion_popup,CohesionQuestion,v);
-
-                    UnitWeightQuestion = (ImageButton)soildialog.findViewById(R.id.question_ws);
-                    ToastMaker(R.string.ws_popup,UnitWeightQuestion,v);
-
-                soildialog.show();
-
-                }else{
-                    for (int j=0; j<mSoils.size(); j++){
-                        Soil checksoil = mSoils.get(j);
-                        if(check.matches(checksoil.getName())){
-                            mCalculation.setSoil(checksoil);
-
-                        }
-                    }
                 }
-
-
-
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        DeleteSoil = (ImageButton)v.findViewById(R.id.soil_delete);
+        DeleteSoil.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(Soil checksoil : mSoils){
+                    if (checksoil.equals(mSoilSpin.getSelectedItem()))
+                        mSoils.remove(checksoil);
+                }
+                sadapter.remove((String)mSoilSpin.getSelectedItem());
+                sadapter.notifyDataSetChanged();
+            }
+
+        });
+        AddSoil = (ImageButton)v.findViewById(R.id.soil_add);
+        AddSoil.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //custom soil dialog launches on new selection
+
+
+                soildialog.setContentView(R.layout.fragment_soil_picker);
+                soildialog.setTitle("Enter Soil Data");
+
+                final EditText mSoilType;
+                final EditText mSoilUnitWeight;
+                final EditText mSoilFrictionAngle;
+                final EditText mSoilCohesionFactor;
+
+                TextView SoilWtUnit = (TextView)soildialog.findViewById(R.id.SoilWt_unit);
+                TextView SoilCUnit = (TextView)soildialog.findViewById(R.id.Soilc_unit);
+
+                if (mUnitsButton.isChecked()){
+                    SoilWtUnit.setText(getResources().getString(R.string.imperial_soilunitwt));
+                    SoilCUnit.setText(getResources().getString(R.string.imperial_soilc));
+
+                }else{
+                    SoilWtUnit.setText(getResources().getString(R.string.metric_soilunitwt));
+                    SoilCUnit.setText(getResources().getString(R.string.metric_soilc));
+
+                }
+
+
+                mSoilType = (EditText)soildialog.findViewById(R.id.SoilName);
+                mSoilType.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                        mCalculation.getSoil().setName(charSequence.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mSoilUnitWeight = (EditText)soildialog.findViewById(R.id.Soilunitwt);
+                //   if (mCalculation.getSoil().getunitW() != 0)
+                //       mSoilUnitWeight.setText(Double.toString(mCalculation.getSoil().getunitW()));
+                mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sSoilUnitWeight = mSoilType.getText().toString();
+                        if (! sSoilUnitWeight.matches(""))
+                            mCalculation.getSoil().setunitW(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mSoilCohesionFactor = (EditText)soildialog.findViewById(R.id.Soilcohesion);
+                //    if (mCalculation.getSoil().getC() !=0 )
+                //        mSoilCohesionFactor.setText(Double.toString(mCalculation.getSoil().getC()));
+                mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sSoilCohesionFactor = mSoilCohesionFactor.getText().toString();
+                        if (!sSoilCohesionFactor.matches(""))
+                            mCalculation.getSoil().setC(Double.parseDouble(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                mSoilFrictionAngle = (EditText)soildialog.findViewById(R.id.Soilfricta);
+                if (mCalculation.getSoil().getfrictA() != 0)
+                    mSoilFrictionAngle.setText(Integer.toString(mCalculation.getSoil().getfrictA()));
+                mSoilFrictionAngle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        String sSoilFrictionAngle = mSoilFrictionAngle.getText().toString();
+                        if (!sSoilFrictionAngle.matches(""))
+                            mCalculation.getSoil().setfrictA(Integer.parseInt(charSequence.toString()));
+                        mCallbacks.onCalculationUpdated(mCalculation);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                Button mCancelButton =(Button)soildialog.findViewById(R.id.soil_cancel);
+                mCancelButton.setOnClickListener(new View.OnClickListener(){
+
+                    public void onClick(View v){
+                        mCalculation.setSoil(null);
+                        soildialog.dismiss();
+
+                    }
+
+                });
+
+                Button mSaveButton = (Button)soildialog.findViewById(R.id.soil_save);
+                mSaveButton.setOnClickListener(new OnClickListener(){
+
+                    public void onClick(View v){
+                        mCalculation.getSoil().convertToMetric();
+                        mSoils.add(mCalculation.getSoil());
+                        SoilOutputList.add(mCalculation.getSoil().getName());
+                        SoilLab.get(getActivity()).saveSoils();
+
+                        soildialog.dismiss();
+
+                    }
+                });
+
+                PhiQuestion = (ImageButton)soildialog.findViewById(R.id.question_fricta);
+                ToastMaker(R.string.fricta_popup,PhiQuestion,v);
+
+                CohesionQuestion = (ImageButton)soildialog.findViewById(R.id.question_cohesion);
+                ToastMaker(R.string.cohesion_popup,CohesionQuestion,v);
+
+                UnitWeightQuestion = (ImageButton)soildialog.findViewById(R.id.question_ws);
+                ToastMaker(R.string.ws_popup,UnitWeightQuestion,v);
+
+                soildialog.show();
+
+
+            }
+
         });
 
         mCalculateButton = (Button)v.findViewById(R.id.calc_button);
@@ -943,6 +970,7 @@ public class CalculationFragment extends Fragment{
                 if (!hasbeencalculated) {
 
                     mCalculation.imperialconversion();
+
                     double AnchCap = mCalculation.anchor_capacity(isimperial);
                     double tipover = mCalculation.tip_over_moment(isimperial);
                     mAnchorCapacity.setText(df.format(AnchCap) +"     "+ AnswerUnits);
@@ -955,7 +983,6 @@ public class CalculationFragment extends Fragment{
                         mRollOver.setTextColor(Color.RED);
                         mRollOver.setHighlightColor(Color.YELLOW);
                     }
-                    //hasbeencalculated = true;
 
                 }
 
@@ -963,7 +990,7 @@ public class CalculationFragment extends Fragment{
 
         });
 
-        mReportButton = (Button)v.findViewById(R.id.report_button);
+ /*       mReportButton = (Button)v.findViewById(R.id.report_button);
         mReportButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
@@ -982,7 +1009,7 @@ public class CalculationFragment extends Fragment{
 
             }
         });
-
+*/
         setRetainInstance(true);
         return v;
 
@@ -1055,12 +1082,11 @@ public class CalculationFragment extends Fragment{
         ex2.setTrackL(3.72);
         ex2.setTrackW(0.62);
 
-        Vehicle newbie = new Vehicle();
-        newbie.setType("new");
+        if (!v.contains(ex1))
+            v.add(ex1);
+        if (!v.contains(ex2))
+            v.add(ex2);
 
-        v.add(ex1);
-        v.add(ex2);
-        v.add(newbie);
 
     }
 
@@ -1069,23 +1095,51 @@ public class CalculationFragment extends Fragment{
         Soil a = new Soil();
         a.setC(0);
         a.setfrictA(25);
-        a.setunitW(1521.75);
-        a.setName("Uncompacted, Loose Silt");
+        a.setunitW(1522);
+        a.setName("Uncompacted, Loose Silt/Sand/or Gravel");
 
         Soil b = new Soil();
         b.setC(0);
-        b.setfrictA(25);
-        b.setunitW(1521.75);
-        b.setName("Uncompacted, Loose Sand");
+        b.setfrictA(30);
+        b.setunitW(1762);
+        b.setName("Uncompacted, Lightly Compacted Silt/Sand/or Gravel");
 
         Soil c = new Soil();
         c.setC(0);
-        c.setfrictA(25);
-        c.setunitW(1521.75);
-        c.setName("Uncompacted, Loose Gravel");
+        c.setfrictA(35);
+        c.setunitW(2082);
+        c.setName("Dense Compacted,Silt/Sand/ Gravel");
 
-        Soil newbie = new Soil();
-        newbie.setName("new");
+        Soil d = new Soil();
+        d.setC(23.9);
+        d.setfrictA(0);
+        d.setunitW(1522);
+        d.setName("Soft Clay");
+
+        Soil e = new Soil();
+        e.setC(47.88);
+        e.setfrictA(0);
+        e.setunitW(1522);
+        e.setName("Firm Clay");
+
+        Soil f = new Soil();
+        f.setC(95.76);
+        f.setfrictA(0);
+        f.setunitW(1522);
+        f.setName("Stiff Clay");
+
+
+        Soil g = new Soil();
+        g.setC(143.64);
+        g.setfrictA(0);
+        g.setunitW(1522);
+        g.setName("Very Stiff Clay");
+
+        Soil h = new Soil();
+        h.setC(191.52);
+        h.setfrictA(0);
+        h.setunitW(1522);
+        h.setName("Hard Clay");
 
         if (! s.contains(a))
             s.add(a);
@@ -1093,9 +1147,16 @@ public class CalculationFragment extends Fragment{
             s.add(b);
         if (! s.contains(c))
              s.add(c);
-        if (!s.contains(newbie))
-            s.add(newbie);
-
+        if (! s.contains(d))
+            s.add(d);
+        if (! s.contains(e))
+            s.add(e);
+        if (! s.contains(f))
+            s.add(f);
+        if (! s.contains(g))
+            s.add(g);
+        if (! s.contains(h))
+            s.add(h);
 
     }
 

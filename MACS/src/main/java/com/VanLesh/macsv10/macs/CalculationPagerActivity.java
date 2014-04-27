@@ -56,14 +56,6 @@ public class CalculationPagerActivity extends FragmentActivity  implements Calcu
         // do nothing
     }
 
-    public void onVehicleUpdated(Vehicle v){
-
-    }
-
-    public void onSoilUpdated(Soil s){
-
-    }
-
     public void onUnitsToggled(View v){
 
     }

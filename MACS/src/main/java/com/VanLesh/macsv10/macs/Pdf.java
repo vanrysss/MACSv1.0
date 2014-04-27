@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
  * Created by samvanryssegem on 4/19/14.
  */
 public class Pdf {
-    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,Font.BOLD);
     private static Font redFont = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL, BaseColor.RED);
     private static Font subFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL);
@@ -44,11 +43,15 @@ public class Pdf {
     private static void addMetaData(Document doc, Calculation calc){
         doc.addTitle(calc.getTitle());
         doc.addAuthor(calc.getEngineerName());
-        doc.addSubject(calc.getJobSite());
+        doc.addSubject(calc.getJobSite()+ " This PDF was created using itext, and MACS is subject to" +
+              "the AGPL license");
+        doc.addCreator("MACS v1.0 using itext");
+        doc.addKeywords("MACS, itext, PDF");
+
 
     }
 
-    private static void addContent(Document doc, Calculation calc)throws DocumentException {
+    private static void addContent(Document doc, Calculation calc) {
         try {
             //special font so we can render greek characters
             BaseFont bfComic = BaseFont.createFont("/system/fonts/DroidSansFallback.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);

@@ -38,7 +38,7 @@ public class Calculation {
 
     public boolean isimperial = false;
     //Class objects that matter for calculation
-    public Soil mSoil;
+    private Soil mSoil;
     public Vehicle mVehicle;
 
 
@@ -151,14 +151,6 @@ public class Calculation {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setId(UUID id) {
-        mId = id;
-    }
-
     public int getBeta() {
         return beta;
     }
@@ -175,28 +167,12 @@ public class Calculation {
         D_b = d_b;
     }
 
-    public double getDelta() {
-        return delta;
-    }
-
-    public void setDelta(double delta) {
-        this.delta = delta;
-    }
-
     public int getTheta() {
         return theta;
     }
 
     public void setTheta(int theta) {
         this.theta = theta;
-    }
-
-    public double getKp() {
-        return Kp;
-    }
-
-    public void setKp(double kp) {
-        Kp = kp;
     }
 
     public Double getLa() {
@@ -274,11 +250,7 @@ public class Calculation {
         return(Math.cos(Math.toRadians(param)));
     }
 
-    private double ttan(double param){
-        return (Math.tan(Math.toRadians(param)));
-    }
-
-    public double Alpha1(){
+    double Alpha1(){
         delta =  (getSoil().getfrictA())/3;
 
         double top = (Math.cos(Math.toRadians(beta)) - Math.tan(Math.toRadians(delta)) * Math.sin(Math.toRadians(beta)));
@@ -287,7 +259,7 @@ public class Calculation {
         return Math.sin(Math.toRadians(beta))+ Math.cos(Math.toRadians((beta))*(top/bot));
     }
 
-    public double Alpha2(){
+    double Alpha2(){
         delta = (getSoil().getfrictA())/3;
         double top = (Math.cos(Math.toRadians(beta)) - Math.tan(Math.toRadians(delta)) * Math.sin(Math.toRadians(beta)));
         double bot = (Math.sin(Math.toRadians(beta)) + Math.tan(Math.toRadians(delta)) * Math.cos(Math.toRadians(beta)));
@@ -305,7 +277,7 @@ public class Calculation {
     }
 
     //equation 8 in the publication
-    public double Pp(){
+    double Pp(){
 
         return 0.5 * (getSoil().getunitW()*KG_TO_KN) * Math.pow(D_b,2) * getVehicle().getBladeW()*Kp
                     + 2*getSoil().getC()* getVehicle().getBladeW() * Math.sqrt(Kp);

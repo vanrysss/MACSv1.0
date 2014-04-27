@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/scrollView">
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Longitute: ">
+            android:text="Longitude: ">
         </TextView>
 
         <TextView
@@ -112,26 +112,75 @@
         android:text="@string/vehicle_params"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <Spinner
-        android:id="@+id/vehicle_spinner"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <Spinner
+            android:id="@+id/vehicle_spinner"
+            android:layout_width="440dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03">
         </Spinner>
+       <ImageButton
+            android:id="@+id/vehicle_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="@drawable/rounded_button"
+            android:layout_marginRight="48dp"
+            android:contentDescription="@null"
+            />
+        <ImageButton
+            android:id="@+id/vehicle_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@null"/>
+
+        </LinearLayout>
+
 
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/soil_params"
         style="?android:listSeparatorTextViewStyle"/>
 
-    <Spinner
-        android:id="@+id/soil_spinner"
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-    </Spinner>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <Spinner
+            android:id="@+id/soil_spinner"
+            android:layout_width="440dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03">
+        </Spinner>
+        <ImageButton
+            android:id="@+id/soil_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="@drawable/rounded_button"
+            android:layout_marginRight="48dp"
+            android:contentDescription="@null"
+            />
+        <ImageButton
+            android:id="@+id/soil_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@null"
+            />
 
-
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -139,11 +188,19 @@
         android:text="@string/measurements"
         style="?android:listSeparatorTextViewStyle"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/general_geometry"
+        />
+
     <ImageView
         android:layout_width="260dp"
         android:layout_height="260dp"
         android:src="@drawable/moment_basic"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:contentDescription="@null"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -160,7 +217,7 @@
             android:text="β"/>
         <EditText
             android:id="@+id/Beta"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -176,13 +233,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
 
-   <!--     <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_beta"/>
--->
+
      </LinearLayout>
 
     <LinearLayout
@@ -199,7 +250,7 @@
             android:text="θ"/>
         <EditText
             android:id="@+id/Theta"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -214,13 +265,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
 
- <!--       <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_theta"/>
-            -->
+
     </LinearLayout>
 
     <LinearLayout
@@ -242,7 +287,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:editable="true"
-            android:hint="Height of Anchor Attachement"
+            android:hint="Height of Anchor Attachment"
             android:inputType="numberDecimal"
             android:layout_weight="1"/>
 
@@ -256,11 +301,12 @@
             />
 
         <ImageButton
+            android:id="@+id/question_ha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_ha"/>
+            tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 
@@ -278,7 +324,7 @@
             android:text="La"/>
         <EditText
             android:id="@+id/La"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -299,9 +345,10 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_la"/>
+            android:id="@+id/question_la"
+            tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 
@@ -319,7 +366,7 @@
             android:text="Db"/>
         <EditText
             android:id="@+id/Db"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -337,11 +384,12 @@
             android:text="@string/metric_distance"/>
 
         <ImageButton
+            android:id="@+id/question_db"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_db"/>
+            />
 
     </LinearLayout>
 
@@ -362,8 +410,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/slide"
-            android:editable="true"/>
+            android:text="@string/slide"/>
     </LinearLayout>
 
     <LinearLayout
@@ -383,9 +430,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/roll"
-            android:editable="true"
-            />
+            android:text="@string/roll"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -396,17 +441,17 @@
 
         <Button
             android:id="@+id/calc_button"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/perform_calc"
            />
-        <Button
+  <!--      <Button
             android:id="@+id/report_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Send Report"/>
+-->
     </LinearLayout>
 </LinearLayout>
 </ScrollView>

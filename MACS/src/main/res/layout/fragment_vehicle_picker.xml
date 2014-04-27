@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrollView">
@@ -46,7 +47,7 @@
 
         <EditText
             android:id="@+id/input_vehicle_height"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -67,9 +68,10 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_hg"/>
+            android:id="@+id/question_hg"
+            tools:ignore="ContentDescription"/>
 
 
     </LinearLayout>
@@ -91,7 +93,7 @@
 
         <EditText
             android:id="@+id/Cg"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -113,9 +115,10 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_cg"/>
+            android:id="@+id/question_cg"
+            tools:ignore="ContentDescription"/>
 
 
     </LinearLayout>
@@ -133,7 +136,7 @@
             android:text="Wv"/>
         <EditText
             android:id="@+id/Wv"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -154,7 +157,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_wv"/>
 
@@ -175,7 +178,7 @@
 
         <EditText
             android:id="@+id/Tl"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -196,7 +199,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_tl"/>
 
@@ -216,7 +219,7 @@
 
         <EditText
             android:id="@+id/Tw"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -237,7 +240,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_tw"/>
     </LinearLayout>
@@ -258,7 +261,7 @@
 
         <EditText
             android:id="@+id/Wb"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -279,7 +282,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
             android:id="@+id/question_wb"/>
 
