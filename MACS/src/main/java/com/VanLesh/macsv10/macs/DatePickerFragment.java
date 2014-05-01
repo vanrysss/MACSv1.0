@@ -22,7 +22,7 @@ public class DatePickerFragment extends DialogFragment{
     public static final String EXTRA_DATE =
             "com.VanLesh.macsv10.macs.date";
 
-   Date mDate;
+   private Date mDate;
 
     public static DatePickerFragment newInstance(Date date){
         Bundle args = new Bundle();

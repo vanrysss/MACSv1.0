@@ -6,16 +6,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +25,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -50,21 +46,22 @@ import java.util.UUID;
  */
 public class CalculationFragment extends Fragment{
     private Calculation mCalculation;
-    private EditText mTitleField;
-    private EditText mEngineerName;
-    private EditText mJobsite;
+    Callbacks mCallbacks;
+    EditText mTitleField;
+    EditText mEngineerName;
+    EditText mJobsite;
 
-    private EditText mSlopeAngle;
-    private EditText mAnchorAngle;
-    private EditText mAnchorHeight;
-    private EditText mAnchorSetback;
+    EditText mSlopeAngle;
+    EditText mAnchorAngle;
+    EditText mAnchorHeight;
+    EditText mAnchorSetback;
     EditText mBladeEmbedment;
 
-    private TextView mAnchorCapacity;
+    TextView mAnchorCapacity;
     TextView mRollOver;
     Button mDateButton;
     ToggleButton mUnitsButton;
-    Callbacks mCallbacks;
+
     Button mCalculateButton;
     Button mReportButton;
 
@@ -163,7 +160,7 @@ public class CalculationFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    public void updateDate(){
+    void updateDate(){
         mDateButton.setText(mCalculation.getDate().toString());
     }
 
@@ -373,9 +370,6 @@ public class CalculationFragment extends Fragment{
                 TextView LaUnit = (TextView)v.findViewById(R.id.La_unit);
                 TextView DbUnit = (TextView)v.findViewById(R.id.Db_unit);
                 //for the soil dialog
-
-                //for the vehicles dialog
-
                 // if it's checked lets set all of the textview to their imperial counterparts
                 if (isChecked) {
                     HaUnit.setText(getResources().getString(R.string.imperial_distance));
@@ -383,6 +377,7 @@ public class CalculationFragment extends Fragment{
                     DbUnit.setText(getResources().getString(R.string.imperial_distance));
 
                     AnswerUnits= getResources().getString(R.string.imperial_answer);
+                    isimperial=true;
                     mCalculation.isimperial = true;
                     mCalculation.getVehicle().isimperial=true;
                     mCalculation.getSoil().isimperial=true;
@@ -852,8 +847,6 @@ public class CalculationFragment extends Fragment{
                 });
 
                 mSoilUnitWeight = (EditText)soildialog.findViewById(R.id.Soilunitwt);
-                //   if (mCalculation.getSoil().getunitW() != 0)
-                //       mSoilUnitWeight.setText(Double.toString(mCalculation.getSoil().getunitW()));
                 mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -875,8 +868,6 @@ public class CalculationFragment extends Fragment{
                 });
 
                 mSoilCohesionFactor = (EditText)soildialog.findViewById(R.id.Soilcohesion);
-                //    if (mCalculation.getSoil().getC() !=0 )
-                //        mSoilCohesionFactor.setText(Double.toString(mCalculation.getSoil().getC()));
                 mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -899,8 +890,6 @@ public class CalculationFragment extends Fragment{
                 });
 
                 mSoilFrictionAngle = (EditText)soildialog.findViewById(R.id.Soilfricta);
-                if (mCalculation.getSoil().getfrictA() != 0)
-                    mSoilFrictionAngle.setText(Integer.toString(mCalculation.getSoil().getfrictA()));
                 mSoilFrictionAngle.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -985,6 +974,7 @@ public class CalculationFragment extends Fragment{
                     }
 
                 }
+                hasbeencalculated=true;
 
                 }
 
@@ -1032,11 +1022,13 @@ public class CalculationFragment extends Fragment{
     }
 
     // A Simple toast function, displays text by resource Id depending on what imagebutton was clicked
-    public void ToastMaker(final int display, ImageButton button, View view){
+    void ToastMaker(final int display, ImageButton button, View view){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),getResources().getString(display),Toast.LENGTH_LONG).show();
+                Toast thistoast = Toast.makeText(getActivity(),getResources().getString(display),Toast.LENGTH_LONG);
+                //calls the class which allows us to display it for longer than TOAST_LONG
+                ToastExpander.showFor(thistoast,5000);
             }
         });
 
@@ -1096,19 +1088,19 @@ public class CalculationFragment extends Fragment{
         a.setC(0);
         a.setfrictA(25);
         a.setunitW(1522);
-        a.setName("Uncompacted, Loose Silt/Sand/or Gravel");
+        a.setName("Uncompacted Loose Silt/Sand/Gravel");
 
         Soil b = new Soil();
         b.setC(0);
         b.setfrictA(30);
         b.setunitW(1762);
-        b.setName("Uncompacted, Lightly Compacted Silt/Sand/or Gravel");
+        b.setName("Uncompacted Lightly Compacted Silt/Sand/Gravel");
 
         Soil c = new Soil();
         c.setC(0);
         c.setfrictA(35);
         c.setunitW(2082);
-        c.setName("Dense Compacted,Silt/Sand/ Gravel");
+        c.setName("Dense Compacted Silt/Sand/Gravel");
 
         Soil d = new Soil();
         d.setC(23.9);

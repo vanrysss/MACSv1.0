@@ -28,9 +28,8 @@ import java.util.ArrayList;
 /**
  * Created by samvanryssegem on 2/27/14.
  */
-public class CalculationListFragment extends ListFragment{
+class CalculationListFragment extends ListFragment{
 
-    private ArrayList<Calculation> mCalculations;
     private boolean mSubtitleVisible;
     private Callbacks mCallbacks;
 
@@ -59,9 +58,9 @@ public class CalculationListFragment extends ListFragment{
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.calculations_title);
-        mCalculations = CalculationLab.get(getActivity()).getCalculations();
+        ArrayList<Calculation> calculations = CalculationLab.get(getActivity()).getCalculations();
 
-        CalculationAdapter adapter = new CalculationAdapter(mCalculations);
+        CalculationAdapter adapter = new CalculationAdapter(calculations);
 
         setListAdapter(adapter);
         setRetainInstance(true);

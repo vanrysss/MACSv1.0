@@ -17,15 +17,14 @@ public class CalculationLab {
     private static final String FILENAME = "calculations.json";
 
     private static CalculationLab sCalculationLab;
-    private Context mAppcontext;
     private ArrayList<Calculation> mCalculations;
     private CalculationJSONSerializer mSerializer;
 
     private Context mAppContext;
 
     private CalculationLab(Context appcontext){
-        mAppcontext = appcontext;
-        mSerializer = new CalculationJSONSerializer(mAppcontext, FILENAME);
+        Context appcontext1 = appcontext;
+        mSerializer = new CalculationJSONSerializer(appcontext1, FILENAME);
 
         try {
             mCalculations = mSerializer.loadCalculations();

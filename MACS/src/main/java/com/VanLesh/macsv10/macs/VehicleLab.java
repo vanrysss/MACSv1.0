@@ -14,15 +14,14 @@ public class VehicleLab {
     private static final String FILENAME = "vehicles.json";
 
     private static VehicleLab sVehicleLab;
-    private Context mAppcontext;
     private ArrayList<Vehicle> mVehicles;
     private VehicleJSONSerializer mSerializer;
 
     private Context mAppContext;
 
     private VehicleLab(Context appcontext){
-        mAppcontext = appcontext;
-        mSerializer = new VehicleJSONSerializer(mAppcontext, FILENAME);
+        Context appcontext1 = appcontext;
+        mSerializer = new VehicleJSONSerializer(appcontext1, FILENAME);
 
         try {
             mVehicles = mSerializer.loadVehicles();

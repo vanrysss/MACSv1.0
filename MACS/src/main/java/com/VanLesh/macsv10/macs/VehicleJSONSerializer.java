@@ -18,10 +18,10 @@ import java.util.ArrayList;
 /**
  * Created by samvanryssegem on 2/28/14.
  */
-public class VehicleJSONSerializer {
+class VehicleJSONSerializer {
 
-    private Context mContext;
-    private String mFilename;
+    private final Context mContext;
+    private final String mFilename;
 
     public VehicleJSONSerializer(Context c, String f){
         mContext = c;

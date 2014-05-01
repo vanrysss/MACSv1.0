@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by samvanryssegem on 2/28/14.
  */
-public class SoilJSONSerializer {
+class SoilJSONSerializer {
 
     private Context mContext;
     private String mFilename;

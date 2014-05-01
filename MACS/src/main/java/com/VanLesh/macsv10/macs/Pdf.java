@@ -6,7 +6,6 @@ import android.util.Log;
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
@@ -19,10 +18,10 @@ import java.io.FileOutputStream;
 /**
  * Created by samvanryssegem on 4/19/14.
  */
-public class Pdf {
-    private static Font redFont = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL, BaseColor.RED);
-    private static Font subFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-    private static Font smallBold = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL);
+class Pdf {
+    private static final Font redFont = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL, BaseColor.RED);
+    private static final Font subFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+    private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL);
 
 
 

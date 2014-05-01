@@ -119,9 +119,9 @@
         android:weightSum="1">
         <Spinner
             android:id="@+id/vehicle_spinner"
-            android:layout_width="440dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.03">
+            android:layout_weight=".75">
         </Spinner>
        <ImageButton
             android:id="@+id/vehicle_delete"
@@ -158,9 +158,9 @@
         android:weightSum="1">
         <Spinner
             android:id="@+id/soil_spinner"
-            android:layout_width="440dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.03">
+            android:layout_weight=".75">
         </Spinner>
         <ImageButton
             android:id="@+id/soil_delete"
@@ -200,7 +200,9 @@
         android:layout_height="260dp"
         android:src="@drawable/moment_basic"
         android:layout_gravity="center"
-        android:contentDescription="@null"/>
+        android:contentDescription="@null"
+        android:padding="3dp"
+        android:background="@drawable/imageview_border"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -389,7 +391,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
             android:src="@drawable/ic_menu_help_holo_light"
-            />
+            tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 
@@ -402,7 +404,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FORCE EQUILIBRIUM"/>
+            android:text="FORCE EQUILIBRIUM "/>
         <TextView
             android:id="@+id/slide_answer"
             android:layout_width="wrap_content"

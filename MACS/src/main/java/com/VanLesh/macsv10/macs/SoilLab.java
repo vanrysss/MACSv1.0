@@ -13,15 +13,14 @@ public class SoilLab {
     private static final String FILENAME = "soils.json";
 
     private static SoilLab sSoilLab;
-    private Context mAppcontext;
     private ArrayList<Soil> mSoils;
     private SoilJSONSerializer mSerializer;
 
     private Context mAppContext;
 
     private SoilLab(Context appcontext){
-        mAppcontext = appcontext;
-        mSerializer = new SoilJSONSerializer(mAppcontext, FILENAME);
+        Context appcontext1 = appcontext;
+        mSerializer = new SoilJSONSerializer(appcontext1, FILENAME);
 
         try {
             mSoils = mSerializer.loadSoils();

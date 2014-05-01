@@ -20,9 +20,6 @@ public class Vehicle {
     private double mBladeW; //blade width
     private double TrackA = mTrackL*mTrackW;
 
-    private static double LBS_TO_KG = 0.453592;
-    private static double FEET_TO_METERS = 0.3048;
-
     public boolean isimperial=false;
 
     private static final String JSON_TYPE ="type";
@@ -38,11 +35,13 @@ public class Vehicle {
 
     public void convertToMetric(){
         if (isimperial){
+            double FEET_TO_METERS = 0.3048;
             mTrackL = mTrackL * FEET_TO_METERS;
             mTrackW = mTrackW * FEET_TO_METERS;
             mTrackA = mTrackA * FEET_TO_METERS;
             mBladeW = mBladeW * FEET_TO_METERS;
             mHg = mHg * FEET_TO_METERS;
+            double LBS_TO_KG = 0.453592;
             mWv = mWv * LBS_TO_KG;
             mCg = mCg * FEET_TO_METERS;
         }

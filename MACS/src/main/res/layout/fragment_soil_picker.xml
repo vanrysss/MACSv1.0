@@ -34,7 +34,7 @@
             <TextView
                 android:layout_width="36dp"
                 android:layout_height="wrap_content"
-                android:text="Ɣ"/>
+                android:text="@string/soil_unitwt"/>
             <EditText
                 android:id="@+id/Soilunitwt"
                 android:layout_width="0dp"
@@ -142,7 +142,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:src="@drawable/ic_menu_help_holo_light"
-                android:id="@+id/question_cohesion"/>
+                android:id="@+id/question_cohesion"
+                tools:ignore="ContentDescription"/>
 
         </LinearLayout>
 

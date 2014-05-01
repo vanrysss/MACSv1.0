@@ -16,19 +16,17 @@ import java.util.UUID;
  */
 public class CalculationPagerActivity extends FragmentActivity  implements CalculationFragment.Callbacks{
 
-    private ViewPager mViewPager;
-
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mViewPager = new ViewPager(this);
-        mViewPager.setId(R.id.viewPager);
-        setContentView(mViewPager);
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setId(R.id.viewPager);
+        setContentView(viewPager);
 
         final ArrayList<Calculation> calculations = CalculationLab.get(this).getCalculations();
 
         FragmentManager fm = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
+        viewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
             @Override
             public Fragment getItem(int position) {
                 UUID calcId = calculations.get(position).getId();
@@ -45,7 +43,7 @@ public class CalculationPagerActivity extends FragmentActivity  implements Calcu
                 .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
         for(int i=0; i < calculations.size(); i++){
             if(calculations.get(i).getId().equals(crimeId)){
-                mViewPager.setCurrentItem(i);
+                viewPager.setCurrentItem(i);
                 break;
             }
         }

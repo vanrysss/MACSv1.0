@@ -44,27 +44,30 @@
     <string name="cg_popup">Cg is the lateral distance between the point of rotation (i.e. the bottom of an embedded blade,
         the toe of the vehicle, etc.) and the center of gravity for the equipment. Bear in mind that the center of gravity
         for equipment is dependent on attachments, location of appendages (excavator boom, etc.) and track setup, all of which
-        may vary. Be sure to be conservative in choice of this location. For more details, For more details, see figure 1.
-        For a variety of scenarios, see figure 2.</string>
+        may vary. Be sure to be conservative in choice of this location.</string>
     <string name="tg_popup">Tg is the ultimate anchor capacity. This delimiting force marks the tension in the anchor cable that will cause the equipment
         anchor to move and become unstable.</string>
     <string name="db_popup">Db is the embedment depth of the equipment. This value is representative of the depth below the
-        depending on the scenario. See figure 1. For alternative setups, see figure 2.</string>
+        depending on the scenario. </string>
     <string name="wb_popup">wb is the width of the blade, shovel or equipment that is in contact with the adjacent,
         resisting soil of embedment.</string>
     <string name="wv_popup">Wv is the weight of the equipment, measured as a force. The vehicular weight is located at a distance
-        from the point of rotation, labeled as Cg. For more details, see figure 1.</string>
+        from the point of rotation, labeled as Cg. </string>
     <string name="la_popup">La is the lateral distance between the point of rotation (i.e. the bottom of an embedded blade, the toe of the vehicle, etc.)
-        and the point at which an anchor is attached. For more details, see figure 1.</string>
+        and the point at which an anchor is attached. </string>
     <string name="ha_popup">Ha is the vertical distance between the ground supporting the equipment and the anchor attachment point.
-        The lower Ha is, the more stable the equipment anchor will be against overturning. For more details, see figure 1. For a variety of scenarios, see figure 2.</string>
+        The lower Ha is, the more stable the equipment anchor will be against overturning.</string>
     <string name="fricta_popup">Phi is the angle of internal friction for soil, which governs soil strength and resistance. This value should be attained from competent
         field testing and the judgment of a licensed engineer.</string>
     <string name="cohesion_popup">C is soil cohesion. Cohesion defines the non-stress dependent shear strength of soil and should be used with caution. Typically,
         cohesion occurs in stiff, over-consolidated clays or cemented native soils. Cohesion should be neglected if the designer is unsure of its presence.</string>
     <string name="ws_popup">Ws is the unit weight of the soil. This value represents the approximate bulk weight in a certain volume of soil.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="general_geometry">General Geometry</string>
+    <string name="soil_unitwt">\u03B3</string>
+    <string name="vehicle_class">Vehicle Class</string>
+    <string name="Hg">Hg</string>
+    <string name="Cg">Cg</string>
+    <string name="Wv">Wv</string>
 
     <string-array name="classes">
         <item>Excavator</item>

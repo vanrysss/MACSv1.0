@@ -54,11 +54,10 @@ public class Calculation {
     private double rollover;
     private double drag;
     private double Kp;
-    private static double KN_TO_KG =101.971;
-    private static double KG_TO_KN = 0.00980665;
-    private static double LBS_TO_KG = 0.453592;
-    private static double FEET_TO_METERS = 0.3048;
-    private static double KG_TO_LBS = 2.205;
+    private static final double KN_TO_KG =101.971;
+    private static final double KG_TO_KN = 0.00980665;
+    // --Commented out by Inspection (4/27/14, 7:08 PM):private static double LBS_TO_KG = 0.453592;
+    private static final double KG_TO_LBS = 2.205;
 
     //JSON things
     private static final String JSON_ID = "id";
@@ -143,9 +142,11 @@ public class Calculation {
         return latitude;
     }
 
-    public void setLatitude(double latititude) {
-        this.latitude = latititude;
-    }
+// --Commented out by Inspection START (4/27/14, 7:09 PM):
+//    public void setLatitude(double latititude) {
+//        this.latitude = latititude;
+//    }
+// --Commented out by Inspection STOP (4/27/14, 7:09 PM)
 
     public double getLongitude() {
         return longitude;
@@ -270,6 +271,7 @@ public class Calculation {
     public void imperialconversion(){
 
         if (isimperial) {
+            double FEET_TO_METERS = 0.3048;
             D_b = D_b * FEET_TO_METERS;
             La = La * FEET_TO_METERS;
             Ha = Ha * FEET_TO_METERS;
@@ -287,16 +289,22 @@ public class Calculation {
     public double anchor_capacity(boolean isimperial){
         delta =  (getSoil().getfrictA())/3;
 
+        // in order to prevent division by zero. Ben knows about this.
+        if (beta == 0 && theta ==0){
+            beta = 1;
+            theta = 1;
+        }
+
         double alph1=Alpha1();
         double alph2=Alpha2();
         Kp =Math.pow(Math.tan(45 * Math.toRadians(getSoil().getfrictA())/2),2);
- /*       if (theta - beta >= delta)
+        if (theta - beta >= delta)
             Kp = 0;
         else if (theta - beta >0)
             Kp = .5 * Kp;
         else
             Kp = Kp;
-*/
+
         double gamma = getSoil().getunitW() * KG_TO_KN;
         double Wb = getVehicle().getBladeW();
         double Nb = Kp * alph1;
