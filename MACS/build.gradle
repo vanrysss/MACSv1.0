@@ -4,6 +4,7 @@ apply plugin: 'android'
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:support-v4:19.+'
+    compile 'com.jakewharton:butterknife:5.0.0'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/itext/itextg-5.5.0.jar')
     // compile files('libs/itext/itextg-5.5.0-javadoc.jar')
@@ -27,7 +28,9 @@ android {
             debuggable true
         }
     }
-
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 
 }
 

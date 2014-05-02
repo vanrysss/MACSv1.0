@@ -60,7 +60,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/LatitudeText"
+            android:id="@+id/current_latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="unknown">
@@ -81,7 +81,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/LongitudeText"
+            android:id="@+id/current_longitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="unknown">
@@ -218,7 +218,7 @@
             android:layout_height="wrap_content"
             android:text="β"/>
         <EditText
-            android:id="@+id/Beta"
+            android:id="@+id/calculation_beta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -251,7 +251,7 @@
             android:layout_height="wrap_content"
             android:text="θ"/>
         <EditText
-            android:id="@+id/Theta"
+            android:id="@+id/calculation_theta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -283,7 +283,7 @@
             android:layout_height="wrap_content"
             android:text="Ha"/>
          <EditText
-            android:id="@+id/Ha"
+            android:id="@+id/calculation_anchor_height"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -325,7 +325,7 @@
             android:layout_height="wrap_content"
             android:text="La"/>
         <EditText
-            android:id="@+id/La"
+            android:id="@+id/calculation_anchor_setback"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -367,7 +367,7 @@
             android:layout_height="wrap_content"
             android:text="Db"/>
         <EditText
-            android:id="@+id/Db"
+            android:id="@+id/calculation_blade_depth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -406,7 +406,7 @@
             android:layout_height="wrap_content"
             android:text="FORCE EQUILIBRIUM "/>
         <TextView
-            android:id="@+id/slide_answer"
+            android:id="@+id/dragging_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -426,7 +426,7 @@
             android:layout_height="wrap_content"
             android:text="MOMENT EQUILIBRIUM"/>
         <TextView
-            android:id="@+id/roll_answer"
+            android:id="@+id/moment_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -442,7 +442,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/calc_button"
+            android:id="@+id/perform_calculation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/perform_calc"
