@@ -9,6 +9,8 @@ MACS uses Itext to render PDF reports, and is subject to the AGPL license.
 http://itextpdf.com/
 http://www.gnu.org/licenses/agpl-3.0.html
 
+We're also using ButterKnife by Jake Wharton
+https://github.com/JakeWharton/butterknife
 
 App is in development by Sam Van Ryssegem
 
