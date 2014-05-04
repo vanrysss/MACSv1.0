@@ -3,6 +3,8 @@ package com.VanLesh.macsv10.macs;
 import android.content.Context;
 import android.util.Log;
 
+import com.VanLesh.macsv10.macs.Models.Soil;
+
 import java.util.ArrayList;
 
 /**
@@ -14,57 +16,57 @@ public class SoilLab {
 
     private static SoilLab sSoilLab;
     private ArrayList<Soil> mSoils;
-    private SoilJSONSerializer mSerializer;
+    private final SoilJSONSerializer mSerializer;
 
     private Context mAppContext;
 
-    private SoilLab(Context appcontext){
+    private SoilLab(Context appcontext) {
         Context appcontext1 = appcontext;
         mSerializer = new SoilJSONSerializer(appcontext1, FILENAME);
 
         try {
             mSoils = mSerializer.loadSoils();
-        }catch (Exception e){
+        } catch (Exception e) {
             mSoils = new ArrayList<Soil>();
             Log.e(TAG, "Error loading soils:", e);
 
         }
     }
 
-    public static SoilLab get(Context c){
-        if(sSoilLab == null){
+    public static SoilLab get(Context c) {
+        if (sSoilLab == null) {
             sSoilLab = new SoilLab(c.getApplicationContext());
         }
         return sSoilLab;
     }
 
-    public ArrayList<Soil> getSoils(){
+    public ArrayList<Soil> getSoils() {
         return mSoils;
     }
 
-    public void addSoil(Soil c){
+    public void addSoil(Soil c) {
         mSoils.add(c);
     }
 
-    public void deleteSoil(Soil c){
+    public void deleteSoil(Soil c) {
         mSoils.remove(c);
     }
 
-    public Soil getSoil(String title){
-        for(Soil c : mSoils){
-            if(c.getName().equals(title))
+    public Soil getSoil(String title) {
+        for (Soil c : mSoils) {
+            if (c.getName().equals(title))
                 return c;
         }
         return null;
     }
 
-    public boolean saveSoils(){
+    public boolean saveSoils() {
         try {
             mSerializer.saveSoils(mSoils);
-            Log.d(TAG,"soils saved");
+            Log.d(TAG, "soils saved");
             return true;
-        }catch (Exception e){
-            Log.e(TAG,"Error saving",e);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving", e);
             return false;
         }
     }

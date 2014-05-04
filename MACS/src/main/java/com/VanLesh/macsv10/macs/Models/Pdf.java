@@ -1,4 +1,4 @@
-package com.VanLesh.macsv10.macs;
+package com.VanLesh.macsv10.macs.Models;
 
 import android.os.Environment;
 import android.util.Log;
@@ -19,31 +19,30 @@ import java.io.FileOutputStream;
  * Created by samvanryssegem on 4/19/14.
  */
 class Pdf {
-    private static final Font redFont = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL, BaseColor.RED);
+    private static final Font redFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
     private static final Font subFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-    private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 12,Font.NORMAL);
-
+    private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
 
 
     public static void maker(Calculation calc) {
-        try{
-            File pdfFile= new File(Environment.getExternalStorageDirectory().getPath() + "/Report.pdf");
+        try {
+            File pdfFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Report.pdf");
             Document doc = new Document();
             PdfWriter.getInstance(doc, new FileOutputStream(pdfFile));
             doc.open();
             addMetaData(doc, calc);
-            addContent(doc,calc);
+            addContent(doc, calc);
             doc.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void addMetaData(Document doc, Calculation calc){
+    private static void addMetaData(Document doc, Calculation calc) {
         doc.addTitle(calc.getTitle());
         doc.addAuthor(calc.getEngineerName());
-        doc.addSubject(calc.getJobSite()+ " This PDF was created using itext, and MACS is subject to" +
-              "the AGPL license");
+        doc.addSubject(calc.getJobSite() + " This PDF was created using itext, and MACS is subject to" +
+                                                                                            "the AGPL license");
         doc.addCreator("MACS v1.0 using itext");
         doc.addKeywords("MACS, itext, PDF");
 
@@ -57,20 +56,20 @@ class Pdf {
             Font font1 = new Font(bfComic, 12);
             Font tgfont, tipfont;
 
-            if(calc.getRollover()> calc.getDrag()){
+            if (calc.getRollover() > calc.getDrag()) {
                 tipfont = redFont;
                 tgfont = smallBold;
-            }else{
-                tipfont=smallBold;
-                tgfont=redFont;
+            } else {
+                tipfont = smallBold;
+                tgfont = redFont;
             }
             Anchor anchor = new Anchor("Site", subFont);
             anchor.setName("Site Parameters");
             Paragraph identifier = new Paragraph("Calculation ID:    " + calc.getTitle(), font1);
             Paragraph engineer = new Paragraph("Engineer:    " + calc.getEngineerName(), font1);
             Paragraph jobsite = new Paragraph("Jobsite:     " + calc.getJobSite(), font1);
-            Paragraph latitude = new Paragraph("Latitude:     "+ calc.getLatitude(),font1);
-            Paragraph longitude = new Paragraph("Longitude:     "+calc.getLongitude(),font1);
+            Paragraph latitude = new Paragraph("Latitude:     " + calc.getLatitude(), font1);
+            Paragraph longitude = new Paragraph("Longitude:     " + calc.getLongitude(), font1);
 
             Anchor vehicleAnchor = new Anchor("Vehicle", subFont);
             vehicleAnchor.setName("Vehicle");
@@ -78,15 +77,15 @@ class Pdf {
             Paragraph vehicletype = new Paragraph("Vehicle Type:     " + calc.getVehicle().getVehicleType(), font1);
             Paragraph vehicleweight = new Paragraph("Wv:     " + calc.getVehicle().getWv(), font1);
             Paragraph vehicletracklength = new Paragraph("Tl:     " + calc.getVehicle().getTrackL(), font1);
-            Paragraph vehicletrackwidth = new Paragraph("Tw:     "+ calc.getVehicle().getTrackW(), font1);
-            Paragraph vehiclebladewidth = new Paragraph("Wb:     "+ calc.getVehicle().getBladeW(), font1);
+            Paragraph vehicletrackwidth = new Paragraph("Tw:     " + calc.getVehicle().getTrackW(), font1);
+            Paragraph vehiclebladewidth = new Paragraph("Wb:     " + calc.getVehicle().getBladeW(), font1);
 
             Anchor soilAnchor = new Anchor("Soil", subFont);
             soilAnchor.setName("Soil");
             Paragraph soiltype = new Paragraph("Soil Type:     " + calc.getSoil().getName(), font1);
-            Paragraph soilunitweight = new Paragraph("\u03B3:     "+ calc.getSoil().getunitW(),font1);
-            Paragraph soilfrictionangle = new Paragraph("\u03A6:     "+ calc.getSoil().getfrictA(),font1);
-            Paragraph soilcohesion = new Paragraph("c:     "+ calc.getSoil().getC(),font1);
+            Paragraph soilunitweight = new Paragraph("\u03B3:     " + calc.getSoil().getunitW(), font1);
+            Paragraph soilfrictionangle = new Paragraph("\u03A6:     " + calc.getSoil().getfrictA(), font1);
+            Paragraph soilcohesion = new Paragraph("c:     " + calc.getSoil().getC(), font1);
 
             Anchor measurementsAnchor = new Anchor("Measurements", subFont);
             anchor.setName("Measurements");
@@ -116,7 +115,6 @@ class Pdf {
             doc.add(vehicletracklength);
             doc.add(vehicletrackwidth);
             doc.add(vehiclebladewidth);
-
 
 
             doc.add(soilAnchor);

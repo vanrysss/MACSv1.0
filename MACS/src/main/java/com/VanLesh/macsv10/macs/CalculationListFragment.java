@@ -21,26 +21,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.VanLesh.macsv10.macs.Models.Calculation;
 
+import java.util.ArrayList;
 
 
 /**
  * Created by samvanryssegem on 2/27/14.
  */
-class CalculationListFragment extends ListFragment{
+class CalculationListFragment extends ListFragment {
 
     private boolean mSubtitleVisible;
     private Callbacks mCallbacks;
 
-    public interface Callbacks{
+    public interface Callbacks {
         void onCalculationSelected(Calculation calc);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallbacks = (Callbacks)activity;
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -50,11 +51,11 @@ class CalculationListFragment extends ListFragment{
     }
 
     public void updateUI() {
-        ((CalculationAdapter)getListAdapter()).notifyDataSetChanged();
+        ((CalculationAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.calculations_title);
@@ -69,20 +70,21 @@ class CalculationListFragment extends ListFragment{
 
     @TargetApi(11)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
-        View v = super.onCreateView(inflater,parent,savedInstanceState);
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            if (mSubtitleVisible){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (mSubtitleVisible) {
                 getActivity().getActionBar().setSubtitle(R.string.subtitle);
             }
         }
 
-        ListView listView = (ListView)v.findViewById(android.R.id.list);
+        ListView listView = (ListView) v.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-             registerForContextMenu(listView);
-        else{listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            registerForContextMenu(listView);
+        else {
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
                 public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -98,7 +100,7 @@ class CalculationListFragment extends ListFragment{
                 public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.menu_item_delete_calc:
-                            CalculationAdapter adapter = (CalculationAdapter)getListAdapter();
+                            CalculationAdapter adapter = (CalculationAdapter) getListAdapter();
                             CalculationLab calcLab = CalculationLab.get(getActivity());
                             for (int i = adapter.getCount() - 1; i >= 0; i--) {
                                 if (getListView().isItemChecked(i)) {
@@ -128,31 +130,31 @@ class CalculationListFragment extends ListFragment{
 
     }
 
-    public void onListItemClick(ListView l, View v, int position, long id){
-        Calculation c = ((CalculationAdapter)getListAdapter()).getItem(position);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Calculation c = ((CalculationAdapter) getListAdapter()).getItem(position);
         mCallbacks.onCalculationSelected(c);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ((CalculationAdapter)getListAdapter()).notifyDataSetChanged();
+        ((CalculationAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        super.onCreateOptionsMenu(menu,inflater);
-        inflater.inflate(R.menu.fragment_calc_list,menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_calc_list, menu);
 
     }
 
     @TargetApi(11)
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_item_new_calc:
                 Calculation calc = new Calculation();
                 CalculationLab.get(getActivity()).addCalculation(calc);
-                ((CalculationAdapter)getListAdapter()).notifyDataSetChanged();
+                ((CalculationAdapter) getListAdapter()).notifyDataSetChanged();
                 mCallbacks.onCalculationSelected(calc);
                 return true;
 /*            case R.id.menu_item_show_subtitle:
@@ -172,18 +174,18 @@ class CalculationListFragment extends ListFragment{
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo){
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         getActivity().getMenuInflater().inflate(R.menu.calc_list_item_context, menu);
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item){
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
-        int position =info.position;
-        CalculationAdapter adapter = (CalculationAdapter)getListAdapter();
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        CalculationAdapter adapter = (CalculationAdapter) getListAdapter();
         Calculation calculation = adapter.getItem(position);
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_item_delete_calc:
                 CalculationLab.get(getActivity()).deleteCalculation(calculation);
                 adapter.notifyDataSetChanged();
@@ -192,42 +194,32 @@ class CalculationListFragment extends ListFragment{
         return super.onContextItemSelected(item);
     }
 
-    private class CalculationAdapter extends ArrayAdapter<Calculation>{
-                public CalculationAdapter(ArrayList<Calculation> calculations){
-                        super(getActivity(),0,calculations);
-                }
-
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent){
-                        //if we dont have a view inflate one
-                        if(convertView == null){
-                                convertView = getActivity().getLayoutInflater()
-                                        .inflate(R.layout.list_item_calculation,null);
-                        }
-
-                        //configure view for this calculation
-                        Calculation c = getItem(position);
-
-                        TextView titleTextView =
-                                (TextView)convertView.findViewById(R.id.calculation_list_item_titleTextView);
-                        titleTextView.setText(c.getTitle());
-
-                    TextView dateTextView =
-                        (TextView)convertView.findViewById(R.id.calculation_list_item_dateTextView);
-                    dateTextView.setText(c.getDate().toString());
-                        return convertView;
-                }
+    private class CalculationAdapter extends ArrayAdapter<Calculation> {
+        public CalculationAdapter(ArrayList<Calculation> calculations) {
+            super(getActivity(), 0, calculations);
         }
 
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            //if we dont have a view inflate one
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater()
+                                                                                                    .inflate(R.layout.list_item_calculation, null);
+            }
 
+            //configure view for this calculation
+            Calculation c = getItem(position);
 
+            TextView titleTextView =
+                                                                                                (TextView) convertView.findViewById(R.id.calculation_list_item_titleTextView);
+            titleTextView.setText(c.getTitle());
 
-
-
-
-
-
-
+            TextView dateTextView =
+                                                                                                (TextView) convertView.findViewById(R.id.calculation_list_item_dateTextView);
+            dateTextView.setText(c.getDate().toString());
+            return convertView;
+        }
+    }
 
 
 }

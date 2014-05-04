@@ -1,5 +1,4 @@
-//TODO: Emailing(report)
-package com.VanLesh.macsv10.macs;
+package com.VanLesh.macsv10.macs.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -30,6 +29,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.VanLesh.macsv10.macs.CalculationLab;
+import com.VanLesh.macsv10.macs.Models.Calculation;
+import com.VanLesh.macsv10.macs.Models.GPSTracker;
+import com.VanLesh.macsv10.macs.Models.Soil;
+import com.VanLesh.macsv10.macs.Models.Vehicle;
+import com.VanLesh.macsv10.macs.R;
+import com.VanLesh.macsv10.macs.SoilLab;
+import com.VanLesh.macsv10.macs.ToastExpander;
+import com.VanLesh.macsv10.macs.VehicleLab;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,79 +48,104 @@ import java.util.UUID;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnTextChanged;
 import butterknife.Optional;
 
 /**
- *
  * Created by samvanryssegem on 2/24/14.
- *
- *Fragment which defines the main Form's behavior. This also handles behavior for the Vehicle and
+ * <p/>
+ * Fragment which defines the main Form's behavior. This also handles behavior for the Vehicle and
  * Soil popups. In short if this is a new Calculation all of the fields should be empty, otherwise
  * we load. The Calculate button @OnClick actually puts everything into a Calculation object and then
  * performs the operation. This prevents a lot of nastiness associated with running a calculation
  * more than once.
- *
+ * <p/>
  * A lot of boilerplate was removed by using ButterKnife. If you're not familiar with the library
  * check it out here... https://github.com/JakeWharton/butterknife
- *
  */
 
-public class CalculationFragment extends Fragment{
+public class CalculationFragment extends Fragment {
 
     private static final int REQUEST_DATE = 0;
-    public static String EXTRA_CALCULATION_ID = "calculationintent.calculation_id";
+    public static final String EXTRA_CALCULATION_ID = "calculationintent.calculation_id";
     private static final String DIALOG_DATE = "date";
 
     private Calculation mCalculation;
     Callbacks mCallbacks;
 
     //InjectionView definitions needed by Butterknife
-    @InjectView(R.id.calculation_title) EditText calculationTitle;
-    @InjectView(R.id.calculation_engineer) EditText calculationEngineer;
-    @InjectView(R.id.calculation_jobsite) EditText calculationJobsite;
-    @InjectView(R.id.calculation_beta) EditText calculationBeta;
-    @InjectView(R.id.calculation_theta) EditText calculationTheta;
-    @InjectView(R.id.calculation_anchor_height) EditText calculationAnchorHeight;
-    @InjectView(R.id.calculation_anchor_setback) EditText calculationAnchorSetback;
-    @InjectView(R.id.calculation_blade_depth) EditText calculationBladeDepth;
+    @InjectView(R.id.calculation_title)
+    EditText calculationTitle;
+    @InjectView(R.id.calculation_engineer)
+    EditText calculationEngineer;
+    @InjectView(R.id.calculation_jobsite)
+    EditText calculationJobsite;
+    @InjectView(R.id.calculation_beta)
+    EditText calculationBeta;
+    @InjectView(R.id.calculation_theta)
+    EditText calculationTheta;
+    @InjectView(R.id.calculation_anchor_height)
+    EditText calculationAnchorHeight;
+    @InjectView(R.id.calculation_anchor_setback)
+    EditText calculationAnchorSetback;
+    @InjectView(R.id.calculation_blade_depth)
+    EditText calculationBladeDepth;
 
-    @InjectView(R.id.dragging_value) TextView dragValue;
-    @InjectView(R.id.moment_value) TextView momentValue;
+    @InjectView(R.id.dragging_value)
+    TextView dragValue;
+    @InjectView(R.id.moment_value)
+    TextView momentValue;
 
-    @InjectView(R.id.toggle_units) ToggleButton unitsToggle;
+    @InjectView(R.id.toggle_units)
+    ToggleButton unitsToggle;
 
-    @InjectView(R.id.perform_calculation) Button performCalculation;
-    @InjectView(R.id.calculation_date) Button calculationDate;
+    @InjectView(R.id.perform_calculation)
+    Button performCalculation;
+    @InjectView(R.id.calculation_date)
+    Button calculationDate;
     Button mReportButton;
 
-    @Optional @InjectView(R.id.question_hg) ImageButton HgQuestion;
-    @Optional @InjectView(R.id.question_db) ImageButton DbQuestion;
-    @Optional @InjectView(R.id.question_wv) ImageButton WvQuestion;
-    @Optional @InjectView(R.id.question_la) ImageButton LaQuestion;
-    @Optional @InjectView(R.id.question_ha) ImageButton HaQuestion;
-    @Optional @InjectView(R.id.question_cg) ImageButton CgQuestion;
-    @Optional @InjectView(R.id.question_wb) ImageButton WbQuestion;
-    @Optional @InjectView(R.id.question_fricta) ImageButton PhiQuestion;
-    @Optional @InjectView(R.id.question_cohesion) ImageButton CohesionQuestion;
-    @Optional @InjectView(R.id.question_ws) ImageButton UnitWeightQuestion;
-
-    @Optional @InjectView(R.id.Ha_unit) TextView HaUnit;
-    @Optional @InjectView(R.id.La_unit) TextView LaUnit;
-    @Optional @InjectView(R.id.Db_unit) TextView DbUnit;
+    @Optional
+    @InjectView(R.id.question_db)
+    ImageButton DbQuestion;
+    @Optional
+    @InjectView(R.id.question_la)
+    ImageButton LaQuestion;
+    @Optional
+    @InjectView(R.id.question_ha)
+    ImageButton HaQuestion;
 
 
-    @InjectView(R.id.vehicle_add) ImageButton addVehicle;
-    @InjectView(R.id.vehicle_delete)ImageButton deleteVehicle;
-    @InjectView(R.id.soil_add) ImageButton addSoil;
-    @InjectView(R.id.soil_delete) ImageButton deleteSoil;
+    @Optional
+    @InjectView(R.id.Ha_unit)
+    TextView HaUnit;
+    @Optional
+    @InjectView(R.id.La_unit)
+    TextView LaUnit;
+    @Optional
+    @InjectView(R.id.Db_unit)
+    TextView DbUnit;
 
-    @InjectView(R.id.current_latitude) TextView latitudeField;
-    @InjectView(R.id.current_longitude)TextView longitudeField;
-    @InjectView(R.id.vehicle_spinner) Spinner mVehicleSpin;
 
-    void populateCalculation()throws NullPointerException{
+    @InjectView(R.id.vehicle_add)
+    ImageButton addVehicle;
+    @InjectView(R.id.vehicle_delete)
+    ImageButton deleteVehicle;
+    @InjectView(R.id.soil_add)
+    ImageButton addSoil;
+    @InjectView(R.id.soil_delete)
+    ImageButton deleteSoil;
+
+    @InjectView(R.id.vehicle_spinner)
+    Spinner mVehicleSpin;
+    @InjectView(R.id.current_latitude)
+    TextView latitudeField;
+    @InjectView(R.id.current_longitude)
+    TextView longitudeField;
+
+
+    void populateCalculation() {
         try {
+            //noinspection ConstantConditions
             mCalculation.setTitle(calculationTitle.getText().toString());
             mCalculation.setEngineerName(calculationEngineer.getText().toString());
             mCalculation.setJobSite(calculationJobsite.getText().toString());
@@ -120,10 +154,11 @@ public class CalculationFragment extends Fragment{
             mCalculation.setHa(Double.parseDouble(calculationAnchorHeight.getText().toString()));
             mCalculation.setLa(Double.parseDouble(calculationAnchorSetback.getText().toString()));
             mCalculation.setD_b(Double.parseDouble(calculationBladeDepth.getText().toString()));
-        }catch(NullPointerException e){
-            Toast thistoast = Toast.makeText(getActivity(),"A field was left unpopulated",Toast.LENGTH_LONG);
+        } catch (NumberFormatException e) {
+            Toast thistoast = Toast.makeText(getActivity(), "A required field was left unpopulated", Toast.LENGTH_LONG);
+            thistoast.show();
         }
-        Log.i("Title",calculationTitle.toString());
+        Log.i("Title", calculationTitle.toString());
     }
 
     double latitudeValue;
@@ -131,21 +166,19 @@ public class CalculationFragment extends Fragment{
 
     GPSTracker gps;
 
-
     String answerUnits;
-    boolean isimperial =false;
-    boolean hasbeencalculated =false;
+    boolean isimperial = false;
 
     private ArrayList<Vehicle> mVehicles;
     private ArrayList<Soil> mSoils;
 
 
-    public interface Callbacks{
+    public interface Callbacks {
         void onCalculationUpdated(Calculation calculation);
 
     }
 
-    public static CalculationFragment newInstance(UUID calculationId){
+    public static CalculationFragment newInstance(UUID calculationId) {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_CALCULATION_ID, calculationId);
         CalculationFragment fragment = new CalculationFragment();
@@ -155,23 +188,22 @@ public class CalculationFragment extends Fragment{
     }
 
     @Override
-    public void onAttach(Activity activity){
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallbacks =(Callbacks)activity;
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
-    public void onDetach(){
+    public void onDetach() {
         super.onDetach();
         mCallbacks = null;
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UUID calculationId = (UUID)getArguments().getSerializable(EXTRA_CALCULATION_ID);
+        UUID calculationId = (UUID) getArguments().getSerializable(EXTRA_CALCULATION_ID);
         mCalculation = CalculationLab.get(getActivity()).getCalculation(calculationId);
 
         mSoils = SoilLab.get(getActivity()).getSoils();
@@ -181,10 +213,10 @@ public class CalculationFragment extends Fragment{
         staticVehicles(mVehicles);
 
         gps = new GPSTracker(getActivity());
-        if (gps.canGetLocation()){
+        if (gps.canGetLocation()) {
             latitudeValue = gps.getLatitude();
-            longitudeValue =gps.getLongitude();
-        }else {
+            longitudeValue = gps.getLongitude();
+        } else {
             // can't get location
             // GPS or Network is not enabled
             // Ask user to enable GPS/network in settings
@@ -194,13 +226,13 @@ public class CalculationFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    void updateDate(){
+    void updateDate() {
         calculationDate.setText(mCalculation.getDate().toString());
     }
 
     @TargetApi(11)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         //inflate our view based on the layout defined
         final View v = inflater.inflate(R.layout.fragment_calculation, parent, false);
         // inject all of those views we created earlier
@@ -210,8 +242,8 @@ public class CalculationFragment extends Fragment{
         final Dialog vehicledialog = new Dialog(getActivity());
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-                 getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         answerUnits = getResources().getString(R.string.metric_answer);
@@ -227,7 +259,7 @@ public class CalculationFragment extends Fragment{
         if (mCalculation.getTheta() != 0)
             calculationTheta.setText(Integer.toString(mCalculation.getTheta()));
 
-        if (mCalculation.getHa() !=0)
+        if (mCalculation.getHa() != 0)
             calculationAnchorHeight.setText(Double.toString(mCalculation.getHa()));
 
         if (mCalculation.getLa() != 0)
@@ -236,10 +268,44 @@ public class CalculationFragment extends Fragment{
         if (mCalculation.getD_b() != 0)
             calculationBladeDepth.setText(Double.toString(mCalculation.getD_b()));
 
+        ToastMaker(R.string.ha_popup, HaQuestion, v);
+        ToastMaker(R.string.la_popup, LaQuestion, v);
+        ToastMaker(R.string.db_popup, DbQuestion, v);
+
+        updateDate();
+        calculationDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCalculation.getDate());
+                dialog.setTargetFragment(CalculationFragment.this, REQUEST_DATE);
+                dialog.show(fm, DIALOG_DATE);
+            }
+        });
+
+        if (mCalculation.isimperial) {
+            unitsToggle.setChecked(mCalculation.isimperial);
+            HaUnit.setText(getResources().getString(R.string.imperial_distance));
+            LaUnit.setText(getResources().getString(R.string.imperial_distance));
+            DbUnit.setText(getResources().getString(R.string.imperial_distance));
+
+            answerUnits = getResources().getString(R.string.imperial_answer);
+            isimperial = true;
+            mCalculation.isimperial = true;
+            mCalculation.getVehicle().isimperial = true;
+            mCalculation.getSoil().isimperial = true;
+        } else {
+            HaUnit.setText(getResources().getString(R.string.metric_distance));
+            LaUnit.setText(getResources().getString(R.string.metric_distance));
+            DbUnit.setText(getResources().getString(R.string.metric_distance));
+
+            answerUnits = getResources().getString(R.string.metric_answer);
+            mCalculation.isimperial = false;
+            mCalculation.getVehicle().isimperial = false;
+            mCalculation.getSoil().isimperial = false;
+        }
 
         unitsToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 //Unit textfield declarations for main view
                 //for the soil dialog
                 // if it's checked lets set all of the textview to their imperial counterparts
@@ -253,7 +319,6 @@ public class CalculationFragment extends Fragment{
                     mCalculation.isimperial = true;
                     mCalculation.getVehicle().isimperial = true;
                     mCalculation.getSoil().isimperial = true;
-                    hasbeencalculated = false;
 
                     // default behavior for the program is metric units
                 } else {
@@ -265,7 +330,6 @@ public class CalculationFragment extends Fragment{
                     mCalculation.isimperial = false;
                     mCalculation.getVehicle().isimperial = false;
                     mCalculation.getSoil().isimperial = false;
-                    hasbeencalculated = false;
 
                 }
                 // invalidating the view forces it to re-render. This will display our changes
@@ -274,51 +338,45 @@ public class CalculationFragment extends Fragment{
             }
         });
 
-        ToastMaker(R.string.ha_popup,HaQuestion,v);
-        ToastMaker(R.string.la_popup,LaQuestion,v);
-        ToastMaker(R.string.db_popup,DbQuestion,v);
-
-        updateDate();
-        calculationDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mCalculation.getDate());
-                dialog.setTargetFragment(CalculationFragment.this, REQUEST_DATE);
-                dialog.show(fm, DIALOG_DATE);
-            }
-        });
-
-
         final ArrayList<String> vehicleoutputlist = new ArrayList<String>();
         String SingleVehicle;
-        for (Vehicle vehicle : mVehicles){
+        for (Vehicle vehicle : mVehicles) {
 
             SingleVehicle = vehicle.getVehicleType();
-            if (! vehicleoutputlist.contains(SingleVehicle))
-                 vehicleoutputlist.add(SingleVehicle);
+            if (!vehicleoutputlist.contains(SingleVehicle))
+                vehicleoutputlist.add(SingleVehicle);
 
         }
         Collections.sort(vehicleoutputlist);
 
-        final ArrayAdapter<String> vadapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,vehicleoutputlist);
+        final ArrayAdapter<String> vadapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, vehicleoutputlist);
         vadapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mVehicleSpin.setAdapter(vadapter);
 
-        mVehicleSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-              @Override
-              public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
-                  String vcheck =(String)mVehicleSpin.getSelectedItem();
-                  Iterator<Vehicle> iterv = mVehicles.iterator();
-                  while (iterv.hasNext()){
-                      Vehicle currentv = iterv.next();
-                      if (currentv.getVehicleType().matches(vcheck)){
-                          mCalculation.setVehicle(currentv);
-                      }
-                  }
-               }
+        //If we're loading a Calculation display the correct Vehicle in the Spinner
+        if (mCalculation.getVehicle() != null) {
+            String selectedVehicle = mCalculation.getVehicle().getVehicleType();
+            int spinnerPosition = vadapter.getPosition(selectedVehicle);
+            mVehicleSpin.setSelection(spinnerPosition);
+        }
 
-              @Override
-              public void onNothingSelected(AdapterView<?> adapterView) {}
+
+        mVehicleSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
+                String vcheck = (String) mVehicleSpin.getSelectedItem();
+                Iterator<Vehicle> iterv = mVehicles.iterator();
+                while (iterv.hasNext()) {
+                    Vehicle currentv = iterv.next();
+                    if (currentv.getVehicleType().matches(vcheck)) {
+                        mCalculation.setVehicle(currentv);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
 
         });
 
@@ -341,7 +399,6 @@ public class CalculationFragment extends Fragment{
             public void onClick(View view) {
                 vehicledialog.setContentView(R.layout.fragment_vehicle_picker);
                 vehicledialog.setTitle("Enter Vehicle Data");
-
                 final EditText mVehicleclass;
                 final EditText mVehicletype;
                 final EditText mVehicleHeight;
@@ -383,7 +440,6 @@ public class CalculationFragment extends Fragment{
                 // then assign the Calculation's appropriate vehicle parameter if something is entered into
                 //the field
                 mVehicleclass = (EditText) vehicledialog.findViewById(R.id.input_vehicle_class);
-                //mVehicleclass.setText(mCalculation.getVehicle().getVehicleClass());
                 mVehicleclass.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -403,11 +459,9 @@ public class CalculationFragment extends Fragment{
                 });
 
                 mVehicletype = (EditText) vehicledialog.findViewById(R.id.input_vehicle_type);
-                //mVehicletype.setText(mCalculation.getVehicle().getVehicleType());
                 mVehicletype.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
                     }
 
                     @Override
@@ -417,42 +471,34 @@ public class CalculationFragment extends Fragment{
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-
                     }
+
                 });
 
                 mVehicleHeight = (EditText) vehicledialog.findViewById(R.id.input_vehicle_height);
-                // if (mCalculation.getVehicle().getHg() != 0)
-                //     mVehicleHeight.setText(Double.toString(mCalculation.getVehicle().getHg()));
-
                 mVehicleHeight.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
                     }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                         String sVehicleHeight = mVehicleHeight.getText().toString();
                         if (!sVehicleHeight.matches(""))
-                            mCalculation.mVehicle.setHg(Double.parseDouble(charSequence.toString()));
+                            mCalculation.getVehicle().setHg(Double.parseDouble(charSequence.toString()));
                         mCallbacks.onCalculationUpdated(mCalculation);
                     }
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-
                     }
+
                 });
 
                 mCOGDistance = (EditText) vehicledialog.findViewById(R.id.Cg);
-                //  if(mCalculation.getVehicle().getCg() != 0)
-                //      mCOGDistance.setText(Double.toString(mCalculation.getVehicle().getCg()));
-
                 mCOGDistance.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
                     }
 
                     @Override
@@ -465,13 +511,11 @@ public class CalculationFragment extends Fragment{
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-
                     }
+
                 });
-                //TODO null validation
+
                 mWeight = (EditText) vehicledialog.findViewById(R.id.Wv);
-                //  if(mCalculation.getVehicle().getWv() != 0)
-                //      mWeight.setText(Double.toString(mCalculation.getVehicle().getWv()));
                 mWeight.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -491,10 +535,8 @@ public class CalculationFragment extends Fragment{
 
                     }
                 });
-                //TODO null validation
+
                 mTrackL = (EditText) vehicledialog.findViewById(R.id.Tl);
-                //  if(mCalculation.getVehicle().getTrackL() !=0)
-                //      mTrackL.setText(Double.toString(mCalculation.getVehicle().getTrackL()));
                 mTrackL.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -514,10 +556,8 @@ public class CalculationFragment extends Fragment{
 
                     }
                 });
-                //TODO: null validation
+
                 mTrackW = (EditText) vehicledialog.findViewById(R.id.Tw);
-                //  if(mCalculation.getVehicle().getTrackW() != 0)
-                //      mTrackW.setText(Double.toString(mCalculation.getVehicle().getTrackW()));
                 mTrackW.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -539,8 +579,6 @@ public class CalculationFragment extends Fragment{
                 });
 
                 mBladeW = (EditText) vehicledialog.findViewById(R.id.Wb);
-                // if (mCalculation.getVehicle().getBladeW() !=0)
-                //     mBladeW.setText(Double.toString(mCalculation.getVehicle().getBladeW()));
                 mBladeW.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -591,12 +629,13 @@ public class CalculationFragment extends Fragment{
 
                 // this code block defines the "?" buttons
                 //We assign them the correct ID and provide the relevant string and ID for the toast
+                ImageButton HgQuestion = (ImageButton) vehicledialog.findViewById(R.id.question_hg);
+                ImageButton WvQuestion = (ImageButton) vehicledialog.findViewById(R.id.question_wv);
+                ImageButton CgQuestion = (ImageButton) vehicledialog.findViewById(R.id.question_cg);
 
                 ToastMaker(R.string.hg_popup, HgQuestion, v);
-                ToastMaker(R.string.wb_popup, WbQuestion, v);
                 ToastMaker(R.string.wv_popup, WvQuestion, v);
                 ToastMaker(R.string.cg_popup, CgQuestion, v);
-
 
                 vehicledialog.show();
             }
@@ -611,15 +650,21 @@ public class CalculationFragment extends Fragment{
         }
         Collections.sort(SoilOutputList);
 
-        final Spinner mSoilSpin = (Spinner)v.findViewById(R.id.soil_spinner);
-        final ArrayAdapter<String> sadapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,SoilOutputList);
+        final Spinner mSoilSpin = (Spinner) v.findViewById(R.id.soil_spinner);
+        final ArrayAdapter<String> sadapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, SoilOutputList);
         sadapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mSoilSpin.setAdapter(sadapter);
 
-        mSoilSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        //If we're loading a Calculation display the correct Soil in Spinner
+        if (mCalculation.getSoil() != null) {
+            String selectedSoil = mCalculation.getSoil().getName();
+            int spinnerPosition = vadapter.getPosition(selectedSoil);
+            mSoilSpin.setSelection(spinnerPosition);
+        }
+        mSoilSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l){
-                String check = (String)mSoilSpin.getSelectedItem();
+            public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
+                String check = (String) mSoilSpin.getSelectedItem();
 
                 Iterator<Soil> iter = mSoils.iterator();
                 while (iter.hasNext()) {
@@ -632,7 +677,8 @@ public class CalculationFragment extends Fragment{
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
 
         deleteSoil.setOnClickListener(new OnClickListener() {
@@ -647,12 +693,13 @@ public class CalculationFragment extends Fragment{
             }
 
         });
+
+        //OnClick we launcha  dialog which allows the user to enter a new custom Soil
         addSoil.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //custom soil dialog launches on new selection
 
-
+                //grab the appropriate layout
                 soildialog.setContentView(R.layout.fragment_soil_picker);
                 soildialog.setTitle("Enter Soil Data");
 
@@ -661,9 +708,11 @@ public class CalculationFragment extends Fragment{
                 final EditText mSoilFrictionAngle;
                 final EditText mSoilCohesionFactor;
 
-                TextView SoilWtUnit = (TextView) soildialog.findViewById(R.id.SoilWt_unit);
-                TextView SoilCUnit = (TextView) soildialog.findViewById(R.id.Soilc_unit);
+                //textviews to display units, we don't include the degrees because it never changes
+                TextView SoilWtUnit = (TextView) soildialog.findViewById(R.id.soil_weight_unit_type);
+                TextView SoilCUnit = (TextView) soildialog.findViewById(R.id.soil_cohesion_unit_type);
 
+                //if units are set to imperial display etc etc
                 if (unitsToggle.isChecked()) {
                     SoilWtUnit.setText(getResources().getString(R.string.imperial_soilunitwt));
                     SoilCUnit.setText(getResources().getString(R.string.imperial_soilc));
@@ -675,7 +724,7 @@ public class CalculationFragment extends Fragment{
                 }
 
 
-                mSoilType = (EditText) soildialog.findViewById(R.id.SoilName);
+                mSoilType = (EditText) soildialog.findViewById(R.id.soil_name);
                 mSoilType.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -694,7 +743,7 @@ public class CalculationFragment extends Fragment{
                     }
                 });
 
-                mSoilUnitWeight = (EditText) soildialog.findViewById(R.id.Soilunitwt);
+                mSoilUnitWeight = (EditText) soildialog.findViewById(R.id.soil_unit_weight);
                 mSoilUnitWeight.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -715,7 +764,7 @@ public class CalculationFragment extends Fragment{
                     }
                 });
 
-                mSoilCohesionFactor = (EditText) soildialog.findViewById(R.id.Soilcohesion);
+                mSoilCohesionFactor = (EditText) soildialog.findViewById(R.id.soil_cohesion);
                 mSoilCohesionFactor.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -737,7 +786,7 @@ public class CalculationFragment extends Fragment{
                     }
                 });
 
-                mSoilFrictionAngle = (EditText) soildialog.findViewById(R.id.Soilfricta);
+                mSoilFrictionAngle = (EditText) soildialog.findViewById(R.id.soil_friction_angle);
                 mSoilFrictionAngle.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -758,6 +807,7 @@ public class CalculationFragment extends Fragment{
                     }
                 });
 
+                //if they decide to cancel for whatever reason jsut remove everything
                 Button mCancelButton = (Button) soildialog.findViewById(R.id.soil_cancel);
                 mCancelButton.setOnClickListener(new View.OnClickListener() {
 
@@ -768,7 +818,8 @@ public class CalculationFragment extends Fragment{
                     }
 
                 });
-
+                //saving adds the soil to our calculation, we also convert it to metric in case it's
+                //imperial.Finally we add it to our array of Soils and the Spinner so it can be selected
                 Button mSaveButton = (Button) soildialog.findViewById(R.id.soil_save);
                 mSaveButton.setOnClickListener(new OnClickListener() {
 
@@ -782,7 +833,12 @@ public class CalculationFragment extends Fragment{
 
                     }
                 });
+
                 // Toasts corresponding to Questions in this popup
+                ImageButton PhiQuestion = (ImageButton) soildialog.findViewById(R.id.question_fricta);
+                ImageButton CohesionQuestion = (ImageButton) soildialog.findViewById(R.id.question_cohesion);
+                ImageButton UnitWeightQuestion = (ImageButton) soildialog.findViewById(R.id.question_ws);
+
                 ToastMaker(R.string.fricta_popup, PhiQuestion, v);
                 ToastMaker(R.string.cohesion_popup, CohesionQuestion, v);
                 ToastMaker(R.string.ws_popup, UnitWeightQuestion, v);
@@ -794,27 +850,35 @@ public class CalculationFragment extends Fragment{
 
         });
 
+        //Nothing is actually added to the calculation object until the user decides to perform the
+        //operation itself.
         performCalculation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                //output from a calc is in double form, but we don't need that much accuracy
                 DecimalFormat df = new DecimalFormat("#");
+                //method call which fetches all of the input data and places it in our
+                //calculation object
                 populateCalculation();
-                    mCalculation.imperialconversion();
+                //convert from imperial if needed
+                mCalculation.imperialconversion();
+                double anchcap = mCalculation.AnchorCapacity(isimperial);
+                double moment = mCalculation.MomentCalc(isimperial);
+                dragValue.setText(df.format(anchcap) + "     " + answerUnits);
+                momentValue.setText(df.format(moment) + "     " + answerUnits);
+                dragValue.setTextColor(Color.BLACK);
+                momentValue.setTextColor(Color.BLACK);
 
-                    double AnchCap = mCalculation.anchor_capacity(isimperial);
-                    double tipover = mCalculation.tip_over_moment(isimperial);
-                    dragValue.setText(df.format(AnchCap) + "     " + answerUnits);
-                    momentValue.setText(df.format(tipover) + "     " + answerUnits);
+                if (anchcap <= moment) {
+                    dragValue.setTextColor(Color.RED);
+                    dragValue.setHighlightColor(Color.YELLOW);
+                } else {
+                    momentValue.setTextColor(Color.RED);
+                    momentValue.setHighlightColor(Color.YELLOW);
+                }
 
-                    if (AnchCap <= tipover) {
-                        dragValue.setTextColor(Color.RED);
-                        dragValue.setHighlightColor(Color.YELLOW);
-                    } else {
-                        momentValue.setTextColor(Color.RED);
-                        momentValue.setHighlightColor(Color.YELLOW);
-                    }
-                    CalculationLab.get(getActivity()).saveCalculations();
-
+                CalculationLab.get(getActivity()).saveCalculations();
+                VehicleLab.get(getActivity()).saveVehicles();
+                SoilLab.get(getActivity()).saveSoils();
 
             }
 
@@ -846,10 +910,10 @@ public class CalculationFragment extends Fragment{
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) return;
 
-        if (requestCode == REQUEST_DATE){
+        if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCalculation.setDate(date);
             mCallbacks.onCalculationUpdated(mCalculation);
@@ -857,33 +921,30 @@ public class CalculationFragment extends Fragment{
         }
 
 
-
     }
 
     // A Simple toast function, displays text by resource Id depending on what imagebutton was clicked
-    void ToastMaker(final int display, ImageButton button, View view){
+    void ToastMaker(final int display, ImageButton button, View view) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast thistoast = Toast.makeText(getActivity(),getResources().getString(display),Toast.LENGTH_LONG);
+                Toast thistoast = Toast.makeText(getActivity(), getResources().getString(display), Toast.LENGTH_LONG);
                 //calls the class which allows us to display toasts for longer than 3.5 seconds
-                ToastExpander.showFor(thistoast,5000);
+                ToastExpander.showFor(thistoast, 5000);
             }
         });
 
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        CalculationLab.get(getActivity()).saveCalculations();
-        VehicleLab.get(getActivity()).saveVehicles();
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(getActivity());
                 return true;
@@ -892,8 +953,7 @@ public class CalculationFragment extends Fragment{
         }
     }
 
-
-    private void staticVehicles(ArrayList<Vehicle> v){
+    private void staticVehicles(ArrayList<Vehicle> v) {
 
         Vehicle ex1 = new Vehicle();
         ex1.setVehicleClass("Bulldozer");
@@ -921,7 +981,7 @@ public class CalculationFragment extends Fragment{
 
     }
 
-    private void staticSoils(ArrayList<Soil> s){
+    private void staticSoils(ArrayList<Soil> s) {
 
         Soil a = new Soil();
         a.setC(0);
@@ -972,23 +1032,24 @@ public class CalculationFragment extends Fragment{
         h.setunitW(1522);
         h.setName("Hard Clay");
 
-        if (! s.contains(a))
+        if (!s.contains(a))
             s.add(a);
-        if (! s.contains(b))
+        if (!s.contains(b))
             s.add(b);
-        if (! s.contains(c))
-             s.add(c);
-        if (! s.contains(d))
+        if (!s.contains(c))
+            s.add(c);
+        if (!s.contains(d))
             s.add(d);
-        if (! s.contains(e))
+        if (!s.contains(e))
             s.add(e);
-        if (! s.contains(f))
+        if (!s.contains(f))
             s.add(f);
-        if (! s.contains(g))
+        if (!s.contains(g))
             s.add(g);
-        if (! s.contains(h))
+        if (!s.contains(h))
             s.add(h);
 
     }
+
 
 }

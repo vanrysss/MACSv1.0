@@ -3,6 +3,8 @@ package com.VanLesh.macsv10.macs;
 import android.content.Context;
 import android.util.Log;
 
+import com.VanLesh.macsv10.macs.Models.Vehicle;
+
 import java.util.ArrayList;
 
 /**
@@ -15,17 +17,17 @@ public class VehicleLab {
 
     private static VehicleLab sVehicleLab;
     private ArrayList<Vehicle> mVehicles;
-    private VehicleJSONSerializer mSerializer;
+    private final VehicleJSONSerializer mSerializer;
 
     private Context mAppContext;
 
-    private VehicleLab(Context appcontext){
+    private VehicleLab(Context appcontext) {
         Context appcontext1 = appcontext;
         mSerializer = new VehicleJSONSerializer(appcontext1, FILENAME);
 
         try {
             mVehicles = mSerializer.loadVehicles();
-        }catch (Exception e){
+        } catch (Exception e) {
             mVehicles = new ArrayList<Vehicle>();
 /*
             Vehicle ex1 = new Vehicle();
@@ -59,40 +61,40 @@ public class VehicleLab {
         }
     }
 
-    public static VehicleLab get(Context c){
-        if(sVehicleLab == null){
+    public static VehicleLab get(Context c) {
+        if (sVehicleLab == null) {
             sVehicleLab = new VehicleLab(c.getApplicationContext());
         }
         return sVehicleLab;
     }
 
-    public ArrayList<Vehicle> getVehicles(){
+    public ArrayList<Vehicle> getVehicles() {
         return mVehicles;
     }
 
-    public void addVehicle(Vehicle c){
+    public void addVehicle(Vehicle c) {
         mVehicles.add(c);
     }
 
-    public void deleteVehicle(Vehicle c){
+    public void deleteVehicle(Vehicle c) {
         mVehicles.remove(c);
     }
 
-    public Vehicle getVehicle(String title){
-        for(Vehicle c : mVehicles){
-            if(c.getVehicleType().equals(title))
+    public Vehicle getVehicle(String title) {
+        for (Vehicle c : mVehicles) {
+            if (c.getVehicleType().equals(title))
                 return c;
         }
         return null;
     }
 
-    public boolean saveVehicles(){
+    public boolean saveVehicles() {
         try {
             mSerializer.saveVehicles(mVehicles);
-            Log.d(TAG,"vehicles saved");
+            Log.d(TAG, "vehicles saved");
             return true;
-        }catch (Exception e){
-            Log.e(TAG,"Error saving",e);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving", e);
             return false;
         }
     }

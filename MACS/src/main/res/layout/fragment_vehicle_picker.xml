@@ -197,12 +197,6 @@
             android:text="@string/metric_distance"
             />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_tl"/>
 
     </LinearLayout>
 
@@ -238,12 +232,6 @@
             android:text="@string/metric_distance"
             />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_tw"/>
     </LinearLayout>
 
     <LinearLayout
@@ -279,13 +267,6 @@
             android:layout_marginRight="16dp"
             android:text="@string/metric_distance"
             />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_menu_help_holo_light"
-            android:id="@+id/question_wb"/>
 
     </LinearLayout>
 

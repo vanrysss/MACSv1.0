@@ -2,6 +2,8 @@ package com.VanLesh.macsv10.macs;
 
 import android.content.Context;
 
+import com.VanLesh.macsv10.macs.Models.Vehicle;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
@@ -15,6 +17,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+
 /**
  * Created by samvanryssegem on 2/28/14.
  */
@@ -23,36 +26,36 @@ class VehicleJSONSerializer {
     private final Context mContext;
     private final String mFilename;
 
-    public VehicleJSONSerializer(Context c, String f){
+    public VehicleJSONSerializer(Context c, String f) {
         mContext = c;
-        mFilename =f;
+        mFilename = f;
     }
 
-    public  ArrayList<Vehicle> loadVehicles() throws IOException, JSONException{
-        ArrayList<Vehicle> vehicles =  new ArrayList<Vehicle>();
+    public ArrayList<Vehicle> loadVehicles() throws IOException, JSONException {
+        ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
         BufferedReader reader = null;
 
-        try{
+        try {
             //open and read into a string builder
             InputStream in = mContext.openFileInput(mFilename);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
             String line;
 
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 // line breaks don't matter
                 jsonString.append(line);
             }
             // parse using a tokener
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
             //build the array of vehicles
-            for (int i=0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 vehicles.add(new Vehicle(array.getJSONObject(i)));
             }
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             //ignore when starting fresh
-        }finally {
-            if(reader !=null){
+        } finally {
+            if (reader != null) {
                 reader.close();
             }
 
@@ -60,22 +63,22 @@ class VehicleJSONSerializer {
         return vehicles;
     }
 
-    public void saveVehicles(ArrayList<Vehicle> vehicles) throws JSONException, IOException{
+    public void saveVehicles(ArrayList<Vehicle> vehicles) throws JSONException, IOException {
 
         //build JSON array
         JSONArray array = new JSONArray();
-        for(Vehicle c : vehicles){
+        for (Vehicle c : vehicles) {
             array.put(c.toJSON());
         }
         //write to HDD
         Writer writer = null;
 
-        try{
+        try {
             OutputStream out = mContext
-               .openFileOutput(mFilename, Context.MODE_PRIVATE);
+                                                                                                .openFileOutput(mFilename, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(out);
             writer.write(array.toString());
-        }finally{
+        } finally {
             if (writer != null)
                 writer.close();
         }

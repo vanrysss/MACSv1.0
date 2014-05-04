@@ -1,4 +1,4 @@
-package com.VanLesh.macsv10.macs;
+package com.VanLesh.macsv10.macs.Models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,23 +18,24 @@ public class Vehicle {
     private double mTrackL; //track length
     private double mTrackW; //track width
     private double mBladeW; //blade width
-    private double TrackA = mTrackL*mTrackW;
+    private double TrackA = mTrackL * mTrackW;
 
-    public boolean isimperial=false;
+    public boolean isimperial = false;
 
-    private static final String JSON_TYPE ="type";
-    private static final String JSON_CLASS="class";
-    private static final String JSON_CG ="center of gravity";
-    private static final String JSON_HG ="height CG";
-    private static final String JSON_WEIGHT ="weight";
-    private static final String JSON_TRACKLENGTH ="track length";
-    private static final String JSON_TRACKWIDTH="track width";
-    private static final String JSON_BLADEWIDTH="blade width";
+    private static final String JSON_TYPE = "type";
+    private static final String JSON_CLASS = "class";
+    private static final String JSON_CG = "center of gravity";
+    private static final String JSON_HG = "height CG";
+    private static final String JSON_WEIGHT = "weight";
+    private static final String JSON_TRACKLENGTH = "track length";
+    private static final String JSON_TRACKWIDTH = "track width";
+    private static final String JSON_BLADEWIDTH = "blade width";
 
-    public Vehicle(){}
+    public Vehicle() {
+    }
 
-    public void convertToMetric(){
-        if (isimperial){
+    public void convertToMetric() {
+        if (isimperial) {
             double FEET_TO_METERS = 0.3048;
             mTrackL = mTrackL * FEET_TO_METERS;
             mTrackW = mTrackW * FEET_TO_METERS;
@@ -49,35 +50,36 @@ public class Vehicle {
 
     public Vehicle(JSONObject json) throws JSONException {
 
-        if(json.has(JSON_TYPE))
-             type=json.getString(JSON_TYPE);
+        if (json.has(JSON_TYPE))
+            type = json.getString(JSON_TYPE);
         if (json.has(JSON_CLASS))
-            vehicleclass=json.getString(JSON_CLASS);
+            vehicleclass = json.getString(JSON_CLASS);
         if (json.has(JSON_CG))
-             mCg =json.getDouble(JSON_CG);
+            mCg = json.getDouble(JSON_CG);
         if (json.has(JSON_HG))
-             mHg=json.getDouble(JSON_HG);
+            mHg = json.getDouble(JSON_HG);
         if (json.has(JSON_WEIGHT))
-             mWv=json.getDouble(JSON_WEIGHT);
+            mWv = json.getDouble(JSON_WEIGHT);
         if (json.has(JSON_TRACKLENGTH))
-            mTrackL=json.getDouble(JSON_TRACKLENGTH);
+            mTrackL = json.getDouble(JSON_TRACKLENGTH);
         if (json.has(JSON_TRACKWIDTH))
-            mTrackW=json.getDouble(JSON_TRACKWIDTH);
+            mTrackW = json.getDouble(JSON_TRACKWIDTH);
         if (json.has(JSON_BLADEWIDTH))
-            mBladeW=json.getDouble(JSON_BLADEWIDTH);
+            mBladeW = json.getDouble(JSON_BLADEWIDTH);
 
     }
-    public JSONObject toJSON() throws JSONException{
+
+    public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
 
-        json.put(JSON_TYPE,type);
-        json.put(JSON_CLASS,vehicleclass);
-        json.put(JSON_CG,mCg);
-        json.put(JSON_HG,mHg);
-        json.put(JSON_WEIGHT,mWv);
-        json.put(JSON_TRACKLENGTH,mTrackL);
-        json.put(JSON_TRACKWIDTH,mTrackW);
-        json.put(JSON_BLADEWIDTH,mBladeW);
+        json.put(JSON_TYPE, type);
+        json.put(JSON_CLASS, vehicleclass);
+        json.put(JSON_CG, mCg);
+        json.put(JSON_HG, mHg);
+        json.put(JSON_WEIGHT, mWv);
+        json.put(JSON_TRACKLENGTH, mTrackL);
+        json.put(JSON_TRACKWIDTH, mTrackW);
+        json.put(JSON_BLADEWIDTH, mBladeW);
 
         return json;
 
@@ -87,7 +89,7 @@ public class Vehicle {
         return mTrackA;
     }
 
-    private double mTrackA = mTrackL*mTrackW; //track area
+    private double mTrackA = mTrackL * mTrackW; //track area
 
     public String getVehicleType() {
         return type;

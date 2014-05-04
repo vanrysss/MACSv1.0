@@ -12,7 +12,7 @@ https://github.com/quiqueqs/Toast-Expander
  */
 public class ToastExpander {
 
-    public static final String TAG = "ToastExpander";
+    private static final String TAG = "ToastExpander";
 
     public static void showFor(final Toast aToast, final long durationInMilliseconds) {
 
