@@ -68,6 +68,8 @@
     <string name="Hg">Hg</string>
     <string name="Cg">Cg</string>
     <string name="Wv">Wv</string>
+    <string name="disclaimer">DISCLAIMER: This software is for educational purposes only, the authors and Oregon
+    State University are not liable for damages.</string>
 
     <string-array name="classes">
         <item>Excavator</item>

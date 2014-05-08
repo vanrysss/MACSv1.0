@@ -406,16 +406,18 @@
             android:id="@+id/force_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FORCE EQUILIBRIUM  "
+            android:text="Sliding – Ultimate Anchor Capacity"
+            android:paddingLeft="24dp"
             android:paddingTop="24dp"/>
         <TextView
             android:id="@+id/moment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MOMENT EQUILIBRIUM"
+            android:text="Overturning – Ultimate Anchor Capacity"
             android:layout_below="@+id/dragging_value"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:paddingLeft="24dp"
             android:paddingTop="24dp"/>
         <TextView
             android:id="@+id/dragging_value"
@@ -443,25 +445,27 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/perform_calculation"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/perform_calc"
-           />
-  <!--      <Button
+            android:layout_weight="0.50"/>
+      <Button
             android:id="@+id/report_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Send Report"/>
--->
+            android:text="Send Report"
+            android:layout_weight="0.5"/>
+
     </LinearLayout>
 </LinearLayout>
 </ScrollView>

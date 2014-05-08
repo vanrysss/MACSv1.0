@@ -14,5 +14,12 @@
         android:src="@drawable/macs_logo_small"
         tools:ignore="ContentDescription"/>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/disclaimer"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:textSize="12dp"/>
 
 </RelativeLayout>

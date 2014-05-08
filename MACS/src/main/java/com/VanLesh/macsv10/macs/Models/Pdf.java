@@ -18,7 +18,7 @@ import java.io.FileOutputStream;
 /**
  * Created by samvanryssegem on 4/19/14.
  */
-class Pdf {
+public class Pdf {
     private static final Font redFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
     private static final Font subFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
     private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);

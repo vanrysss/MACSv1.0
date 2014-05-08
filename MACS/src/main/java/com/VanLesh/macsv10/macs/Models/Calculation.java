@@ -351,5 +351,14 @@ public class Calculation {
         return mTitle;
     }
 
+    public static void resetCalculation(Calculation c){
+        c.setBeta(0);
+        c.setD_b(0);
+        c.setHa(0.0);
+        c.setLa(0.0);
+        c.setTheta(0);
+
+    }
+
 
 }

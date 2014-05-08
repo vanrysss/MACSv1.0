@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -32,6 +34,7 @@ import android.widget.ToggleButton;
 import com.VanLesh.macsv10.macs.CalculationLab;
 import com.VanLesh.macsv10.macs.Models.Calculation;
 import com.VanLesh.macsv10.macs.Models.GPSTracker;
+import com.VanLesh.macsv10.macs.Models.Pdf;
 import com.VanLesh.macsv10.macs.Models.Soil;
 import com.VanLesh.macsv10.macs.Models.Vehicle;
 import com.VanLesh.macsv10.macs.R;
@@ -102,6 +105,7 @@ public class CalculationFragment extends Fragment {
     Button performCalculation;
     @InjectView(R.id.calculation_date)
     Button calculationDate;
+    @InjectView(R.id.report_button)
     Button mReportButton;
 
     @Optional
@@ -260,13 +264,13 @@ public class CalculationFragment extends Fragment {
             calculationTheta.setText(Integer.toString(mCalculation.getTheta()));
 
         if (mCalculation.getHa() != 0)
-            calculationAnchorHeight.setText(Double.toString(mCalculation.getHa()));
+            calculationAnchorHeight.setText(Double.toString(decimalFormater(mCalculation.getHa())));
 
         if (mCalculation.getLa() != 0)
-            calculationAnchorSetback.setText(Double.toString(mCalculation.getLa()));
+            calculationAnchorSetback.setText(Double.toString(decimalFormater(mCalculation.getLa())));
 
         if (mCalculation.getD_b() != 0)
-            calculationBladeDepth.setText(Double.toString(mCalculation.getD_b()));
+            calculationBladeDepth.setText(Double.toString(decimalFormater(mCalculation.getD_b())));
 
         ToastMaker(R.string.ha_popup, HaQuestion, v);
         ToastMaker(R.string.la_popup, LaQuestion, v);
@@ -306,6 +310,7 @@ public class CalculationFragment extends Fragment {
 
         unitsToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Calculation.resetCalculation(mCalculation);
                 //Unit textfield declarations for main view
                 //for the soil dialog
                 // if it's checked lets set all of the textview to their imperial counterparts
@@ -883,8 +888,6 @@ public class CalculationFragment extends Fragment {
             }
 
         });
-
- /*       mReportButton = (Button)v.findViewById(R.id.report_button);
         mReportButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
@@ -896,14 +899,14 @@ public class CalculationFragment extends Fragment {
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "MACS Report");
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This email sent by the MACS App");
                 // Here my file name is shortcuts.pdf which i have stored in /res/raw folder
-                Uri emailUri = Uri.parse("file://" + Environment.getExternalStorageDirectory().getPath()+ "/Report.pdf");
+                Uri emailUri = Uri.parse("file://" + Environment.getExternalStorageDirectory().getPath() + "/Report.pdf");
                 emailIntent.putExtra(Intent.EXTRA_STREAM, emailUri);
                 emailIntent.setType("application/pdf");
                 startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 
             }
         });
-*/
+
         setRetainInstance(true);
         return v;
 
@@ -1051,5 +1054,9 @@ public class CalculationFragment extends Fragment {
 
     }
 
+    Double decimalFormater(double parameter){
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.valueOf(twoDForm.format(parameter));
+    }
 
 }

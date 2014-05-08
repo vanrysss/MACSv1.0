@@ -3,6 +3,7 @@ package com.VanLesh.macsv10.macs;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.VanLesh.macsv10.macs.Fragments.SplashScreen;
 import com.VanLesh.macsv10.macs.Models.Calculation;
 
 import java.util.ArrayList;
@@ -157,17 +159,15 @@ class CalculationListFragment extends ListFragment {
                 ((CalculationAdapter) getListAdapter()).notifyDataSetChanged();
                 mCallbacks.onCalculationSelected(calc);
                 return true;
-/*            case R.id.menu_item_show_subtitle:
-                if (getActivity().getActionBar().getSubtitle() == null){
-                    getActivity().getActionBar().setSubtitle(R.string.subtitle);
-                    mSubtitleVisible =true;
-                    item.setTitle(R.string.hide_subtitle);
-                }else{
-                    getActivity().getActionBar().setSubtitle(null);
-                    mSubtitleVisible =false;
-                    item.setTitle(R.string.show_subtitle);
-                }
-                return true; */
+
+            case R.id.menu_item_publication:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse( "http://people.forestry.oregonstate.edu/ben-leshchinsky/"));
+                startActivity(browserIntent);
+
+            case R.id.menu_about:
+                Intent splashIntent = new Intent(getActivity(), SplashScreen.class);
+                startActivity(splashIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -204,18 +204,18 @@ class CalculationListFragment extends ListFragment {
             //if we dont have a view inflate one
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                                                                                                    .inflate(R.layout.list_item_calculation, null);
+                .inflate(R.layout.list_item_calculation, null);
             }
 
             //configure view for this calculation
             Calculation c = getItem(position);
 
             TextView titleTextView =
-                                                                                                (TextView) convertView.findViewById(R.id.calculation_list_item_titleTextView);
+            (TextView) convertView.findViewById(R.id.calculation_list_item_titleTextView);
             titleTextView.setText(c.getTitle());
 
             TextView dateTextView =
-                                                                                                (TextView) convertView.findViewById(R.id.calculation_list_item_dateTextView);
+            (TextView) convertView.findViewById(R.id.calculation_list_item_dateTextView);
             dateTextView.setText(c.getDate().toString());
             return convertView;
         }

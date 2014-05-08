@@ -43,7 +43,7 @@ public class CalculationPagerActivity extends FragmentActivity implements Calcul
         });
 
         UUID crimeId = (UUID) getIntent()
-                                                                                            .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
+        .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
         for (int i = 0; i < calculations.size(); i++) {
             if (calculations.get(i).getId().equals(crimeId)) {
                 viewPager.setCurrentItem(i);

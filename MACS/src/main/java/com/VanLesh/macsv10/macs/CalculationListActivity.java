@@ -13,7 +13,7 @@ import com.VanLesh.macsv10.macs.Models.Calculation;
  * Created by samvanryssegem on 2/27/14.
  */
 public class CalculationListActivity extends SingleFragmentActivity
-                                                                                    implements CalculationListFragment.Callbacks, CalculationFragment.Callbacks {
+    implements CalculationListFragment.Callbacks, CalculationFragment.Callbacks {
 
     @Override
     protected Fragment createFragment() {
@@ -47,7 +47,7 @@ public class CalculationListActivity extends SingleFragmentActivity
     public void onCalculationUpdated(Calculation calc) {
         FragmentManager fm = getSupportFragmentManager();
         CalculationListFragment listFragment = (CalculationListFragment)
-                                                                                            fm.findFragmentById(R.id.fragmentContainer);
+        fm.findFragmentById(R.id.fragmentContainer);
         listFragment.updateUI();
 
 

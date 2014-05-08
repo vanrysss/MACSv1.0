@@ -1,4 +1,4 @@
-package com.VanLesh.macsv10.macs.Models;
+package com.VanLesh.macsv10.macs.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
