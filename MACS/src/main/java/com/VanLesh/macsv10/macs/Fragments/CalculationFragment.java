@@ -961,25 +961,80 @@ public class CalculationFragment extends Fragment {
         Vehicle ex1 = new Vehicle();
         ex1.setVehicleClass("Bulldozer");
         ex1.setType("Caterpillar D8");
-        ex1.setWv(36199.93);
-        ex1.setBladeW(3.255);
-        ex1.setCg(3.51);
-        ex1.setTrackL(3.255);
-        ex1.setTrackW(0.62);
+        ex1.setWv(36287.39);
+        ex1.setBladeW(3.93);
+        ex1.setCg(3.45);
+        ex1.setTrackL(3.2);
+        ex1.setTrackW(0.55);
 
         Vehicle ex2 = new Vehicle();
-        ex2.setVehicleClass("Excavator");
-        ex2.setType("Caterpillar 320C");
-        ex2.setWv(21821.93);
-        ex2.setBladeW(1.55);
-        ex2.setCg(7.75);
-        ex2.setTrackL(3.72);
-        ex2.setTrackW(0.62);
+        ex2.setVehicleClass("Bulldozer");
+        ex2.setType("Caterpillar D7");
+        ex2.setWv(18143.7);
+        ex2.setBladeW(3.9);
+        ex2.setCg(3.14);
+        ex2.setTrackL(2.87);
+        ex2.setTrackW(0.55);
+
+        Vehicle ex3 = new Vehicle();
+        ex3.setVehicleClass("Bulldozer");
+        ex3.setType("Caterpillar D6");
+        ex3.setWv(24494.0);
+        ex3.setBladeW(3.35);
+        ex3.setCg(2.65);
+        ex3.setTrackL(2.62);
+        ex3.setTrackW(0.6);
+
+        Vehicle ex4 = new Vehicle();
+        ex4.setVehicleClass("Bulldozer");
+        ex4.setType("CAT 320- Drawbar Attachment w/ Embedded ");
+        ex4.setWv(21318.8);
+        ex4.setBladeW(0.91);
+        ex4.setCg(6.7);
+        ex4.setTrackL(3.26);
+        ex4.setTrackW(0.56);
+
+        Vehicle ex5 = new Vehicle();
+        ex5.setVehicleClass("Bulldozer");
+        ex5.setType("CAT 320- Elbow Attachment w/ Embedded ");
+        ex5.setWv(21318.8);
+        ex5.setBladeW(0.91);
+        ex5.setCg(6.7);
+        ex5.setTrackL(3.26);
+        ex5.setTrackW(0.56);
+
+        Vehicle ex6 = new Vehicle();
+        ex6.setVehicleClass("Bulldozer");
+        ex6.setType("CAT 330- Drawbar Attachment w/ Embedded ");
+        ex6.setWv(35108.0);
+        ex6.setBladeW(0.91);
+        ex6.setCg(6.7);
+        ex6.setTrackL(4.05);
+        ex6.setTrackW(0.86);
+
+        Vehicle ex7 = new Vehicle();
+        ex7.setVehicleClass("Bulldozer");
+        ex7.setType("CAT 330- Elbow Attachment w/ Embedded ");
+        ex7.setWv(35108.0);
+        ex7.setBladeW(0.91);
+        ex7.setCg(6.7);
+        ex7.setTrackL(4.05);
+        ex7.setTrackW(0.86);
 
         if (!v.contains(ex1))
             v.add(ex1);
         if (!v.contains(ex2))
             v.add(ex2);
+        if (!v.contains(ex3))
+            v.add(ex3);
+        if (!v.contains(ex4))
+            v.add(ex4);
+        if (!v.contains(ex5))
+            v.add(ex5);
+        if (!v.contains(ex6))
+            v.add(ex6);
+        if (!v.contains(ex7))
+            v.add(ex7);
 
 
     }
