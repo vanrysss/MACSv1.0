@@ -1,9 +1,9 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
-    compile 'com.android.support:support-v4:19.+'
+    compile 'com.android.support:support-v4:23.0.1'
     compile 'com.jakewharton:butterknife:5.0.0'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/itext/itextg-5.5.0.jar')
@@ -12,19 +12,17 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 19
+        minSdkVersion 11
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             debuggable true
         }
     }
