@@ -14,49 +14,9 @@ import java.util.UUID;
  */
 public class Calculation {
 
-    //metadata
-    private String mTitle;
-    private String mEngineerName;
-    private String mJobSite;
-    private Date mDate;
-    private UUID mId;
-
-
-    private double latitude;
-    private double longitude;
-
-
-    // Measurements
-    private int beta; //angle of slope
-    private double D_b; //blade embedment
-    private double delta;//figure provided by Ben
-    private int theta; //angle on guyline
-    private double La; //Setback distance of anchor from soil
-    private double Ha; //height of Anchor
-
-
-    public boolean isimperial = false;
-    //Class objects that matter for calculation
-    private Soil mSoil;
-    private Vehicle mVehicle;
-
-
-    public double getRollover() {
-        return rollover;
-    }
-
-    public double getDrag() {
-        return drag;
-    }
-
-    //final calculation values
-    private double rollover;
-    private double drag;
-    private double Kp;
     private static final double KN_TO_KG = 101.971;
     private static final double KG_TO_KN = 0.00980665;
     private static final double KG_TO_LBS = 2.205;
-
     //JSON things
     private static final String JSON_ID = "id";
     private static final String JSON_TITLE = "title";
@@ -74,6 +34,29 @@ public class Calculation {
     private static final String JSON_SOIL = "soil";
     private static final String JSON_LONGITUDE = "longitude";
     private static final String JSON_LATITUDE = "latitude";
+    public boolean isimperial = false;
+    //metadata
+    private String mTitle;
+    private String mEngineerName;
+    private String mJobSite;
+    private Date mDate;
+    private UUID mId;
+    private double latitude;
+    private double longitude;
+    // Measurements
+    private int beta; //angle of slope
+    private double D_b; //blade embedment
+    private double delta;//figure provided by Ben
+    private int theta; //angle on guyline
+    private double La; //Setback distance of anchor from soil
+    private double Ha; //height of Anchor
+    //Class objects that matter for calculation
+    private Soil mSoil;
+    private Vehicle mVehicle;
+    //final calculation values
+    private double rollover;
+    private double drag;
+    private double Kp;
 
     public Calculation() {
         mId = UUID.randomUUID();
@@ -112,6 +95,23 @@ public class Calculation {
         if (json.has(JSON_LONGITUDE))
             longitude = json.getDouble(JSON_LONGITUDE);
 
+    }
+
+    public static void resetCalculation(Calculation c) {
+        c.setBeta(0);
+        c.setD_b(0);
+        c.setHa(0.0);
+        c.setLa(0.0);
+        c.setTheta(0);
+
+    }
+
+    public double getRollover() {
+        return rollover;
+    }
+
+    public double getDrag() {
+        return drag;
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -201,28 +201,28 @@ public class Calculation {
         return mId;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
-    public void setEngineerName(String engineerName) {
-        mEngineerName = engineerName;
-    }
-
-    public void setJobSite(String jobSite) {
-        mJobSite = jobSite;
-    }
-
     public String getTitle() {
         return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public String getEngineerName() {
         return mEngineerName;
     }
 
+    public void setEngineerName(String engineerName) {
+        mEngineerName = engineerName;
+    }
+
     public String getJobSite() {
         return mJobSite;
+    }
+
+    public void setJobSite(String jobSite) {
+        mJobSite = jobSite;
     }
 
     public Soil getSoil() {
@@ -280,7 +280,7 @@ public class Calculation {
     double Pp() {
 
         return 0.5 * (getSoil().getunitW() * KG_TO_KN) * Math.pow(D_b, 2) * getVehicle().getBladeW() * Kp
-                                                                                            + 2 * getSoil().getC() * getVehicle().getBladeW() * Math.sqrt(Kp);
+                + 2 * getSoil().getC() * getVehicle().getBladeW() * Math.sqrt(Kp);
     }
 
     //figure 7
@@ -303,14 +303,14 @@ public class Calculation {
         else
             Kp = Kp;
 
-        double gamma = getSoil().getunitW() * KG_TO_KN;
+        double gamma = getSoil().unitWeight * KG_TO_KN;
         double Wb = getVehicle().getBladeW();
         double Nb = Kp * alph1;
         double c = getSoil().getC();
         double Nc = 2 * Math.sqrt(Kp) * alph1;
         double Nct = alph1 / alph2;
         double Nw = 1 / alph2;
-        double At = getVehicle().getTrackA();
+        double At = getVehicle().getTrackArea();
         double Wv = getVehicle().getWv() * KG_TO_KN;
 
         double prelim = 0.5 * gamma * Math.pow(D_b, 2) * Wb * Nb + (c * Wb * Nc) + (c * At * Nct) + (Wv * Nw);
@@ -341,7 +341,6 @@ public class Calculation {
             rollover = prelim * KN_TO_KG;
         return rollover;
 
-
     }
 
     @Override
@@ -349,15 +348,6 @@ public class Calculation {
     //useful when we display a list of calcs
     public String toString() {
         return mTitle;
-    }
-
-    public static void resetCalculation(Calculation c){
-        c.setBeta(0);
-        c.setD_b(0);
-        c.setHa(0.0);
-        c.setLa(0.0);
-        c.setTheta(0);
-
     }
 
 

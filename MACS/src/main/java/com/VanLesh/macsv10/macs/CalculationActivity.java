@@ -12,7 +12,7 @@ public abstract class CalculationActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         //return new CalculationFragment();
         UUID calculationId = (UUID) getIntent()
-         .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
+                .getSerializableExtra(CalculationFragment.EXTRA_CALCULATION_ID);
         return CalculationFragment.newInstance(calculationId);
 
     }

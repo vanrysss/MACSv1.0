@@ -22,7 +22,7 @@ import java.util.GregorianCalendar;
 public class DatePickerFragment extends DialogFragment {
 
     public static final String EXTRA_DATE =
-                                                                                        "com.VanLesh.macsv10.macs.date";
+            "com.VanLesh.macsv10.macs.date";
 
     private Date mDate;
 
@@ -44,7 +44,7 @@ public class DatePickerFragment extends DialogFragment {
         i.putExtra(EXTRA_DATE, mDate);
 
         getTargetFragment()
-                                                                                            .onActivityResult(getTargetRequestCode(), resultCode, i);
+                .onActivityResult(getTargetRequestCode(), resultCode, i);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DatePickerFragment extends DialogFragment {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         View v = getActivity().getLayoutInflater()
-                                                                                            .inflate(R.layout.dialog_date, null);
+                .inflate(R.layout.dialog_date, null);
 
         DatePicker datePicker = (DatePicker) v.findViewById(R.id.dialog_date_datePicker);
         datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
@@ -71,17 +71,17 @@ public class DatePickerFragment extends DialogFragment {
             }
         });
         return new AlertDialog.Builder(getActivity())
-                                                                                            .setView(v)
-                                                                                            .setTitle(R.string.date_picker_title)
-                                                                                            .setPositiveButton(android.R.string.ok,
-                                                                                                                                                                                new DialogInterface.OnClickListener() {
-                                                                                                                                                                                    @Override
-                                                                                                                                                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                                                                                                                                                        sendResult(Activity.RESULT_OK);
-                                                                                                                                                                                    }
-                                                                                                                                                                                }
-                                                                                            )
-                                                                                            .create();
+                .setView(v)
+                .setTitle(R.string.date_picker_title)
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                sendResult(Activity.RESULT_OK);
+                            }
+                        }
+                )
+                .create();
 
     }
 }

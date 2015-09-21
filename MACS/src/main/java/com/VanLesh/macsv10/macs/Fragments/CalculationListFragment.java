@@ -1,4 +1,4 @@
-package com.VanLesh.macsv10.macs;
+package com.VanLesh.macsv10.macs.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -22,8 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.VanLesh.macsv10.macs.Fragments.SplashScreen;
+import com.VanLesh.macsv10.macs.CalculationLab;
 import com.VanLesh.macsv10.macs.Models.Calculation;
+import com.VanLesh.macsv10.macs.R;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by samvanryssegem on 2/27/14.
  */
-class CalculationListFragment extends ListFragment {
+public class CalculationListFragment extends ListFragment {
 
     private boolean mSubtitleVisible;
     private Callbacks mCallbacks;
@@ -162,7 +163,7 @@ class CalculationListFragment extends ListFragment {
 
             case R.id.menu_item_publication:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse( "http://people.forestry.oregonstate.edu/ben-leshchinsky/"));
+                        Uri.parse("http://people.forestry.oregonstate.edu/ben-leshchinsky/"));
                 startActivity(browserIntent);
 
             case R.id.menu_about:
@@ -204,18 +205,18 @@ class CalculationListFragment extends ListFragment {
             //if we dont have a view inflate one
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                .inflate(R.layout.list_item_calculation, null);
+                        .inflate(R.layout.list_item_calculation, null);
             }
 
             //configure view for this calculation
             Calculation c = getItem(position);
 
             TextView titleTextView =
-            (TextView) convertView.findViewById(R.id.calculation_list_item_titleTextView);
+                    (TextView) convertView.findViewById(R.id.calculation_list_item_titleTextView);
             titleTextView.setText(c.getTitle());
 
             TextView dateTextView =
-            (TextView) convertView.findViewById(R.id.calculation_list_item_dateTextView);
+                    (TextView) convertView.findViewById(R.id.calculation_list_item_dateTextView);
             dateTextView.setText(c.getDate().toString());
             return convertView;
         }

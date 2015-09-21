@@ -6,6 +6,7 @@ import android.util.Log;
 import com.VanLesh.macsv10.macs.Models.Vehicle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by samvanryssegem on 3/12/14.
@@ -16,46 +17,17 @@ public class VehicleLab {
     private static final String FILENAME = "vehicles.json";
 
     private static VehicleLab sVehicleLab;
-    private ArrayList<Vehicle> mVehicles;
-    private final VehicleJSONSerializer mSerializer;
+    private List<Vehicle> mVehicles;
 
     private Context mAppContext;
 
     private VehicleLab(Context appcontext) {
         Context appcontext1 = appcontext;
-        mSerializer = new VehicleJSONSerializer(appcontext1, FILENAME);
 
         try {
             mVehicles = mSerializer.loadVehicles();
         } catch (Exception e) {
             mVehicles = new ArrayList<Vehicle>();
-/*
-            Vehicle ex1 = new Vehicle();
-            ex1.setVehicleClass("Bulldozer");
-            ex1.setType("Caterpillar D8");
-            ex1.setWv(355* Vehicle.KN_TO_KG);
-            ex1.setBladeW(3.255);
-            ex1.setCg(3.51);
-            ex1.setTrackL(3.255);
-            ex1.setTrackW(0.62);
-
-            Vehicle ex2 = new Vehicle();
-            ex2.setVehicleClass("Excavator");
-            ex2.setType("Caterpillar 320C");
-            ex2.setWv(214 * Vehicle.KN_TO_KG);
-            ex2.setBladeW(1.55);
-            ex2.setCg(7.75);
-            ex2.setTrackL(3.72);
-            ex2.setTrackW(0.62);
-
-            Vehicle newbie = new Vehicle();
-            newbie.setType("new");
-
-            mVehicles.add(ex1);
-            mVehicles.add(ex2);
-            mVehicles.add(newbie);
-
-            */
             Log.e(TAG, "Error loading vehicles:", e);
 
         }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.VanLesh.macsv10.macs.Models.Soil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by samvanryssegem on 3/12/14.
@@ -15,7 +16,7 @@ public class SoilLab {
     private static final String FILENAME = "soils.json";
 
     private static SoilLab sSoilLab;
-    private ArrayList<Soil> mSoils;
+    private List<Soil> soils;
     private final SoilJSONSerializer mSerializer;
 
     private Context mAppContext;
@@ -25,9 +26,9 @@ public class SoilLab {
         mSerializer = new SoilJSONSerializer(appcontext1, FILENAME);
 
         try {
-            mSoils = mSerializer.loadSoils();
+            soils = mSerializer.loadSoils();
         } catch (Exception e) {
-            mSoils = new ArrayList<Soil>();
+            soils = new ArrayList<Soil>();
             Log.e(TAG, "Error loading soils:", e);
 
         }
@@ -41,19 +42,19 @@ public class SoilLab {
     }
 
     public ArrayList<Soil> getSoils() {
-        return mSoils;
+        return soils;
     }
 
     public void addSoil(Soil c) {
-        mSoils.add(c);
+        soils.add(c);
     }
 
     public void deleteSoil(Soil c) {
-        mSoils.remove(c);
+        soils.remove(c);
     }
 
     public Soil getSoil(String title) {
-        for (Soil c : mSoils) {
+        for (Soil c : soils) {
             if (c.getName().equals(title))
                 return c;
         }
@@ -62,7 +63,7 @@ public class SoilLab {
 
     public boolean saveSoils() {
         try {
-            mSerializer.saveSoils(mSoils);
+            mSerializer.saveSoils(soils);
             Log.d(TAG, "soils saved");
             return true;
         } catch (Exception e) {

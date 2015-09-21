@@ -11,84 +11,55 @@ import org.json.JSONObject;
 public class Soil {
 
 
-    private String mname; //hey lets uniquely name all of our soil types
-    private double munitW; //this is a force aka weight/volume
-    private int mfrictA; // the friction angle
-    private double mC; //cohesion of soil
+    private static final String nameJSON = "name";
+    private static final String unitWeightJSON = "unit weight";
+    private static final String frictionAngleJSON = "friction angle";
+    private static final String cohesionJSON = "cohesion";
+    public final String name; //hey lets uniquely name all of our soil types
+    public final double unitWeight; //this is a force aka weight/volume
+    public final int frictionAngle; // the friction angle
+    public final double cohesion; //cohesion of soil
+    private final double KPa_To_Psf = 0.04788;
+    private final double KGm3_To_Pf3 = 77.8555;
+    public final boolean isimperial;
 
-    private static final double KPa_To_Psf = 0.04788;
-    private static final double KGm3_To_Pf3 = 77.8555;
+    public Soil(boolean isimperial, String name, double unitWeight, int frictionAngle, double cohesion) {
+        this.isimperial = isimperial;
+        this.name = name;
+        this.unitWeight = unitWeight;
+        this.frictionAngle = frictionAngle;
+        this.cohesion = cohesion;
+    }
 
-    private static final String JSON_NAME = "name";
-    private static final String JSON_UNITW = "unit weight";
-    private static final String JSON_FRICTIONANGLE = "friction angle";
-    private static final String JSON_COHESION = "cohesion";
+    public Soil(JSONObject json) throws JSONException {
 
-    public boolean isimperial = false;
+        if (json.has(nameJSON) && json.has(unitWeightJSON) && json.has(frictionAngleJSON) && json.has(cohesionJSON)) {
+            this.name = json.getString(nameJSON);
+            this.cohesion = json.getDouble(cohesionJSON);
+            this.frictionAngle = json.getInt(frictionAngleJSON);
+            this.unitWeight = json.getDouble(unitWeightJSON);
+            this.isimperial = false;
+        } else throw new JSONException("This soil does not have all fields set properly.");
 
-    public Soil() {
     }
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(JSON_NAME, mname);
-        json.put(JSON_UNITW, munitW);
-        json.put(JSON_FRICTIONANGLE, mfrictA);
-        json.put(JSON_COHESION, mC);
+        json.put(nameJSON, name);
+        json.put(unitWeightJSON, unitWeight);
+        json.put(frictionAngleJSON, frictionAngle);
+        json.put(cohesionJSON, cohesion);
         return json;
 
     }
 
-    public Soil(JSONObject json) throws JSONException {
-        if (json.has(JSON_NAME))
-            mname = json.getString(JSON_NAME);
-        if (json.has(JSON_UNITW))
-            munitW = json.getDouble(JSON_UNITW);
-        if (json.has(JSON_FRICTIONANGLE))
-            mfrictA = json.getInt(JSON_FRICTIONANGLE);
-        if (json.has(JSON_COHESION))
-            mC = json.getDouble(JSON_COHESION);
-    }
+    public Soil(Soil metricSoil) {
+        this.cohesion = metricSoil.cohesion * KPa_To_Psf;
+        this.unitWeight = metricSoil.unitWeight / KGm3_To_Pf3;
+        this.name = metricSoil.name;
+        this.frictionAngle = metricSoil.frictionAngle;
+        this.isimperial = true;
 
-
-    public void convertToMetric() {
-        if (isimperial) {
-            mC = mC * KPa_To_Psf;
-            munitW = munitW / KGm3_To_Pf3;
-        }
-    }
-
-    public int getfrictA() {
-        return mfrictA;
-    }
-
-    public void setfrictA(int mfrictA) {
-        this.mfrictA = mfrictA;
-    }
-
-
-    public String getName() {
-        return mname;
-    }
-
-    public void setName(String mname) {
-        this.mname = mname;
-    }
-
-    public double getC() {
-        return mC;
-    }
-
-    public void setC(double c) {
-        mC = c;
-    }
-
-    public double getunitW() {
-        return munitW;
-    }
-
-    public void setunitW(double munitW) {
-        this.munitW = munitW;
     }
 
 

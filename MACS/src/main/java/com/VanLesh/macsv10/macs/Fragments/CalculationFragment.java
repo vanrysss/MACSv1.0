@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import butterknife.ButterKnife;
@@ -888,14 +889,14 @@ public class CalculationFragment extends Fragment {
             }
 
         });
-        mReportButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        mReportButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
                 Pdf.maker(mCalculation);
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
-                     new String[]{});
+                        new String[]{});
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "MACS Report");
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This email sent by the MACS App");
                 // Here my file name is shortcuts.pdf which i have stored in /res/raw folder
@@ -1039,7 +1040,7 @@ public class CalculationFragment extends Fragment {
 
     }
 
-    private void staticSoils(ArrayList<Soil> s) {
+    private void staticSoils(List<Soil> s) {
 
         Soil a = new Soil();
         a.setC(0);
@@ -1109,7 +1110,7 @@ public class CalculationFragment extends Fragment {
 
     }
 
-    Double decimalFormater(double parameter){
+    Double decimalFormater(double parameter) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         return Double.valueOf(twoDForm.format(parameter));
     }

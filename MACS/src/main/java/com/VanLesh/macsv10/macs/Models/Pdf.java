@@ -42,7 +42,7 @@ public class Pdf {
         doc.addTitle(calc.getTitle());
         doc.addAuthor(calc.getEngineerName());
         doc.addSubject(calc.getJobSite() + " This PDF was created using itext, and MACS is subject to" +
-                                                                                            "the AGPL license");
+                "the AGPL license");
         doc.addCreator("MACS v1.0 using itext");
         doc.addKeywords("MACS, itext, PDF");
 
